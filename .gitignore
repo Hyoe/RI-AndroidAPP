@@ -36,9 +36,13 @@ captures/
 
 # Intellij
 *.iml
+.idea/
 
 # Keystore files
 *.jks
+
+.DS_Store
+/.DS_Store
 
 ### Android Patch ###
 gen-external-apklibs
