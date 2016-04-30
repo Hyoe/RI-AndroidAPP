@@ -1,4 +1,3 @@
-
 ### Android ###
 # Built application files
 *.apk
@@ -39,6 +38,11 @@ captures/
 
 # Keystore files
 *.jks
+
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
 
 ### Android Patch ###
 gen-external-apklibs
