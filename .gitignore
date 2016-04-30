@@ -35,14 +35,20 @@ captures/
 
 # Intellij
 *.iml
+.idea/
 
 # Keystore files
 *.jks
 
+<<<<<<< HEAD
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
+=======
+.DS_Store
+/.DS_Store
+>>>>>>> hyo
 
 ### Android Patch ###
 gen-external-apklibs
