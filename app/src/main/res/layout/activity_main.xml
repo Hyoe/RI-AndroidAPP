@@ -1,5 +1,5 @@
 <LinearLayout
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
@@ -7,24 +7,27 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
 
 
         <EditText
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/zipTextBox"
             android:numeric="integer"
-            android:hint="Enter Zip Code" />
+            android:hint="Enter Zip Code"
+            android:layout_gravity="bottom" />
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignRight="@+id/zipTextBox"
             android:text="Search"
             android:id="@+id/zipSearchButton"
-            android:layout_gravity="right"
-            android:onClick="onSearch" />
+            android:onClick="onSearch"
+            android:layout_gravity="right" />
 
     </LinearLayout>
     <LinearLayout
