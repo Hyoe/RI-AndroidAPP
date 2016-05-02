@@ -38,7 +38,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
     }
 
     protected void onPostExecute(List<HashMap<String, String>> list){
-        mMap.clear();
+        //mMap.clear();
         for (int i = 0; i < list.size(); i++){
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = list.get(i);
