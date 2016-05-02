@@ -44,6 +44,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mMap = mapFragment.getMap();
         mapFragment.getMapAsync(this);
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
@@ -60,7 +61,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 else{
                     LatLng newZip = getLocatonFromZip(this, zipCode);
                     StringBuilder googlePlacesURL = new StringBuilder("http://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                    googlePlacesURL.append("location=" + newZip.latitude + newZip.longitude);
+                    googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
                     googlePlacesURL.append("&radius=" + 5000);
                     googlePlacesURL.append("&keyword=recycling");
                     googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
@@ -70,8 +71,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     toPass[0] = mMap;
                     toPass[1] = googlePlacesURL.toString();
                     googlePlacesReadTask.execute(toPass);
-                    //mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
+                    mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
+
                 }
 
             }
