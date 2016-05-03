@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return userZip;
     }
-
     // helper method for menu
     private void addDrawerItems() {
         String[] osArray = { "Login", "Favorite", "Comments", "About" };
@@ -245,5 +244,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 }
