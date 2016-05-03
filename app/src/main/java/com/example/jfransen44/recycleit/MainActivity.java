@@ -8,8 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +24,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
+    private final String GOOGLE_API_KEY = "AIzaSyDSoM54-pL-owZTO68KrTJM_OZ2utgt2Mo";
     private final float defaultZoom = (float) 16.0;
     private GoogleApiClient mGoogleApiClient;
     private Button zipSearchButton;
@@ -33,10 +35,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //show error if google play services unavailable
+        if (! isGooglePlayServicesAvailable()){
+            finish();
+        }
         setContentView(R.layout.activity_main);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mMap = mapFragment.getMap();
         mapFragment.getMapAsync(this);
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
@@ -52,21 +60,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else{
                     LatLng newZip = getLocatonFromZip(this, zipCode);
+                    StringBuilder googlePlacesURL = new StringBuilder("http://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                    googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
+                    googlePlacesURL.append("&radius=" + 5000);
+                    googlePlacesURL.append("&keyword=recycling");
+                    googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
+
+                    GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+                    Object[] toPass = new Object[2];
+                    toPass[0] = mMap;
+                    toPass[1] = googlePlacesURL.toString();
+                    googlePlacesReadTask.execute(toPass);
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
+
                 }
 
             }
         });
-
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                //.enableAutoManage(this, this)
-                .build();
     }
 
+    private boolean isGooglePlayServicesAvailable(){
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status){
+            return true;
+        }
+        else{
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
 
     /**
      * Manipulates the map once available.
