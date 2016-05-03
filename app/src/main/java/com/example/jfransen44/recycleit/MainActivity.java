@@ -1,5 +1,6 @@
 package com.example.jfransen44.recycleit;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -68,13 +69,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         addDrawerItems();
         setupDrawer();
         // genereic listener for  menu list
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //    @Override
+        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+         //       Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
+         //   }
+        //});
+        // set drawerlist listener
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                switch(position) {
+                    case 0:
+                        //Intent a = new Intent(MainActivity.this, Activity1.class);
+                        //startActivity(a);
+                        Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        //Intent b = new Intent(MainActivity.this, Activity2.class);
+                        //startActivity(b)
+                        Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        //Intent b = new Intent(MainActivity.this, Activity2.class);
+                        //startActivity(b);
+                        Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        //Intent b = new Intent(MainActivity.this, Activity2.class);
+                        //startActivity(b);
+                        Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                }
             }
-        });
 
+        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -155,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // helper method for menu
     private void addDrawerItems() {
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        String[] osArray = { "Login", "Favorite", "Comments", "About" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
     }
