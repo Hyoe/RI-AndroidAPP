@@ -1,42 +1,61 @@
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- The first child in the layout is for the main Activity UI-->
 
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/zipTextBox"
-            android:numeric="integer"
-            android:hint="Enter Zip Code"
-            android:layout_gravity="bottom" />
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignRight="@+id/zipTextBox"
-            android:text="Search"
-            android:id="@+id/zipSearchButton"
-            android:onClick="onSearch"
-            android:layout_gravity="right" />
-
-    </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/map" tools:context=".MainActivity"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_height="wrap_content">
 
+
+            <EditText
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/zipTextBox"
+                android:numeric="integer"
+                android:hint="Enter Zip Code" />
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:id="@+id/zipSearchButton"
+                android:layout_gravity="right"
+                android:onClick="onSearch" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/map" tools:context=".MainActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <!-- Side navigation drawer UI -->
+    <ListView
+        android:id="@+id/navList"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:background="#ffeeeeee"/>
+</android.support.v4.widget.DrawerLayout>
