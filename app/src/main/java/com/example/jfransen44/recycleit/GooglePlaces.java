@@ -1,5 +1,7 @@
 package com.example.jfransen44.recycleit;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,8 +62,9 @@ public class GooglePlaces {
             if (! googlePlaceJson.isNull("vicinity")){
                 vicinity = googlePlaceJson.getString("vicinity");
             }
+            Log.d("Google Place JSON", googlePlaceJson.toString());
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = googlePlaceJson.getJSONObject("geomtery").getJSONObject("location").getString("lng");
+            longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
             reference = googlePlaceJson.getString("reference");
             googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
