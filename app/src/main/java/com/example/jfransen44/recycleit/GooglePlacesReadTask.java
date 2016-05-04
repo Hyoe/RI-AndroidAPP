@@ -24,6 +24,7 @@ public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
         catch (Exception e){
             Log.d("Google Places Read Task", e.toString());
         }
+        Log.d("Google Places Data", googlePlacesData);
         return googlePlacesData;
     }
 
@@ -32,6 +33,7 @@ public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
         toPass[1] = result;
+        Log.d("Tag", result);
         placesDisplayTask.execute(toPass);
     }
 }

@@ -1,11 +1,12 @@
 package com.example.jfransen44.recycleit;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,23 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
-        mapFragment.getMapAsync(this);
+        //mapFragment.getMapAsync(this);
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 else{
                     LatLng newZip = getLocatonFromZip(this, zipCode);
-                    StringBuilder googlePlacesURL = new StringBuilder("http://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                    StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                     googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
                     googlePlacesURL.append("&radius=" + 5000);
                     googlePlacesURL.append("&keyword=recycling");
@@ -141,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     toPass[0] = mMap;
                     toPass[1] = googlePlacesURL.toString();
                     googlePlacesReadTask.execute(toPass);
+                    Log.d("Tag", googlePlacesURL.toString());
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
 
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     */
+     *
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
-    }
+    }*/
 
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
         Geocoder coder = new Geocoder(this);
