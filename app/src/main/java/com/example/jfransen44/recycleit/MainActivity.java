@@ -13,14 +13,13 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends FragmentActivity {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -45,7 +44,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
-        mapFragment.getMapAsync(this);
+        //mapFragment.getMapAsync(this);
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
@@ -59,7 +58,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    LatLng newZip = getLocatonFromZip(this, zipCode);
+                    LatLng newZip = getLocatonFromZip(zipCode);
                     StringBuilder googlePlacesURL = new StringBuilder("http://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                     googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
                     googlePlacesURL.append("&radius=" + 5000);
@@ -100,8 +99,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+    //@Override
+    /*public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //mMap.setMyLocationEnabled(true);  To Be Enabled if location services set up
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -111,9 +110,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
-    }
+    }*/
 
-    public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
+    public LatLng getLocatonFromZip(String zipCode){
         Geocoder coder = new Geocoder(this);
         List<android.location.Address> address;
         LatLng userZip = null;
