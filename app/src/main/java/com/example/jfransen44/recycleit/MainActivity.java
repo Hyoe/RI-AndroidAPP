@@ -1,5 +1,6 @@
 package com.example.jfransen44.recycleit;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -86,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 switch(position) {
                     case 0:
-                        //Intent a = new Intent(MainActivity.this, Activity1.class);
-                        //startActivity(a);
-                        Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         //Intent b = new Intent(MainActivity.this, Activity2.class);
