@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
     private final String GOOGLE_API_KEY = "AIzaSyDSoM54-pL-owZTO68KrTJM_OZ2utgt2Mo";
-    private final float defaultZoom = (float) 16.0;
+    private final float defaultZoom = (float) 17.0;
     private GoogleApiClient mGoogleApiClient;
     private Button zipSearchButton;
     private EditText zipTextBox;
@@ -53,10 +53,14 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         setContentView(R.layout.activity_main);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
         //mapFragment.getMapAsync(this);
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
@@ -126,10 +130,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    mMap.clear();
                     LatLng newZip = getLocatonFromZip(this, zipCode);
                     StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                     googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
-                    googlePlacesURL.append("&radius=" + 5000);
+                    googlePlacesURL.append("&nearby");
                     googlePlacesURL.append("&keyword=recycling");
                     googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
@@ -141,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Tag", googlePlacesURL.toString());
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
-
                 }
 
             }
