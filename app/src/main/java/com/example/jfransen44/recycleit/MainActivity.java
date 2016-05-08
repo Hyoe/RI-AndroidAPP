@@ -44,6 +44,56 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    String session_username = null;
+    String session_firstName = null;
+    String session_lastName = null;
+    private boolean loggedIn = false;
+    String[] favArray;
+    private String[] loggedInMenu = { "Logout", "Favorite", "Comments", "About" };
+    private String[] loggedOutMenu = { "Login", "About" };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //when you return from another actiivty, we check if that activity had a request code, so we can set certain session variables.
+        if (requestCode == 222) {
+            //returning from register
+            if (resultCode == RESULT_OK) {
+                session_username = data.getStringExtra("username");
+                session_firstName = data.getStringExtra("firstName");
+                session_lastName = data.getStringExtra("lastName");
+                Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == 111) {
+            //returning from login
+            loggedIn = true;
+            addDrawerItems(loggedInMenu);
+            setupDrawer();
+            setupDrawerListener();
+            if (resultCode == RESULT_OK) {
+                session_username = data.getStringExtra("username");
+                session_firstName = data.getStringExtra("firstName");
+                session_lastName = data.getStringExtra("lastName");
+                Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+        if (requestCode == 333) {
+            loggedIn = false;
+            addDrawerItems(loggedOutMenu);
+            setupDrawer();
+            setupDrawerListener();
+            //returning from log out
+            session_username = null;
+            session_firstName = null;
+            session_lastName = null;
+            Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,59 +116,15 @@ public class MainActivity extends AppCompatActivity {
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
-
-
-
-
         // listview for menu
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         // activity title
         mActivityTitle = getTitle().toString();
         // add menu drawer list
-        addDrawerItems();
+        addDrawerItems(loggedOutMenu);
         setupDrawer();
-        // genereic listener for  menu list
-        //mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    @Override
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-         //       Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-         //   }
-        //});
-        // set drawerlist listener
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                switch(position) {
-                    case 0:
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b)
-                        Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b);
-                        Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b);
-                        Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                }
-            }
-
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-
+        setupDrawerListener();
 
 
         //set zipSearchButton listener
@@ -131,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    mMap.clear();
+                   // mMap.clear();
                     LatLng newZip = getLocatonFromZip(this, zipCode);
                     StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                     googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
                     googlePlacesURL.append("&nearby");
-                    googlePlacesURL.append("&keyword=recycling");
+                    googlePlacesURL.append("&keyword=restaurants");
                     googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
                     GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
@@ -209,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
         return userZip;
     }
     // helper method for menu
-    private void addDrawerItems() {
-        String[] osArray = { "Login", "Favorite", "Comments", "About" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+    private void addDrawerItems(String[] values) {
+       // String[] osArray = { "Login", "Favorite", "Comments", "About" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
         mDrawerList.setAdapter(mAdapter);
     }
 
@@ -237,7 +243,63 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    private void setupDrawerListener(){
 
+        if(!loggedIn){
+            mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            MainActivity.this.startActivityForResult(logInIntent, 111);
+                            //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case 1:
+                            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            startActivity(aboutIntent);
+                            //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                    }
+                }
+
+            });
+        } else {
+            mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
+                            MainActivity.this.startActivityForResult(intent, 333);
+                            //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            //Intent b = new Intent(MainActivity.this, Activity2.class);
+                            //startActivity(b)
+                            Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            //Intent b = new Intent(MainActivity.this, Activity2.class);
+                            //startActivity(b);
+                            Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            startActivity(aboutIntent);
+                            break;
+                        default:
+                    }
+                }
+
+            });
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
