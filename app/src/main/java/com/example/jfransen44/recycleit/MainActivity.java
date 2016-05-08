@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,7 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -83,6 +83,42 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
             // for ActivityCompat#requestPermissions for more details.
             //mMap.setMyLocationEnabled(true);
         }
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null){
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mMap.clear();
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                LatLng latLng = new LatLng(latitude, longitude);
+                MarkerOptions myMarker = new MarkerOptions();
+                myMarker.title("Current Location");
+                myMarker.position(latLng);
+                mMap.addMarker(myMarker);
+                getMapInfo(latLng);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
 
         //mMap.setOnMarkerClickListener(this);
 
@@ -196,14 +232,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null){
-            onLocationChanged(location);
-        }
-        locationManager.requestLocationUpdates(bestProvider, 2000, 0, (LocationListener) this);
 
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
@@ -246,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         mMap.addMarker(myMarker);
         getMapInfo(latLng);
     }
+
 
     //call google services to place markers on map
     private void getMapInfo(LatLng latLng){
