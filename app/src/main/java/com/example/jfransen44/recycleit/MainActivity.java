@@ -29,7 +29,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback, LocationListener {
+public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, LocationListener {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -58,21 +57,25 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+
+
         //show error if google play services unavailable
         if (!isGooglePlayServicesAvailable()) {
             finish();
         }
         setContentView(R.layout.activity_main);
-        //LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //Criteria criteria = new Criteria();
-        //String bestProvider = locationManager.getBestProvider(criteria, true);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        //mMap = mapFragment.getMap();
-        //mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap = mapFragment.getMap();
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        //enable location services
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                mMap.clear();
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 LatLng latLng = new LatLng(latitude, longitude);
@@ -122,9 +124,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
         //mMap.setOnMarkerClickListener(this);
 
-        mapFragment.getMapAsync(this);
-        zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
-        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
 
         // listview for menu
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
+        zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
                 }
-
             }
         });
     }
@@ -214,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     */
+     *
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
-    }
+    }*/
 
     //convert user entered zip code to lat/lon
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){

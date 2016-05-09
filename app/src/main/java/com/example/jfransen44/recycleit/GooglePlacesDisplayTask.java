@@ -53,4 +53,8 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             mMap.addMarker(markerOptions);
         }
     }
+
+    public List<HashMap<String, String>> getHashMap(){
+        return doInBackground();
+    }
 }
