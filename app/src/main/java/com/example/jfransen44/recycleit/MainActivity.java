@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
     String session_lastName = null;
     private boolean loggedIn = false;
     String[] favArray;
-    private String[] loggedInMenu = { "Logout", "Favorite", "Comments", "About" };
-    private String[] loggedOutMenu = { "Login", "About" };
+    private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
+    private String[] loggedOutMenu = { "Login", "Register", "About" };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         //when you return from another actiivty, we check if that activity had a request code, so we can set certain session variables.
         if (requestCode == 222) {
-            //returning from register
+            //returning from register or Login
             if (resultCode == RESULT_OK) {
+                Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
                 session_username = data.getStringExtra("username");
                 session_firstName = data.getStringExtra("firstName");
                 session_lastName = data.getStringExtra("lastName");
@@ -255,10 +256,14 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this.startActivityForResult(logInIntent, 111);
                             //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
                             break;
-
                         case 1:
-                            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
-                            startActivity(aboutIntent);
+                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                            MainActivity.this.startActivityForResult(registerIntent, 111);
+                            //Toast.makeText(MainActivity.this, "Register Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            MainActivity.this.startActivityForResult(AboutIntent, 222);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         default:
