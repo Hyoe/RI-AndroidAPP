@@ -26,9 +26,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -36,7 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -52,12 +53,11 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private Marker myMarker;
+    private String gResultString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
 
         //show error if google play services unavailable
@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mMap = mapFragment.getMap();
+        mapFragment.getMapAsync(this);
+        /*mMap = mapFragment.getMap();
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
             public void onProviderDisabled(String provider) {
 
             }
-        });
+        });*/
 
         //mMap.setOnMarkerClickListener(this);
 
@@ -175,17 +176,20 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         getSupportActionBar().setHomeButtonEnabled(true);
 
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
+        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 zipCode = zipTextBox.getText().toString();
+                Log.d("ZIPTEXTBOX", zipCode);
                 //check for 5 digit zip, make alert if not
                 if (zipCode.length() != 5) {
                     Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
                 } else {
                     mMap.clear();
                     LatLng newZip = getLocatonFromZip(this, zipCode);
+                    Log.d("NEW ZIP", newZip.toString());
                     getMapInfo(newZip);
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
@@ -212,10 +216,15 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     *
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -226,15 +235,47 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
 
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
-    }*/
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null){
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                LatLng latLng = new LatLng(latitude, longitude);
+                MarkerOptions myMarker = new MarkerOptions();
+                myMarker.title("Current Location");
+                myMarker.position(latLng);
+                mMap.addMarker(myMarker);
+                getMapInfo(latLng);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+    }
 
     //convert user entered zip code to lat/lon
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
@@ -244,13 +285,14 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
         try{
             address = coder.getFromLocationName(zipCode, 5);
+            Log.d("ADDRESS", address.toString());
             if (address == null) {
                 return null;
             }
             android.location.Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
-
+            Log.d("GETLOCATIONFROMZIP", location.toString());
             userZip = new LatLng(location.getLatitude(), location.getLongitude());
         }
         catch (Exception ex){
@@ -261,8 +303,9 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
     }
 
     //update map icons when map is moved
+    //commented out for testing
     public void onLocationChanged(Location location){
-        mMap.clear();
+     /*   mMap.clear();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
@@ -270,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         myMarker.title("Current Location");
         myMarker.position(latLng);
         mMap.addMarker(myMarker);
-        getMapInfo(latLng);
+        getMapInfo(latLng);*/
     }
 
 
@@ -287,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMarke
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        Log.d("Tag", googlePlacesURL.toString());
+        gResultString = googlePlacesReadTask.googlePlacesData;
     }
 
     // helper method for menu
