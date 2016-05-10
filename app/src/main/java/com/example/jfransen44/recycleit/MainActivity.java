@@ -99,17 +99,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // TODO this block throws an error
         //show error if google play services unavailable
-        if (! isGooglePlayServicesAvailable()){
-            finish();
-        }
+       // if (! isGooglePlayServicesAvailable()){
+       //     finish();
+       // }
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -142,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
                     LatLng newZip = getLocatonFromZip(this, zipCode);
                     StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                     googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
-                    googlePlacesURL.append("&nearby");
-                    googlePlacesURL.append("&keyword=restaurants");
+
+                    googlePlacesURL.append("&radius=" + 5000);
+                    googlePlacesURL.append("&keyword=recycling");
+
                     googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
                     GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
