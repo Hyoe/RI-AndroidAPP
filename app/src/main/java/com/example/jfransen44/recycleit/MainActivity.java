@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,9 +304,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //update map icons when map is moved
-    //commented out for testing
+    
     public void onLocationChanged(Location location){
-     /*   mMap.clear();
+        mMap.clear();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
@@ -313,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         myMarker.title("Current Location");
         myMarker.position(latLng);
         mMap.addMarker(myMarker);
-        getMapInfo(latLng);*/
+        getMapInfo(latLng);
     }
 
 
@@ -331,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
         gResultString = googlePlacesReadTask.googlePlacesData;
+        //Log.d("gRESULTSTRING", gResultString);
     }
 
     // helper method for menu
