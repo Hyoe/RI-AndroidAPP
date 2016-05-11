@@ -188,8 +188,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         addDrawerItems(loggedOutMenu);
         setupDrawer();
         setupDrawerListener();
-
-
+// TODO added in merge not cleared yet
+        zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
+        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+// end of TODO
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,7 +336,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getMapInfo(LatLng latLng){
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
-        googlePlacesURL.append("&nearby");
+        //googlePlacesURL.append("&nearby");
+        //googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&radius=" + 5000);
         googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
