@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
 
-        //show error if google play services unavailable
+        /*show error if google play services unavailable
         if (!isGooglePlayServicesAvailable()) {
             finish();
-        }
+        }*/
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //update map icons when map is moved
-    
+
     public void onLocationChanged(Location location){
         mMap.clear();
         double latitude = location.getLatitude();
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getMapInfo(LatLng latLng){
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
-        googlePlacesURL.append("&nearby");
+        googlePlacesURL.append("&radius" + 5000);
         googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
@@ -331,8 +331,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        gResultString = googlePlacesReadTask.googlePlacesData;
-        //Log.d("gRESULTSTRING", gResultString);
+        gResultString = googlePlacesReadTask.getGooglePlacesData();
+        Log.d("gRESULTSTRING", gResultString);
     }
 
     // helper method for menu

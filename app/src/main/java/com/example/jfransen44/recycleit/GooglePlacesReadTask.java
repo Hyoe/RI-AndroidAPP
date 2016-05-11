@@ -35,4 +35,8 @@ public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
         Log.d("Tag", result);
         placesDisplayTask.execute(toPass);
     }
+
+    public String getGooglePlacesData(){
+        return googlePlacesData;
+    }
 }
