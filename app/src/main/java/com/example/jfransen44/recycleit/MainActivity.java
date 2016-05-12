@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 session_firstName = data.getStringExtra("firstName");
                 session_lastName = data.getStringExtra("lastName");
                 Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 session_firstName = data.getStringExtra("firstName");
                 session_lastName = data.getStringExtra("lastName");
                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -106,16 +107,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (session_username != null){
+            addDrawerItems(loggedInMenu);
+            setupDrawer();
+            setupDrawerListener();
+        } else {
+            addDrawerItems(loggedOutMenu);
+            setupDrawer();
+            setupDrawerListener();
+        }
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // TODO this block throws an error
         //show error if google play services unavailable
-       // if (! isGooglePlayServicesAvailable()){
-       //     finish();
-       // }
+        // if (! isGooglePlayServicesAvailable()){
+        //     finish();
+        // }
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
@@ -318,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //update map icons when map is moved
-    
+
     public void onLocationChanged(Location location){
         mMap.clear();
         double latitude = location.getLatitude();
@@ -353,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // helper method for menu
     private void addDrawerItems(String[] values) {
-       // String[] osArray = { "Login", "Favorite", "Comments", "About" };
+        // String[] osArray = { "Login", "Favorite", "Comments", "About" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
         mDrawerList.setAdapter(mAdapter);
     }
@@ -382,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setupDrawerListener(){
 
-        if(!loggedIn){
+        if(session_firstName == null){
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
