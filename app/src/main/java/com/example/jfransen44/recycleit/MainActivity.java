@@ -26,6 +26,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private Marker myMarker;
-    private String gResultString;
+    private LatLng newPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                newPlace = place.getLatLng();
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
         /*mMap = mapFragment.getMap();
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -176,25 +195,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setHomeButtonEnabled(true);
 
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
-        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+        //zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zipCode = zipTextBox.getText().toString();
-                Log.d("ZIPTEXTBOX", zipCode);
+                //zipCode = newPlace;
+                Log.d("ZIPTEXTBOX", newPlace.toString());
                 //check for 5 digit zip, make alert if not
-                if (zipCode.length() != 5) {
-                    Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
-                } else {
-                    mMap.clear();
-                    LatLng newZip = getLocatonFromZip(this, zipCode);
-                    Log.d("NEW ZIP", newZip.toString());
-                    getMapInfo(newZip);
-                    mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
-                }
+
+                mMap.clear();
+                //LatLng newZip = getLocatonFromZip(this, zipCode);
+                //Log.d("NEW ZIP", newZip.toString());
+                getMapInfo(newPlace);
+                mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
+
             }
         });
     }
@@ -326,13 +343,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
-        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        gResultString = googlePlacesReadTask.getGooglePlacesData();
-        Log.d("gRESULTSTRING", gResultString);
     }
 
     // helper method for menu
@@ -404,5 +419,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("Marker ID" , placeID);
 
         return false;
+    }
+
+    public void asyncResult(String result){
+        if (result != null){
+            Log.d("RESULT", result.toString());
+        }
     }
 }

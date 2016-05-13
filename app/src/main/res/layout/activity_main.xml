@@ -21,12 +21,19 @@
             android:layout_height="wrap_content">
 
 
-            <EditText
+            <!--EditText
                 android:layout_width="266dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/zipTextBox"
                 android:numeric="integer"
-                android:hint="Enter Zip Code" />
+                android:hint="Enter Zip Code" /-->
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                />
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
