@@ -24,7 +24,6 @@ public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
         catch (Exception e){
             Log.d("Google Places Read Task", e.toString());
         }
-        Log.d("Google Places Data", googlePlacesData);
         return googlePlacesData;
     }
 

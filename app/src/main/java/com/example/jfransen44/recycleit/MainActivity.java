@@ -1,9 +1,15 @@
 package com.example.jfransen44.recycleit;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +29,16 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -44,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private Marker myMarker;
+    private String gResultString;
     String session_username = null;
     String session_firstName = null;
     String session_lastName = null;
@@ -63,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
                 session_username = data.getStringExtra("username");
                 Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -75,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 session_username = data.getStringExtra("username");
                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -91,80 +103,131 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (session_username != null){
+            addDrawerItems(loggedInMenu);
+            setupDrawer();
+            setupDrawerListener();
+        } else {
+            addDrawerItems(loggedOutMenu);
+            setupDrawer();
+            setupDrawerListener();
+        }
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // TODO this block throws an error
         //show error if google play services unavailable
-       // if (! isGooglePlayServicesAvailable()){
-       //     finish();
-       // }
+        // if (! isGooglePlayServicesAvailable()){
+        //     finish();
+        // }
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mMap = mapFragment.getMap();
-
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mapFragment.getMapAsync(this);
+        /*mMap = mapFragment.getMap();
+        mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        //mapFragment.getMapAsync(this);
-        zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
-        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+        //enable location services
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            //mMap.setMyLocationEnabled(true);
+        }
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null){
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                LatLng latLng = new LatLng(latitude, longitude);
+                MarkerOptions myMarker = new MarkerOptions();
+                myMarker.title("Current Location");
+                myMarker.position(latLng);
+                mMap.addMarker(myMarker);
+                getMapInfo(latLng);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });*/
+
+        //mMap.setOnMarkerClickListener(this);
+
+
 
         // listview for menu
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         // activity title
         mActivityTitle = getTitle().toString();
         // add menu drawer list
         addDrawerItems(loggedOutMenu);
         setupDrawer();
         setupDrawerListener();
-
-
+// TODO added in merge not cleared yet
+        zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
+        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+// end of TODO
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 zipCode = zipTextBox.getText().toString();
+                Log.d("ZIPTEXTBOX", zipCode);
                 //check for 5 digit zip, make alert if not
-                if(zipCode.length() != 5){
+                if (zipCode.length() != 5) {
                     Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                   // mMap.clear();
+                } else {
+                    mMap.clear();
                     LatLng newZip = getLocatonFromZip(this, zipCode);
-                    StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                    googlePlacesURL.append("location=" + Double.toString(newZip.latitude) + "," + Double.toString(newZip.longitude));
-
-                    googlePlacesURL.append("&radius=" + 5000);
-                    googlePlacesURL.append("&keyword=recycling");
-
-                    googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-
-                    GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
-                    Object[] toPass = new Object[2];
-                    toPass[0] = mMap;
-                    toPass[1] = googlePlacesURL.toString();
-                    googlePlacesReadTask.execute(toPass);
-                    Log.d("Tag", googlePlacesURL.toString());
+                    Log.d("NEW ZIP", newZip.toString());
+                    getMapInfo(newZip);
                     mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
                 }
-
             }
         });
     }
 
-    private boolean isGooglePlayServicesAvailable(){
+    private boolean isGooglePlayServicesAvailable() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == status){
+        if (ConnectionResult.SUCCESS == status) {
             return true;
-        }
-        else{
+        } else {
             GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
             return false;
         }
@@ -178,20 +241,68 @@ public class MainActivity extends AppCompatActivity {
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     *
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //mMap.setMyLocationEnabled(true);  To Be Enabled if location services set up
+        mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
         // Add a marker at CSUMB and move the camera
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
-    }*/
 
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null){
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                LatLng latLng = new LatLng(latitude, longitude);
+                MarkerOptions myMarker = new MarkerOptions();
+                myMarker.title("Current Location");
+                myMarker.position(latLng);
+                mMap.addMarker(myMarker);
+                getMapInfo(latLng);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+    }
+
+    //convert user entered zip code to lat/lon
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
         Geocoder coder = new Geocoder(this);
         List<android.location.Address> address;
@@ -199,13 +310,14 @@ public class MainActivity extends AppCompatActivity {
 
         try{
             address = coder.getFromLocationName(zipCode, 5);
+            Log.d("ADDRESS", address.toString());
             if (address == null) {
                 return null;
             }
             android.location.Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
-
+            Log.d("GETLOCATIONFROMZIP", location.toString());
             userZip = new LatLng(location.getLatitude(), location.getLongitude());
         }
         catch (Exception ex){
@@ -214,9 +326,44 @@ public class MainActivity extends AppCompatActivity {
 
         return userZip;
     }
+
+    //update map icons when map is moved
+
+    public void onLocationChanged(Location location){
+        mMap.clear();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+        MarkerOptions myMarker = new MarkerOptions();
+        myMarker.title("Current Location");
+        myMarker.position(latLng);
+        mMap.addMarker(myMarker);
+        getMapInfo(latLng);
+    }
+
+
+    //call google services to place markers on map
+    private void getMapInfo(LatLng latLng){
+        StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
+        //googlePlacesURL.append("&nearby");
+        //googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&radius=" + 5000);
+        googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
+
+        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+        Object[] toPass = new Object[2];
+        toPass[0] = mMap;
+        toPass[1] = googlePlacesURL.toString();
+        googlePlacesReadTask.execute(toPass);
+        gResultString = googlePlacesReadTask.googlePlacesData;
+        //Log.d("gRESULTSTRING", gResultString);
+    }
+
     // helper method for menu
     private void addDrawerItems(String[] values) {
-       // String[] osArray = { "Login", "Favorite", "Comments", "About" };
+        // String[] osArray = { "Login", "Favorite", "Comments", "About" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
         mDrawerList.setAdapter(mAdapter);
     }
@@ -245,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDrawerListener(){
 
-        if(!loggedIn){
+        if(session_firstName == null){
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -335,5 +482,13 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String placeID = marker.getTitle();
+        Log.d("Marker ID" , placeID);
+
+        return false;
     }
 }
