@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
                 session_username = data.getStringExtra("username");
-                session_firstName = data.getStringExtra("firstName");
-                session_lastName = data.getStringExtra("lastName");
                 Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
@@ -88,8 +86,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             setupDrawerListener();
             if (resultCode == RESULT_OK) {
                 session_username = data.getStringExtra("username");
-                session_firstName = data.getStringExtra("firstName");
-                session_lastName = data.getStringExtra("lastName");
                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
             }
