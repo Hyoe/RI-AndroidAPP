@@ -69,25 +69,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //when you return from another actiivty, we check if that activity had a request code, so we can set certain session variables.
         if (requestCode == 222) {
-            //returning from register or Login
+            //returning from register
             if (resultCode == RESULT_OK) {
+                loggedIn = true;
+                addDrawerItems(loggedInMenu);
+                setupDrawer();
+                setupDrawerListener();
                 Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
                 session_username = data.getStringExtra("username");
-                Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hi "+ session_username +"!", Toast.LENGTH_SHORT).show();
+
             }
         }
 
         if (requestCode == 111) {
             //returning from login
-            loggedIn = true;
-            addDrawerItems(loggedInMenu);
-            setupDrawer();
-            setupDrawerListener();
+
             if (resultCode == RESULT_OK) {
+                loggedIn = true;
+                addDrawerItems(loggedInMenu);
+                setupDrawer();
+                setupDrawerListener();
                 session_username = data.getStringExtra("username");
-                Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "Hi "+ session_firstName +"!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hello "+ session_username +"!", Toast.LENGTH_SHORT).show();
+
             }
         }
 
@@ -106,10 +113,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        if (session_username != null){
+        if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
             setupDrawer();
             setupDrawerListener();
+            Toast.makeText(MainActivity.this, "Username and Logged in true", Toast.LENGTH_SHORT).show();
         } else {
             addDrawerItems(loggedOutMenu);
             setupDrawer();
@@ -392,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setupDrawerListener(){
 
-        if(session_firstName == null){
+        if(loggedIn == false){
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -404,12 +412,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             break;
                         case 1:
                             Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
-                            MainActivity.this.startActivityForResult(registerIntent, 111);
+                            MainActivity.this.startActivityForResult(registerIntent, 222);
                             //Toast.makeText(MainActivity.this, "Register Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
-                            MainActivity.this.startActivityForResult(AboutIntent, 222);
+                            MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         default:
@@ -438,8 +446,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 3:
-                            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
-                            startActivity(aboutIntent);
+                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            MainActivity.this.startActivityForResult(AboutIntent, 444);
+                            //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         default:
                     }
