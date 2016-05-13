@@ -39,6 +39,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
     private Marker myMarker;
     private LatLng newPlace;
+    private String gQueryResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -415,15 +419,44 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        String placeID = marker.getTitle();
-        Log.d("Marker ID" , placeID);
+        String placeResult = "";
+        List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
+        int i = 0;
+        //gPlacesList.get(1).get("place_name");
+        //Log.d("Marker Place Name" , marker.getTitle());
+        //Log.d("Place HashMap Place Name", placeResult);
+        
+        while (! marker.getTitle().contains(placeResult)){
+            placeResult = gPlacesList.get(i).get("place_name");
+            i++;
+        }
 
         return false;
     }
 
+    //get results string from GoogleReadTask query
     public void asyncResult(String result){
         if (result != null){
             Log.d("RESULT", result.toString());
+            gQueryResult = result;
         }
+        else
+            Log.d("METHOD ASYNCRESULT", "result empty");
+    }
+
+    //parse results from GoogleReadTask query
+    private List<HashMap<String, String>> parseResults(String queryResult){
+        JSONObject gPlacesJson;
+        List<HashMap<String, String>> parsedResultsList = null;
+        GooglePlaces gPlacesParser = new GooglePlaces();
+
+        try{
+            gPlacesJson = new JSONObject((String) queryResult);
+            parsedResultsList = gPlacesParser.parse(gPlacesJson);
+        }
+        catch (Exception e){
+            Log.d("PARSERESULTS EXC", e.toString());
+        }
+        return parsedResultsList;
     }
 }
