@@ -42,6 +42,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 //zipCode = newPlace;
-                Log.d("ZIPTEXTBOX", newPlace.toString());
+                //Log.d("ZIPTEXTBOX", newPlace.toString());
                 //check for 5 digit zip, make alert if not
 
                 mMap.clear();
@@ -380,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googlePlacesURL.append("&radius" + 5000);
         googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-
+        Log.d("QueryURL", googlePlacesURL.toString());
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
@@ -532,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //get results string from GoogleReadTask query
     public void asyncResult(String result){
         if (result != null){
-            Log.d("RESULT", result.toString());
+            //Log.d("RESULT", result.toString());
             gQueryResult = result;
         }
         else
