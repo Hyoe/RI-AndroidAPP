@@ -2,6 +2,7 @@ package com.example.jfransen44.recycleit;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -62,16 +63,87 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker myMarker;
     private LatLng newPlace;
     private String gQueryResult;
+    private String gResultString;
+    String session_username = null;
+    String session_firstName = null;
+    String session_lastName = null;
+    private boolean loggedIn = false;
+    String[] favArray;
+    private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
+    private String[] loggedOutMenu = { "Login", "Register", "About" };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //when you return from another actiivty, we check if that activity had a request code, so we can set certain session variables.
+        if (requestCode == 222) {
+            //returning from register
+            if (resultCode == RESULT_OK) {
+                loggedIn = true;
+                addDrawerItems(loggedInMenu);
+                setupDrawer();
+                setupDrawerListener();
+                Toast.makeText(MainActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
+                session_username = data.getStringExtra("username");
+                //Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hi "+ session_username +"!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+        if (requestCode == 111) {
+            //returning from login
+
+            if (resultCode == RESULT_OK) {
+                loggedIn = true;
+                addDrawerItems(loggedInMenu);
+                setupDrawer();
+                setupDrawerListener();
+                session_username = data.getStringExtra("username");
+                //Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hello "+ session_username +"!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+        if (requestCode == 333) {
+            loggedIn = false;
+            addDrawerItems(loggedOutMenu);
+            setupDrawer();
+            setupDrawerListener();
+            //returning from log out
+            session_username = null;
+            session_firstName = null;
+            session_lastName = null;
+            Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (loggedIn = true && session_username != null){
+            addDrawerItems(loggedInMenu);
+            setupDrawer();
+            setupDrawerListener();
+            Toast.makeText(MainActivity.this, "Username and Logged in true", Toast.LENGTH_SHORT).show();
+        } else {
+            addDrawerItems(loggedOutMenu);
+            setupDrawer();
+            setupDrawerListener();
+        }
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        /*show error if google play services unavailable
-        if (!isGooglePlayServicesAvailable()) {
-            finish();
-        }*/
+        // TODO this block throws an error
+        //show error if google play services unavailable
+        // if (! isGooglePlayServicesAvailable()){
+        //     finish();
+        // }
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
@@ -156,48 +228,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // activity title
         mActivityTitle = getTitle().toString();
         // add menu drawer list
-        addDrawerItems();
+        addDrawerItems(loggedOutMenu);
         setupDrawer();
-        // genereic listener for  menu list
-        //mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    @Override
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //       Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-        //   }
-        //});
-        // set drawerlist listener
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        //Intent a = new Intent(MainActivity.this, Activity1.class);
-                        //startActivity(a);
-                        Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b)
-                        Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b);
-                        Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        //Intent b = new Intent(MainActivity.this, Activity2.class);
-                        //startActivity(b);
-                        Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                }
-            }
-
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
+        setupDrawerListener();
+// TODO added in merge not cleared yet
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
         //zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
@@ -355,9 +389,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // helper method for menu
-    private void addDrawerItems() {
-        String[] osArray = { "Login", "Favorite", "Comments", "About" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+    private void addDrawerItems(String[] values) {
+        // String[] osArray = { "Login", "Favorite", "Comments", "About" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
         mDrawerList.setAdapter(mAdapter);
     }
 
@@ -383,7 +417,68 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    private void setupDrawerListener(){
 
+        if(loggedIn == false){
+            mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            MainActivity.this.startActivityForResult(logInIntent, 111);
+                            //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                            MainActivity.this.startActivityForResult(registerIntent, 222);
+                            //Toast.makeText(MainActivity.this, "Register Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            MainActivity.this.startActivityForResult(AboutIntent, 444);
+                            //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                    }
+                }
+
+            });
+        } else {
+            mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
+                            MainActivity.this.startActivityForResult(intent, 333);
+                            //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            //Intent b = new Intent(MainActivity.this, Activity2.class);
+                            //startActivity(b)
+                            Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            //Intent b = new Intent(MainActivity.this, Activity2.class);
+                            //startActivity(b);
+                            Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            MainActivity.this.startActivityForResult(AboutIntent, 444);
+                            //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                    }
+                }
+
+            });
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
