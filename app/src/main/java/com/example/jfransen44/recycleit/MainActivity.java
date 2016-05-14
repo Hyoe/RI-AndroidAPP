@@ -27,6 +27,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -36,6 +40,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private Marker myMarker;
+    private LatLng newPlace;
+    private String gQueryResult;
     private String gResultString;
     String session_username = null;
     String session_firstName = null;
@@ -129,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // TODO this block throws an error
         //show error if google play services unavailable
         // if (! isGooglePlayServicesAvailable()){
@@ -140,6 +150,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                newPlace = place.getLatLng();
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
         /*mMap = mapFragment.getMap();
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -208,25 +233,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setupDrawerListener();
 // TODO added in merge not cleared yet
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
-        zipTextBox = (EditText) findViewById(R.id.zipTextBox);
-// end of TODO
+        //zipTextBox = (EditText) findViewById(R.id.zipTextBox);
+
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zipCode = zipTextBox.getText().toString();
-                Log.d("ZIPTEXTBOX", zipCode);
+                //zipCode = newPlace;
+                Log.d("ZIPTEXTBOX", newPlace.toString());
                 //check for 5 digit zip, make alert if not
-                if (zipCode.length() != 5) {
-                    Toast.makeText(MainActivity.this, "Enter valid zip code", Toast.LENGTH_SHORT).show();
-                } else {
-                    mMap.clear();
-                    LatLng newZip = getLocatonFromZip(this, zipCode);
-                    Log.d("NEW ZIP", newZip.toString());
-                    getMapInfo(newZip);
-                    mMap.addMarker(new MarkerOptions().position(newZip).title(zipCode));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newZip, defaultZoom));
-                }
+
+                mMap.clear();
+                //LatLng newZip = getLocatonFromZip(this, zipCode);
+                //Log.d("NEW ZIP", newZip.toString());
+                getMapInfo(newPlace);
+                mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
+
             }
         });
     }
@@ -354,19 +377,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getMapInfo(LatLng latLng){
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
-        //googlePlacesURL.append("&nearby");
-        //googlePlacesURL.append("&keyword=recycling");
-        googlePlacesURL.append("&radius=" + 5000);
+        googlePlacesURL.append("&radius" + 5000);
         googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
 
-        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        gResultString = googlePlacesReadTask.googlePlacesData;
-        //Log.d("gRESULTSTRING", gResultString);
     }
 
     // helper method for menu
@@ -495,9 +514,44 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        String placeID = marker.getTitle();
-        Log.d("Marker ID" , placeID);
+        String placeResult = "";
+        List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
+        int i = 0;
+        //gPlacesList.get(1).get("place_name");
+        //Log.d("Marker Place Name" , marker.getTitle());
+        //Log.d("Place HashMap Place Name", placeResult);
+        
+        while (! marker.getTitle().contains(placeResult)){
+            placeResult = gPlacesList.get(i).get("place_name");
+            i++;
+        }
 
         return false;
+    }
+
+    //get results string from GoogleReadTask query
+    public void asyncResult(String result){
+        if (result != null){
+            Log.d("RESULT", result.toString());
+            gQueryResult = result;
+        }
+        else
+            Log.d("METHOD ASYNCRESULT", "result empty");
+    }
+
+    //parse results from GoogleReadTask query
+    private List<HashMap<String, String>> parseResults(String queryResult){
+        JSONObject gPlacesJson;
+        List<HashMap<String, String>> parsedResultsList = null;
+        GooglePlaces gPlacesParser = new GooglePlaces();
+
+        try{
+            gPlacesJson = new JSONObject((String) queryResult);
+            parsedResultsList = gPlacesParser.parse(gPlacesJson);
+        }
+        catch (Exception e){
+            Log.d("PARSERESULTS EXC", e.toString());
+        }
+        return parsedResultsList;
     }
 }
