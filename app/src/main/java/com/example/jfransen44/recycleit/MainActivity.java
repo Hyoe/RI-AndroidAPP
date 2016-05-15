@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
+
         if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
             setupDrawer();
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //LatLng newZip = getLocatonFromZip(this, zipCode);
                 //Log.d("NEW ZIP", newZip.toString());
                 getMapInfo(newPlace);
-                mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+                mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode).snippet("asdfasfda"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
 
             }
@@ -465,17 +466,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         String placeResult = "";
+        LatLng latlng = marker.getPosition();
+        //Toast.makeText(MainActivity.this, latlng.toString(), Toast.LENGTH_SHORT).show();
         List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
-        int i = 0;
-        //gPlacesList.get(1).get("place_name");
-        Log.d("Marker Place Name" , marker.getTitle());
-        //Log.d("Place HashMap Place Name", placeResult);
-        
-        //while (! gPlacesList.get(i).get("place_name").equals(marker.getTitle())){
-            //placeResult = gPlacesList.get(i).get("place_name");
-          //  Log.d("gPlacesList", placeResult);
-            //i++;
-        //}
+        // get marker id
+        String markerIdString = marker.getId();
+        // turn marker id into element position in hash
+        int markerId = Integer.parseInt(markerIdString.substring(1)) - 2;
+        // we dont want current position or zip code to return results
+        if (markerId <= gPlacesList.size() && markerId >= 0 ) {
+            Toast.makeText(MainActivity.this, gPlacesList.get(markerId).get("place_name"), Toast.LENGTH_SHORT).show();
+
+            //do marker stuff
+        }
 
         return false;
     }
