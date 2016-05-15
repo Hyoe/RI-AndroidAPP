@@ -1,8 +1,8 @@
 package com.example.jfransen44.recycleit;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -42,8 +42,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -138,8 +136,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
 
         // TODO this block throws an error
         //show error if google play services unavailable
@@ -167,62 +165,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-        /*mMap = mapFragment.getMap();
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        //enable location services
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //mMap.setMyLocationEnabled(true);
-        }
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null){
-            onLocationChanged(location);
-        }
-        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                LatLng latLng = new LatLng(latitude, longitude);
-                MarkerOptions myMarker = new MarkerOptions();
-                myMarker.title("Current Location");
-                myMarker.position(latLng);
-                mMap.addMarker(myMarker);
-                getMapInfo(latLng);
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        });*/
 
         //mMap.setOnMarkerClickListener(this);
-
-
 
         // listview for menu
         mDrawerList = (ListView) findViewById(R.id.navList);
@@ -277,7 +221,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -305,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (location != null){
             onLocationChanged(location);
         }
-        locationManager.requestLocationUpdates(bestProvider, 2000, 0, new android.location.LocationListener() {
+        locationManager.requestLocationUpdates(bestProvider, 2000, 3300, new android.location.LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
@@ -332,10 +278,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onProviderDisabled(String provider) {
 
             }
+
         });
+
     }
 
-    //convert user entered zip code to lat/lon
+    //convert user entered zip code to lat/lon.  Not used after location services implemented
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
         Geocoder coder = new Geocoder(this);
         List<android.location.Address> address;
@@ -520,13 +468,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
         int i = 0;
         //gPlacesList.get(1).get("place_name");
-        //Log.d("Marker Place Name" , marker.getTitle());
+        Log.d("Marker Place Name" , marker.getTitle());
         //Log.d("Place HashMap Place Name", placeResult);
         
-        while (! marker.getTitle().contains(placeResult)){
-            placeResult = gPlacesList.get(i).get("place_name");
-            i++;
-        }
+        //while (! gPlacesList.get(i).get("place_name").equals(marker.getTitle())){
+            //placeResult = gPlacesList.get(i).get("place_name");
+          //  Log.d("gPlacesList", placeResult);
+            //i++;
+        //}
 
         return false;
     }
@@ -556,4 +505,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         return parsedResultsList;
     }
+
 }
