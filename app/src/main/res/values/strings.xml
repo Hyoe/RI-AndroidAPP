@@ -32,6 +32,7 @@
     </string>
     <string name="title_activity_about">About</string>
 <string name="large_text">
+                <item><H1><b>Recycling Facts\n\n</b></H1></item>
         <item><b>Aluminum Recycling Facts\n</b></item>
         <item><text:wrap>\t    •  Used aluminum can is recycled and back on the grocery shelf as a new can\, in as little as 60 days. That\'s closed loop recycling at itsfinest!\n</text:wrap></item>
         <item><text:wrap>\t    •  A used aluminum can is recycled and back on the grocery shelf as a new can\, in as little as 60 days. That\'s closed loop recycling at its finest!\n</text:wrap></item>
@@ -127,11 +128,7 @@
         <item><text:wrap>\t    •  	A typical family consumes 182 gallons of soda\, 29 gallons of juice\, 104 gallons of
                 milk\, and 26 gallons of bottled water a year. That\'s a lot of containers -- make
                 sure they\'re recycled!\n</text:wrap></item>
-        <item><text:wrap>\t    •   recycling facts have been compiled from various sources including the National
-               Recycling Coalition\, the Environmental Protection Agency\, and Earth911.org. While I
-               make every effort to provide accurate information\, I make no warranty or guarantee
-               that the facts presented here are exact. We welcome all polite corrections to our
-               information.\n\n</text:wrap></item>
+        <item><b>\n\nSource: http://www.recycling-revolution.com/recycling-facts.html</b></item>
     </string>
     <string name="title_activity_register">Register</string>
 </resources>
