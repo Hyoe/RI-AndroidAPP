@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String[] favArray;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
+    HashMap<Marker, Integer> markerHashMap;
+    List<HashMap<String, String>> placesDetail = null;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
 
         // TODO this block throws an error
         //show error if google play services unavailable
@@ -312,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
+        mMap.setOnMarkerClickListener(this);
     }
 
     // helper method for menu
@@ -440,30 +445,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        String placeResult = "";
-        LatLng latlng = marker.getPosition();
-        //Toast.makeText(MainActivity.this, latlng.toString(), Toast.LENGTH_SHORT).show();
-        //List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
-        // get marker id
-        String markerIdString = marker.getId();
-        // turn marker id into element position in hash
-        int markerId = Integer.parseInt(markerIdString.substring(1)) - 2;
-        // we dont want current position or zip code to return results
-        if (markerId <= gPlacesList.size() && markerId >= 0 ) {
-            Toast.makeText(MainActivity.this, gPlacesList.get(markerId).get("place_name"), Toast.LENGTH_SHORT).show();
-            return true;
-        //do marker stuff
+        int pos;
+
+        Log.d("Markerhashsize", Integer.toString(this.markerHashMap.size()));
+        //Log.d("PLACES DETAIL", placesDetail.get(pos).get("place_name"));
+        //Log.d("Marker POS", Integer.toString(pos));
+        return true;
         }
 
-        return false;
-    }
+
 
     //get results string from GoogleReadTask query
     public void asyncResult(String result){
         if (result != null){
             //Log.d("RESULT", result.toString());
-            gQueryResult = result;
-            gPlacesList = parseResults(gQueryResult);
+            //gQueryResult = result;
+            placesDetail = parseResults(result);
+            //Log.d("GPLACESLIST SIZE", Integer.toString(gPlacesList.size()));
         }
         else
             Log.d("METHOD ASYNCRESULT", "result empty");
@@ -476,13 +474,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GooglePlaces gPlacesParser = new GooglePlaces();
 
         try{
-            gPlacesJson = new JSONObject((String) queryResult);
+            gPlacesJson = new JSONObject( queryResult);
             parsedResultsList = gPlacesParser.parse(gPlacesJson);
         }
         catch (Exception e){
             Log.d("PARSERESULTS EXC", e.toString());
         }
         return parsedResultsList;
+    }
+
+    public void setHash(HashMap<Marker, Integer> markerHashMap){
+        this.markerHashMap = markerHashMap;
     }
 
 }

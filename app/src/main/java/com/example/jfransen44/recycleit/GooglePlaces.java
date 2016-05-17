@@ -46,7 +46,7 @@ public class GooglePlaces {
         return placesList;
     }
 
-    //get single place, return hash map with markers
+
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson){
         HashMap<String, String> googlePlaceMap = new HashMap<String, String>();
         String placeName = "NA";
