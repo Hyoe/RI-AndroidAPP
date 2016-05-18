@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker myMarker;
     private LatLng newPlace;
     private String gQueryResult;
-    private String gResultString;
+    private List<HashMap<String, String>> gPlacesList;
     String session_username = null;
     String session_firstName = null;
     String session_lastName = null;
@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String[] favArray;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
+    HashMap<Marker, Integer> markerHashMap;
+    List<HashMap<String, String>> placesDetail = null;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,13 +135,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             addDrawerItems(loggedOutMenu);
             setupDrawer();
             setupDrawerListener();
-        }
+        };
 
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
 
         // TODO this block throws an error
         //show error if google play services unavailable
@@ -167,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        //mMap.setOnMarkerClickListener(this);
 
         // listview for menu
         mDrawerList = (ListView) findViewById(R.id.navList);
@@ -186,17 +189,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //zipCode = newPlace;
-                //Log.d("ZIPTEXTBOX", newPlace.toString());
-                //check for 5 digit zip, make alert if not
 
-                mMap.clear();
-                //LatLng newZip = getLocatonFromZip(this, zipCode);
-                //Log.d("NEW ZIP", newZip.toString());
-                getMapInfo(newPlace);
-                mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode).snippet("asdfasfda"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
+                if (newPlace != null) {
+                    mMap.clear();
 
+                    getMapInfo(newPlace);
+                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
+                    autocompleteFragment.setText("");
+                    newPlace = null;
+                }
             }
         });
     }
@@ -229,6 +231,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        final Location location = locationManager.getLastKnownLocation(bestProvider);
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                onLocationChanged(location);
+                return false;
+            }
+        });
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -245,42 +258,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
 
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null){
-            onLocationChanged(location);
-        }
-        locationManager.requestLocationUpdates(bestProvider, 2000, 3300, new android.location.LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                LatLng latLng = new LatLng(latitude, longitude);
-                MarkerOptions myMarker = new MarkerOptions();
-                myMarker.title("Current Location");
-                myMarker.position(latLng);
-                mMap.addMarker(myMarker);
-                getMapInfo(latLng);
-            }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-
-        });
+        /*if (location != null){
+            onLocationChanged(location);*/
 
     }
 
@@ -337,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
+        mMap.setOnMarkerClickListener(this);
     }
 
     // helper method for menu
@@ -465,29 +446,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        String placeResult = "";
-        LatLng latlng = marker.getPosition();
-        //Toast.makeText(MainActivity.this, latlng.toString(), Toast.LENGTH_SHORT).show();
-        List<HashMap<String, String>> gPlacesList = parseResults(gQueryResult);
-        // get marker id
-        String markerIdString = marker.getId();
-        // turn marker id into element position in hash
-        int markerId = Integer.parseInt(markerIdString.substring(1)) - 2;
-        // we dont want current position or zip code to return results
-        if (markerId <= gPlacesList.size() && markerId >= 0 ) {
-            Toast.makeText(MainActivity.this, gPlacesList.get(markerId).get("place_name"), Toast.LENGTH_SHORT).show();
+        int pos;
 
-            //do marker stuff
+        Log.d("Markerhashsize", Integer.toString(this.markerHashMap.size()));
+        //Log.d("PLACES DETAIL", placesDetail.get(pos).get("place_name"));
+        //Log.d("Marker POS", Integer.toString(pos));
+        return true;
         }
 
-        return false;
-    }
+
 
     //get results string from GoogleReadTask query
     public void asyncResult(String result){
         if (result != null){
             //Log.d("RESULT", result.toString());
-            gQueryResult = result;
+            //gQueryResult = result;
+            placesDetail = parseResults(result);
+            //Log.d("GPLACESLIST SIZE", Integer.toString(gPlacesList.size()));
         }
         else
             Log.d("METHOD ASYNCRESULT", "result empty");
@@ -500,13 +475,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GooglePlaces gPlacesParser = new GooglePlaces();
 
         try{
-            gPlacesJson = new JSONObject((String) queryResult);
+            gPlacesJson = new JSONObject( queryResult);
             parsedResultsList = gPlacesParser.parse(gPlacesJson);
         }
         catch (Exception e){
             Log.d("PARSERESULTS EXC", e.toString());
         }
         return parsedResultsList;
+    }
+
+    public void setHash(HashMap<Marker, Integer> markerHashMap){
+        this.markerHashMap = markerHashMap;
     }
 
 }

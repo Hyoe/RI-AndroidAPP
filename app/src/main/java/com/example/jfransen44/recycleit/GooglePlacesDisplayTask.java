@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
 
     JSONObject googlePlacesJson;
     GoogleMap mMap;
-
+    MainActivity mainActivity = new MainActivity();
     @Override
     protected List<HashMap<String, String>> doInBackground(Object... inputObj) {
 
@@ -39,18 +40,22 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
     }
 
     protected void onPostExecute(List<HashMap<String, String>> list){
-        //mMap.clear();
+        HashMap<Marker, Integer> markerPosHash = new HashMap<Marker, Integer>();
         for (int i = 0; i < list.size(); i++){
-            MarkerOptions markerOptions = new MarkerOptions();
+            //MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = list.get(i);
             double lat = Double.parseDouble(googlePlace.get("lat"));
             double lng = Double.parseDouble(googlePlace.get("lng"));
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
             LatLng latLng = new LatLng(lat, lng);
-            markerOptions.position(latLng);
-            markerOptions.title(placeName + " : " + vicinity);
-            mMap.addMarker(markerOptions);
+            //markerOptions.position(latLng);
+            //markerOptions.title(placeName + " : " + vicinity);
+            //mMap.addMarker(markerOptions);
+            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName));
+            markerPosHash.put(m, i);
+            //Log.d("Markerposhash", Integer.toString(markerPosHash.size()));
+            mainActivity.setHash(markerPosHash);
         }
     }
 }
