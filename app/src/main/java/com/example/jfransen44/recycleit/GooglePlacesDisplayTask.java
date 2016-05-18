@@ -35,7 +35,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
         catch (Exception e) {
             Log.d("Exception", e.toString());
         }
-        Log.d("Google Places List:", googlePlacesList.toString());//for testing
+        //Log.d("Google Places List:", googlePlacesList.toString());//for testing
         return googlePlacesList;
     }
 

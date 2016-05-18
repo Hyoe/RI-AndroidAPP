@@ -44,6 +44,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
@@ -447,12 +448,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         int pos;
+        String mTitle = marker.getTitle();
+        LatLng mLatLng = marker.getPosition();
 
-        Log.d("Markerhashsize", Integer.toString(this.markerHashMap.size()));
-        //Log.d("PLACES DETAIL", placesDetail.get(pos).get("place_name"));
-        //Log.d("Marker POS", Integer.toString(pos));
-        return true;
-        }
+        // get key value from results
+        for (HashMap<String, String> map : placesDetail)
+            for (Map.Entry<String, String> entry : map.entrySet())
+                Log.d("KEY_VALUE", entry.getKey() + " => " + entry.getValue());
+
+        // get query result from marker latlng/title
+        if(mTitle != null && mLatLng != null) {
+                for (int i = 0; i < placesDetail.size(); i++) {
+                    LatLng businessLatLng = new LatLng(Double.parseDouble(placesDetail.get(i).get("lat")), Double.parseDouble(placesDetail.get(i).get("lng")));
+                    //Log.d("KEY_VALUE", businessLatLng.toString());
+                    if (mTitle.equals(placesDetail.get(i).get("place_name")) && mLatLng.equals(businessLatLng)) {
+                        Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
+                        Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
+                        //TODO add sql
+                        //TODO add other business fields currently placesDetail only has latlng title and address
+                        //TODO
+                    }
+                }
+            }
+
+        return false;
+    }
 
 
 
