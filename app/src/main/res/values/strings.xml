@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:text="http://schemas.android.com/tools">
     <string name="app_name">RecycleIt!</string>
     <string name="google_app_id">Recycleit-1293</string>
     <string name="action_settings">Settings</string>
@@ -30,94 +31,104 @@
         completions."
     </string>
     <string name="title_activity_about">About</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
+<string name="large_text">
+                <item><H1><b>Recycling Facts\n\n</b></H1></item>
+        <item><b>Aluminum Recycling Facts\n</b></item>
+        <item><text:wrap>\t    •  Used aluminum can is recycled and back on the grocery shelf as a new can\, in as little as 60 days. That\'s closed loop recycling at itsfinest!\n</text:wrap></item>
+        <item><text:wrap>\t    •  A used aluminum can is recycled and back on the grocery shelf as a new can\, in as little as 60 days. That\'s closed loop recycling at its finest!\n</text:wrap></item>
+        <item><text:wrap>\t    •   Used aluminum beverage cans are the most recycled item in the U.S.\, but other types
+              of aluminum\, such as siding\, gutters\, car components\, storm window frames\, and lawn
+              furniture can also be recycled.\n</text:wrap></item>
+        <item><text:wrap>\t    •  Recycling one aluminum can saves enough energy to run a TV for three hours -- or the
+              equivalent of a half a gallon of gasoline.\n</text:wrap></item>
+	    <item><text:wrap>\t    •  More aluminum goes into beverage cans than any other product.\n</text:wrap></item>
+	    <item><text:wrap>\t    •  Because so many of them are recycled\, aluminum cans account for less than 1\%% of the
+              total U.S. waste stream\, according to EPA estimates.\n</text:wrap></item>
+	    <item><text:wrap>\t    •  An aluminum can that is thrown away will still be a can 500 years from now!\n</text:wrap></item>
+	    <item><text:wrap>\t    •  There is no limit to the amount of times an aluminum can be recycled.\n</text:wrap></item>
+        <item><text:wrap>\t    •  We use over 80\,000\,000\,000 aluminum soda cans every year.\n</text:wrap></item>
+	    <item><text:wrap>\t    •  At one time\, aluminum was more valuable than gold!\n</text:wrap></item>
+	    <item><text:wrap>\t    •   A 60-watt light bulb can be run for over a day on the amount of energy saved by
+              recycling 1 pound of steel. In one year in the United States\, the recycling of steel
+              saves enough energy to heat and light 18\,000\,000 homes!\n\n</text:wrap></item>
+        <item><b>Paper Recycling Facts\n</b></item>
+        <item><text:wrap>\t    •  	To produce each week\'s Sunday newspapers\, 500\,000 trees must be cut down.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Recycling a single run of the Sunday New York Times would save 75\,000 trees.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	If all our newspaper was recycled\, we could save about 250\,000\,000 trees each year!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	If every American recycled just one-tenth of their newspapers\, we would save about
+                25\,000\,000 trees a year.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	If you had a 15-year-old tree and made it into paper grocery bags\, you\'d get about
+                700 of them. A busy supermarket could use all of them in under an hour! This means
+                in one year\, one supermarket can go through over 6 million paper bags! Imagine how
+                many supermarkets there are just in the United States!!!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The average American uses seven trees a year in paper\, wood\, and other products
+                made from trees. This amounts to about 2\,000\,000\,000 trees per year!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The amount of wood and paper we throw away each year is enough to heat 50\,000\,000
+                homes for 20 years.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Approximately 1 billion trees worth of paper are thrown away every year in the U.S.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Americans use 85\,000\,000 tons of paper a year; about 680 pounds per person.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The average household throws away 13\,000 separate pieces of paper each year.
+                Most is packaging and junk mail.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	In 1993\, U.S. paper recovery saved more than 90\,000\,000 cubic yards of landfill
+                space.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Each ton (2000 pounds) of recycled paper can save 17 trees\, 380 gallons of oil\,
+                three cubic yards of landfill space\, 4000 kilowatts of energy\, and 7000 gallons of
+                water. This represents a 64\%% energy savings\, a 58\%% water savings\, and 60 pounds
+                less of air pollution!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The 17 trees saved (above) can absorb a total of 250 pounds of carbon dioxide
+                from the air each year. Burning that same ton of paper would create 1500 pounds
+                of carbon dioxide.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The construction costs of a paper mill designed to use waste paper is 50 to 80\%%
+                less than the cost of a mill using new pulp.\n\n</text:wrap></item>
+        <item><text:wrap><b>Plastic Recycling Facts\n</b></text:wrap></item>
+        <item><text:wrap>\t    •  	Americans use 2\,500\,000 plastic bottles every hour! Most of them are thrown away!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Plastic bags and other plastic garbage thrown into the ocean kill as many as
+                1\,000\,000 sea creatures every year!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Recycling plastic saves twice as much energy as burning it in an incinerator.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Americans throw away 25\,000\,000\,000 Styrofoam coffee cups every year.\n\n</text:wrap></item>
+        <item><b> Recycling Facts\n</b></item>
+		<item><text:wrap>\t    •  	Every month\, we throw out enough glass bottles and jars to fill up a giant
+                skyscraper. All of these jars are recyclable!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The energy saved from recycling one glass bottle can run a 100\-watt light bulb for
+                four hours or a compact fluorescent bulb for 20 hours. It also causes 20\%% less air
+                pollution and 50\%% less water pollution than when a new bottle is made from raw
+                materials.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	A modern glass bottle would take 4000 years or more to decompose -- and even longer
+                if it\'s in the landfill.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Mining and transporting raw materials for glass produces about 385 pounds of waste
+                for every ton of glass that is made. If recycled glass is substituted for half of
+                the raw materials\, the waste is cut by more than 80\%%.\n\n</text:wrap></item>
+        <item><b> Waste and Landfills\n</b></item>
+        <item><text:wrap>\t    •  	About one-third of an average dump is made up of packaging material!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Every year\, each American throws out about 1\,200 pounds of organic garbage that can
+                be composted.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The U.S. is the #1 trash-producing country in the world at 1\,609 pounds per person
+                per year. This means that 5\%% of the world\'s people generate 40\%% of the world\'s waste.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The highest point in Hamilton County\, Ohio (near Cincinnati) is "Mount Rumpke." It
+                is actually a mountain of trash at the Rumpke sanitary landfill towering 1045 ft.
+                above sea level.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	The US population discards each year 16\,000\,000\,000 diapers\, 1\,600\,000\,000 pens\,
+                2\,000\,000\,000 razor blades\, 220\,000\,000 car tires\, and enough aluminum to rebuild
+                the US commercial air fleet four times over.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Out of every $10 spent buying things\, $1 (10\%%) goes for packaging that is thrown
+                away. Packaging represents about 65\%% of household trash.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	On average\, it costs $30 per ton to recycle trash\, $50 to send it to the landfill\,
+                and $65 to $75 to incinerate it.\n\n</text:wrap></item>
+        <item><b>Miscellaneous Recycling Facts\n</b></item>
+        <item><text:wrap>\t    •  	An estimated 80\,000\,000 Hershey\'s Kisses are wrapped each day\, using enough
+                aluminum foil to cover over 50 acres of space -- that\'s almost 40 football fields.
+                All that foil is recyclable\, but not many people realize it.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Rainforests are being cut down at the rate of 100 acres per minute!\n</text:wrap></item>
+        <item><text:wrap>\t    •  	A single quart of motor oil\, if disposed of improperly\, can contaminate up to
+                2\,000\,000 gallons of fresh water.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	Motor oil never wears out\, it just gets dirty. Oil can be recycled\, re-refined and
+                used again\, reducing our reliance on imported oil.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	On average\, each one of us produces 4.4 pounds of solid waste each day. This adds
+                up to almost a ton of trash per person\, per year.\n</text:wrap></item>
+        <item><text:wrap>\t    •  	A typical family consumes 182 gallons of soda\, 29 gallons of juice\, 104 gallons of
+                milk\, and 26 gallons of bottled water a year. That\'s a lot of containers -- make
+                sure they\'re recycled!\n</text:wrap></item>
+        <item><b>\n\nSource: http://www.recycling-revolution.com/recycling-facts.html</b></item>
     </string>
     <string name="title_activity_register">Register</string>
 </resources>

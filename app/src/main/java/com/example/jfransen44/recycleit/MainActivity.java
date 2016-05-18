@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
+
         if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
             setupDrawer();
