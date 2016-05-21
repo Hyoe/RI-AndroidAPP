@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     HashMap<Marker, Integer> markerHashMap;
     List<HashMap<String, String>> placesDetail = null;
     List<HashMap<String, String>> placesMoreDetail = null;
-
+    List<String> businessDetails = new ArrayList<String>();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     getMapInfo(newPlace);
 
 
-                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode).snippet(myMarker.getId()));
+                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
                     autocompleteFragment.setText("");
                     newPlace = null;
@@ -485,7 +486,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         // TODO update marker name and address and add details button
                         // TODO
 
-
+                        //placeDetails.add();
+                        for (HashMap<String, String> map : placesMoreDetail) {
+                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                                Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
+                                if(entry.getValue() != null){
+                                    businessDetails.add(entry.getValue());
+                                }
+                            }
+                        }
                         break;
 
                     }
