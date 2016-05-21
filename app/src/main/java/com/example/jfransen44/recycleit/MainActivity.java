@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String[] loggedOutMenu = { "Login", "Register", "About" };
     HashMap<Marker, Integer> markerHashMap;
     List<HashMap<String, String>> placesDetail = null;
-
+    List<HashMap<String, String>> placesMoreDetail = null;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -195,7 +196,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mMap.clear();
 
                     getMapInfo(newPlace);
-                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+
+
+                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode).snippet(myMarker.getId()));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
                     autocompleteFragment.setText("");
                     newPlace = null;
@@ -450,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int pos;
         String mTitle = marker.getTitle();
         LatLng mLatLng = marker.getPosition();
-
+        String mPlaceId = null;
         // get key value from results
         for (HashMap<String, String> map : placesDetail)
             for (Map.Entry<String, String> entry : map.entrySet())
@@ -462,11 +465,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     LatLng businessLatLng = new LatLng(Double.parseDouble(placesDetail.get(i).get("lat")), Double.parseDouble(placesDetail.get(i).get("lng")));
                     //Log.d("KEY_VALUE", businessLatLng.toString());
                     if (mTitle.equals(placesDetail.get(i).get("place_name")) && mLatLng.equals(businessLatLng)) {
-                        Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
-                        Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
-                        //TODO add sql
-                        //TODO add other business fields currently placesDetail only has latlng title and address
-                        //TODO
+                        //Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
+                        //Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
+                        mPlaceId = placesDetail.get(i).get("reference");
+
+                        // Query for business specific information
+                        StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+                        googlePlacesDetailURL.append("reference=" + mPlaceId);
+                        googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
+                        Log.d("QueryURL", googlePlacesDetailURL.toString());
+
+                        PlacesDetail PlacesDetailTask = new PlacesDetail(this);
+                        Object[] toPass = new Object[2];
+                        toPass[0] = mMap;
+                        toPass[1] = googlePlacesDetailURL.toString();
+                        PlacesDetailTask.execute(toPass);
+
+                        // TODO
+                        // TODO update marker name and address and add details button
+                        // TODO
+
+
+                        break;
+
                     }
                 }
             }
@@ -487,6 +508,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         else
             Log.d("METHOD ASYNCRESULT", "result empty");
     }
+    //get results string from GoogleReadTask query
+    public void asyncResult2(String result){
+        if (result != null){
+
+            placesMoreDetail = parseResults(result);
+            Log.d("MORE_DETAIL", result.toString());
+        }
+        else
+            Log.d("METHOD ASYNCRESULT", "result empty");
+    }
+
 
     //parse results from GoogleReadTask query
     private List<HashMap<String, String>> parseResults(String queryResult){
