@@ -39,6 +39,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONObject;
 
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<HashMap<String, String>> placesDetail = null;
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -484,14 +486,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         // TODO
                         // TODO update marker name and address and add details button
-                        // TODO
-
-                        //placeDetails.add();
-                        for (HashMap<String, String> map : placesMoreDetail) {
-                            for (Map.Entry<String, String> entry : map.entrySet()) {
-                                Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
-                                if(entry.getValue() != null){
-                                    businessDetails.add(entry.getValue());
+                        // TODO this remains null because placesMoreDetail is not being populated 
+                        if (placesMoreDetail != null) {
+                            Toast.makeText(MainActivity.this,"in if" , Toast.LENGTH_SHORT).show();
+                            for (HashMap<String, String> map : placesMoreDetail) {
+                                for (Map.Entry<String, String> entry : map.entrySet()) {
+                                    Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
+                                    if (entry.getValue() != null) {
+                                        businessDetails.add(entry.getValue());
+                                    }
                                 }
                             }
                         }
@@ -519,10 +522,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     //get results string from GoogleReadTask query
     public void asyncResult2(String result){
-        if (result != null){
 
+        if (result != null){
+            //TODO error there is results(you can log them) but parseResults leaves placesMoreDetail null
             placesMoreDetail = parseResults(result);
-            Log.d("MORE_DETAIL", result.toString());
+            //TODO null error happens here
+            Log.d("PLACES_MORE_DETAIL", placesMoreDetail.toString());
         }
         else
             Log.d("METHOD ASYNCRESULT", "result empty");

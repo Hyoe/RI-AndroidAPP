@@ -45,7 +45,7 @@ public class PlacesDetail extends AsyncTask<Object, Integer, String> {
             String googlePlacesURL = (String) inputObj[1];
             GoogleHttp http = new GoogleHttp();
             googlePlacesData = http.readGoogle(googlePlacesURL);
-            Log.d("Google Places Read Task", googlePlacesData.toString());
+            Log.d("GOOGLEPLACESDATARETURN", googlePlacesData.toString());
         }
         catch (Exception e){
             Log.d("Google Places Read Task", e.toString());
@@ -54,6 +54,8 @@ public class PlacesDetail extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result){
+        //Log.d("Tag", result);
         mainActivity.asyncResult2(result);
+
     }
 }
