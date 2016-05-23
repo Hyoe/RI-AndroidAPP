@@ -30,7 +30,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
         try {
             mMap = (GoogleMap) inputObj[0];
             googlePlacesJson = new JSONObject((String) inputObj[1]);
-            googlePlacesList = placesJsonParser.parse(googlePlacesJson);
+            googlePlacesList = placesJsonParser.parse(googlePlacesJson, 1001);
         }
         catch (Exception e) {
             Log.d("Exception", e.toString());
@@ -40,7 +40,6 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
     }
 
     protected void onPostExecute(List<HashMap<String, String>> list){
-        HashMap<Marker, Integer> markerPosHash = new HashMap<Marker, Integer>();
         for (int i = 0; i < list.size(); i++){
             //MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = list.get(i);
@@ -53,9 +52,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             //markerOptions.title(placeName + " : " + vicinity);
             //mMap.addMarker(markerOptions);
             Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName));
-            markerPosHash.put(m, i);
-            //Log.d("Markerposhash", Integer.toString(markerPosHash.size()));
-            mainActivity.setHash(markerPosHash);
+
         }
     }
 }
