@@ -524,14 +524,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     //get results string from GoogleReadTask query
     public void asyncResult2(String result){
-
+        if (result != null){
             placesMoreDetail = parseResults(result, 1000);
             Log.d("MORE_DETAIL", result.toString());
-        }
-        else
+        }else{
             Log.d("METHOD ASYNCRESULT2", "result empty");
+        }
     }
-
 
     //parse results from GoogleReadTask query
     private List<HashMap<String, String>> parseResults(String queryResult, int callingCode){
