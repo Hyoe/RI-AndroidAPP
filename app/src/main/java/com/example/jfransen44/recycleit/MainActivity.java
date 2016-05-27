@@ -40,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONObject;
 
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<HashMap<String, String>> placesDetail = null;
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
-    
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -522,7 +524,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     //get results string from GoogleReadTask query
     public void asyncResult2(String result){
-        if (result != null){
 
             placesMoreDetail = parseResults(result, 1000);
             Log.d("MORE_DETAIL", result.toString());
