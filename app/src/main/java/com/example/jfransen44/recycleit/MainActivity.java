@@ -2,6 +2,7 @@ package com.example.jfransen44.recycleit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Criteria;
@@ -43,13 +44,12 @@ import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
     private GoogleMap mMap;
     private final LatLng csumbLatLng = new LatLng(36.654458, -121.801567);
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<HashMap<String, String>> placesDetail = null;
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
 
 
@@ -261,9 +262,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        // Add a marker at CSUMB and move the camera
-        mMap.addMarker(new MarkerOptions().position(csumbLatLng).title("CSUMB"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(csumbLatLng, defaultZoom));
+        mMap.setOnInfoWindowClickListener(this);
+        // Add a marker at current location
+        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom));
 
 
         /*if (location != null){
@@ -271,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    //TODO: Delete this method; not used
     //convert user entered zip code to lat/lon.  Not used after location services implemented
     public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
         Geocoder coder = new Geocoder(this);
@@ -315,10 +318,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getMapInfo(LatLng latLng){
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
-        googlePlacesURL.append("&radius=" + 5000);
-        googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&radius=" + 8500);
+        googlePlacesURL.append("&keyword=recycling|waste_management");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-        Log.d("QueryURL", googlePlacesURL.toString());
+        Log.d("QueryURLS", googlePlacesURL.toString());
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
@@ -464,46 +467,45 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // get query result from marker latlng/title
         if(mTitle != null && mLatLng != null) {
-                for (int i = 0; i < placesDetail.size(); i++) {
-                    LatLng businessLatLng = new LatLng(Double.parseDouble(placesDetail.get(i).get("lat")), Double.parseDouble(placesDetail.get(i).get("lng")));
-                    //Log.d("KEY_VALUE", businessLatLng.toString());
-                    if (mTitle.equals(placesDetail.get(i).get("place_name")) && mLatLng.equals(businessLatLng)) {
-                        //Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
-                        //Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
-                        mPlaceId = placesDetail.get(i).get("reference");
+            for (int i = 0; i < placesDetail.size(); i++) {
+                LatLng businessLatLng = new LatLng(Double.parseDouble(placesDetail.get(i).get("lat")), Double.parseDouble(placesDetail.get(i).get("lng")));
+                //Log.d("KEY_VALUE", businessLatLng.toString());
+                if (mTitle.equals(placesDetail.get(i).get("place_name")) && mLatLng.equals(businessLatLng)) {
+                    //Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
+                    //Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
+                    mPlaceId = placesDetail.get(i).get("reference");
 
-                        // Query for business specific information
-                        StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
-                        googlePlacesDetailURL.append("reference=" + mPlaceId);
-                        googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
-                        Log.d("QueryURL", googlePlacesDetailURL.toString());
+                    // Query for business specific information
+                    StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+                    googlePlacesDetailURL.append("reference=" + mPlaceId);
+                    googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
+                    Log.d("QueryURL", googlePlacesDetailURL.toString());
 
-                        PlacesDetail PlacesDetailTask = new PlacesDetail(this);
-                        Object[] toPass = new Object[2];
-                        toPass[0] = mMap;
-                        toPass[1] = googlePlacesDetailURL.toString();
-                        PlacesDetailTask.execute(toPass);
+                    PlacesDetail PlacesDetailTask = new PlacesDetail(this);
+                    Object[] toPass = new Object[2];
+                    toPass[0] = mMap;
+                    toPass[1] = googlePlacesDetailURL.toString();
+                    PlacesDetailTask.execute(toPass);
 
-                        // TODO
-                        // TODO update marker name and address and add details button
-                        // TODO this remains null because placesMoreDetail is not being populated 
-                        if (placesMoreDetail != null) {
-                            Toast.makeText(MainActivity.this,"in if" , Toast.LENGTH_SHORT).show();
-                            for (HashMap<String, String> map : placesMoreDetail) {
-                                for (Map.Entry<String, String> entry : map.entrySet()) {
-                                    Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
-                                    if (entry.getValue() != null) {
-                                        businessDetails.add(entry.getValue());
-                                    }
-                                }
+                    // TODO
+                    // TODO update marker name and address and add details button
+                    // TODO
+
+                    //placeDetails.add();
+                    Log.d("placesmoredetial", placesDetail.toString());
+                    /*for (HashMap<String, String> map : placesMoreDetail) {
+                        for (Map.Entry<String, String> entry : map.entrySet()) {
+                            Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
+                            if(entry.getValue() != null){
+                                businessDetails.add(entry.getValue());
                             }
                         }
-                        break;
+                    }*/
+                    break;
 
-                    }
                 }
             }
-
+        }
         return false;
     }
 
@@ -514,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (result != null){
             //Log.d("RESULT", result.toString());
             //gQueryResult = result;
-            placesDetail = parseResults(result);
+            placesDetail = parseResults(result, 1001);
             //Log.d("GPLACESLIST SIZE", Integer.toString(gPlacesList.size()));
         }
         else
@@ -523,26 +525,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //get results string from GoogleReadTask query
     public void asyncResult2(String result){
 
-        if (result != null){
-            //TODO error there is results(you can log them) but parseResults leaves placesMoreDetail null
-            placesMoreDetail = parseResults(result);
-            //TODO null error happens here
-            Log.d("PLACES_MORE_DETAIL", placesMoreDetail.toString());
+            placesMoreDetail = parseResults(result, 1000);
+            Log.d("MORE_DETAIL", result.toString());
         }
         else
-            Log.d("METHOD ASYNCRESULT", "result empty");
+            Log.d("METHOD ASYNCRESULT2", "result empty");
     }
 
 
     //parse results from GoogleReadTask query
-    private List<HashMap<String, String>> parseResults(String queryResult){
-        JSONObject gPlacesJson;
+    private List<HashMap<String, String>> parseResults(String queryResult, int callingCode){
+        //JSONObject gPlacesJson;
         List<HashMap<String, String>> parsedResultsList = null;
         GooglePlaces gPlacesParser = new GooglePlaces();
 
         try{
-            gPlacesJson = new JSONObject( queryResult);
-            parsedResultsList = gPlacesParser.parse(gPlacesJson);
+            JSONObject gPlacesJson = new JSONObject(queryResult);
+            parsedResultsList = gPlacesParser.parse(gPlacesJson, callingCode);
+            Log.d("PARSEDRESULTSLIST", parsedResultsList.toString());
         }
         catch (Exception e){
             Log.d("PARSERESULTS EXC", e.toString());
@@ -550,8 +550,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return parsedResultsList;
     }
 
-    public void setHash(HashMap<Marker, Integer> markerHashMap){
-        this.markerHashMap = markerHashMap;
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.d("oninforwindowclick", "click");
+        Intent intent = new Intent(this, BusinessDetailActivity.class);
+        intent.putStringArrayListExtra("businessDetail", (ArrayList)businessDetails);
+        startActivity(intent);
     }
+
 
 }

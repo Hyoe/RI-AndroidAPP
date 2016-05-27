@@ -131,4 +131,5 @@
         <item><b>\n\nSource: http://www.recycling-revolution.com/recycling-facts.html</b></item>
     </string>
     <string name="title_activity_register">Register</string>
+    <string name="title_activity_business_detail">BusinessDetailActivity</string>
 </resources>
