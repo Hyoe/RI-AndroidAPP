@@ -315,10 +315,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getMapInfo(LatLng latLng){
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
-        googlePlacesURL.append("&radius=" + 5000);
-        googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&radius=" + 8500);
+        googlePlacesURL.append("&keyword=recycling|waste_management");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-        Log.d("QueryURL", googlePlacesURL.toString());
+        Log.d("QueryURLS", googlePlacesURL.toString());
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
