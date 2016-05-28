@@ -51,7 +51,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             //markerOptions.position(latLng);
             //markerOptions.title(placeName + " : " + vicinity);
             //mMap.addMarker(markerOptions);
-            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName));
+            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + ". Click for more details."));
 
         }
     }

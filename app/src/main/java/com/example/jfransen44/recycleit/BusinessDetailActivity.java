@@ -11,7 +11,11 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.net.URL;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeMap;
+import com.example.jfransen44.recycleit.MultiSpinner;
+import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 public class BusinessDetailActivity extends AppCompatActivity {
 
     ImageView businessImage;
@@ -24,6 +28,26 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
         businessImage = (ImageView) findViewById(R.id.businessImage);
         //businessImage.
+        final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
+        TreeMap<String, Boolean> items = new TreeMap<>();
+        for(String item : list) {
+            items.put(item, Boolean.FALSE);
+        }
+        MultiSpinner simpleSpinner = (MultiSpinner) findViewById(R.id.simpleMultiSpinner);
+
+        simpleSpinner.setItems(items, new MultiSpinnerListener() {
+
+            @Override
+            public void onItemsSelected(boolean[] selected) {
+
+                // your operation with code...
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        Log.i("TAG", i + " : " + list.get(i));
+                    }
+                }
+            }
+        });
     }
 
     public Drawable loadImageFromWeb (String url){
