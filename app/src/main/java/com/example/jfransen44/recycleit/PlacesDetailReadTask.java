@@ -17,11 +17,9 @@ public class PlacesDetailReadTask extends AsyncTask<Object, Integer, String> {
     @Override
     protected String doInBackground(Object... inputObj) {
         try{
-            Log.d("PLACES DETAIL READ TASK", inputObj[0].toString());
             String googlePlacesURL = (String) inputObj[0];
             GoogleHttp http = new GoogleHttp();
             googlePlacesData = http.readGoogle(googlePlacesURL);
-            Log.d("GOOGLEPLACESDATARETURN", googlePlacesData.toString());
         }
         catch (Exception e){
             Log.d("Places Detail Read Task", e.toString());
@@ -30,8 +28,6 @@ public class PlacesDetailReadTask extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result){
-        //Log.d("Tag", result);
         mainActivity.setPlacesDetail(result);
-
     }
 }

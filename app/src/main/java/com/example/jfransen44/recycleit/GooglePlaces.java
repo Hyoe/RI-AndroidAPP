@@ -82,4 +82,33 @@ public class GooglePlaces {
         }
         return googlePlaceMap;
     }
+
+    public String[] parseDetails(String result){
+        String[] placeDetails = new String[5];
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(result);
+            jsonObject = jsonObject.getJSONObject("result");
+            if (! jsonObject.isNull("name")) {
+                placeDetails[0] = jsonObject.getString("name");
+            }
+            if (! jsonObject.isNull("formatted_address")){
+                placeDetails[1] = jsonObject.getString("formatted_address");
+            }
+            if (! jsonObject.isNull("formatted_phone_number")){
+                placeDetails[2] = jsonObject.getString("formatted_phone_number");
+            }
+            if (! jsonObject.isNull("icon")){
+                placeDetails[3] = jsonObject.getString("icon");
+            }
+            if (! jsonObject.isNull("website")){
+                placeDetails[4] = jsonObject.getString("website");
+            }
+
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return placeDetails;
+    }
 }

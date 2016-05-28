@@ -39,9 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
 
     private LatLng newPlace;
+    private String[] placesDetail;
+
 
 
     String session_username = null;
@@ -432,21 +431,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
-    //get results string from GoogleReadTask query
+    //get results string from PlacesDetailReadTask query
     public void setPlacesDetail(String result){
-
-            //placesMoreDetail = parseResults(result);
-            Log.d("MORE_DETAIL", result.toString());
-            try{
-                JSONObject placeDetail = new JSONObject(result);
-                placeDetail = placeDetail.getJSONObject("result");
-                Log.d("Place Detail Main", placeDetail.getString("formatted_phone_number"));
-            }
-            catch (JSONException e){
-                e.printStackTrace();
-            }
-
-        }
+        GooglePlaces googlePlaces = new GooglePlaces();
+        placesDetail = googlePlaces.parseDetails(result);
+    }
 
 
 
@@ -473,18 +462,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onInfoWindowClick(Marker marker) {
 
         // Query for business specific information
-        StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
-        googlePlacesDetailURL.append("reference=" + placeRef);
-        googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
-        PlacesDetailReadTask placesDetailReadTask = new PlacesDetailReadTask(this);
-        Object[] toPass = new Object[1];
-        toPass[0] = googlePlacesDetailURL.toString();
-        //Log.d("DETAIL URL 472", toPass[0].toString());
-        placesDetailReadTask.execute(toPass);
+        try {
+            StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+            googlePlacesDetailURL.append("reference=" + placeRef);
+            googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
+            PlacesDetailReadTask placesDetailReadTask = new PlacesDetailReadTask(this);
+            Object[] toPass = new Object[1];
+            toPass[0] = googlePlacesDetailURL.toString();
+            placesDetailReadTask.execute(toPass);
+            Log.d("WTFFF!", placesDetail[0]);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
 
-        Intent intent = new Intent(this, BusinessDetailActivity.class);
-        intent.putStringArrayListExtra("businessDetail", (ArrayList)businessDetails);
-        startActivity(intent);
+
+            Log.d("WTFFFF", placesDetail[1]);
+            Intent intent = new Intent(this, BusinessDetailActivity.class);
+            intent.putExtra("businessDetails", placesDetail);
+            startActivity(intent);
+        }
     }
 
 
