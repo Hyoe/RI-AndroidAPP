@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
 
     private LatLng newPlace;
-    private String[] placesDetail;
+    private String[] placesDetail = new String[5];
 
 
 
@@ -434,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //get results string from PlacesDetailReadTask query
     public void setPlacesDetail(String result){
         GooglePlaces googlePlaces = new GooglePlaces();
-        placesDetail = googlePlaces.parseDetails(result);
+        this.placesDetail = googlePlaces.parseDetails(result);
         Log.d("placesDetail line 438", placesDetail[0]);
     }
 
@@ -471,12 +471,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Object[] toPass = new Object[1];
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
-            Log.d("WTFFF!", placesDetail[0]);
 
+            //Log.d("WTFFF!", placesDetail[0]);
+            if (placesDetail == null){
+                try{
+                    wait(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+            }
 
-
-            Log.d("WTFFFF", placesDetail[1]);
+            Log.d("Places Detail line 485", placesDetail[1]);
             Intent intent = new Intent(this, BusinessDetailActivity.class);
             intent.putExtra("businessDetails", placesDetail);
             startActivity(intent);

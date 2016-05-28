@@ -29,37 +29,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.1481482">
-              <caret line="462" column="33" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.50110865">
+              <caret line="477" column="28" selection-start-line="477" selection-start-column="28" selection-end-line="477" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2966#2974#0" expanded="true" />
-                <element signature="e#6509#6510#0" expanded="true" />
-                <element signature="e#6569#6570#0" expanded="true" />
-                <element signature="e#7292#7825#0" expanded="true" />
-                <element signature="e#7824#7825#0" expanded="true" />
-                <element signature="e#9411#9636#0" expanded="true" />
-                <element signature="e#9635#9636#0" expanded="true" />
-                <element signature="e#12621#12641#0" expanded="true" />
-                <element signature="e#12643#12664#0" expanded="true" />
-                <element signature="e#13599#14995#0" expanded="true" />
-                <element signature="e#14994#14995#0" expanded="true" />
-                <element signature="e#15062#16701#0" expanded="true" />
-                <element signature="e#16700#16701#0" expanded="true" />
+                <element signature="e#2982#2990#0" expanded="true" />
+                <element signature="e#6525#6526#0" expanded="true" />
+                <element signature="e#6585#6586#0" expanded="true" />
+                <element signature="e#7308#7841#0" expanded="true" />
+                <element signature="e#7840#7841#0" expanded="true" />
+                <element signature="e#9427#9652#0" expanded="true" />
+                <element signature="e#9651#9652#0" expanded="true" />
+                <element signature="e#12637#12657#0" expanded="true" />
+                <element signature="e#12659#12680#0" expanded="true" />
+                <element signature="e#13615#15011#0" expanded="true" />
+                <element signature="e#15010#15011#0" expanded="true" />
+                <element signature="e#15078#16717#0" expanded="true" />
+                <element signature="e#16716#16717#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BusinessDetailActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PlacesDetailReadTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="45" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
+              <folding>
+                <element signature="e#849#850#0" expanded="true" />
+                <element signature="e#901#902#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BusinessDetailActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18410042">
-              <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
+              <folding>
+                <element signature="e#1557#1558#0" expanded="true" />
+                <element signature="e#1597#1598#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2074,8 +2090,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GetPlacesDetail.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GooglePlacesReadTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GooglePlaces.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java" />
       </list>
     </option>
@@ -2550,17 +2566,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7175732">
-          <caret line="30" column="45" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
-          <folding>
-            <element signature="e#849#850#0" expanded="true" />
-            <element signature="e#901#902#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2569,34 +2574,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.1481482">
-          <caret line="462" column="33" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2966#2974#0" expanded="true" />
-            <element signature="e#6509#6510#0" expanded="true" />
-            <element signature="e#6569#6570#0" expanded="true" />
-            <element signature="e#7292#7825#0" expanded="true" />
-            <element signature="e#7824#7825#0" expanded="true" />
-            <element signature="e#9411#9636#0" expanded="true" />
-            <element signature="e#9635#9636#0" expanded="true" />
-            <element signature="e#12621#12641#0" expanded="true" />
-            <element signature="e#12643#12664#0" expanded="true" />
-            <element signature="e#13599#14995#0" expanded="true" />
-            <element signature="e#14994#14995#0" expanded="true" />
-            <element signature="e#15062#16701#0" expanded="true" />
-            <element signature="e#16700#16701#0" expanded="true" />
+            <element signature="e#1557#1558#0" expanded="true" />
+            <element signature="e#1597#1598#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18410042">
-          <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="45" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
+          <folding>
+            <element signature="e#849#850#0" expanded="true" />
+            <element signature="e#901#902#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50110865">
+          <caret line="477" column="28" selection-start-line="477" selection-start-column="28" selection-end-line="477" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2982#2990#0" expanded="true" />
+            <element signature="e#6525#6526#0" expanded="true" />
+            <element signature="e#6585#6586#0" expanded="true" />
+            <element signature="e#7308#7841#0" expanded="true" />
+            <element signature="e#7840#7841#0" expanded="true" />
+            <element signature="e#9427#9652#0" expanded="true" />
+            <element signature="e#9651#9652#0" expanded="true" />
+            <element signature="e#12637#12657#0" expanded="true" />
+            <element signature="e#12659#12680#0" expanded="true" />
+            <element signature="e#13615#15011#0" expanded="true" />
+            <element signature="e#15010#15011#0" expanded="true" />
+            <element signature="e#15078#16717#0" expanded="true" />
+            <element signature="e#16716#16717#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

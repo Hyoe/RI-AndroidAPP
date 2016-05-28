@@ -25,10 +25,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         businessImage = (ImageView) findViewById(R.id.businessImage);
-        String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
+        /*String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
         for (int i = 0; i < 5; i++){
             Log.d("DETAIL ACT", businessDetail[i]);
-        }
+        }*/
     }
 
     public Drawable loadImageFromWeb (String url){
