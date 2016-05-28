@@ -436,6 +436,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
         Log.d("placesDetail line 438", placesDetail[0]);
+
+        Intent intent = new Intent(this, BusinessDetailActivity.class);
+        intent.putExtra("businessDetails", placesDetail);
+        startActivity(intent);
     }
 
     //parse results from GoogleReadTask query
@@ -468,22 +472,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Object[] toPass = new Object[1];
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
-
-            //Log.d("WTFFF!", placesDetail[0]);
-            if (placesDetail == null){
-                try{
-                    wait(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            Log.d("Places Detail line 485", placesDetail[1]);
-            Intent intent = new Intent(this, BusinessDetailActivity.class);
-            intent.putExtra("businessDetails", placesDetail);
-            startActivity(intent);
-
     }
 
 
