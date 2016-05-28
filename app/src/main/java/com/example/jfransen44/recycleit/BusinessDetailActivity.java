@@ -1,5 +1,6 @@
 package com.example.jfransen44.recycleit;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -18,12 +19,16 @@ public class BusinessDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_business_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         businessImage = (ImageView) findViewById(R.id.businessImage);
-        //businessImage.
+        /*String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
+        for (int i = 0; i < 5; i++){
+            Log.d("DETAIL ACT", businessDetail[i]);
+        }*/
     }
 
     public Drawable loadImageFromWeb (String url){

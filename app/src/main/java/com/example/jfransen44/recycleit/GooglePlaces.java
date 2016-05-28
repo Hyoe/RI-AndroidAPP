@@ -16,50 +16,29 @@ import java.util.List;
 //parse data returned from Google Places
 public class GooglePlaces {
 
-    public List<HashMap<String, String>> parse(JSONObject jsonObject, int callingCode){
+    public List<HashMap<String, String>> parse(JSONObject jsonObject){
         JSONArray jsonArray = null;
 
-        if (callingCode == 1001) {
+
             try {
                 jsonArray = jsonObject.getJSONArray("results");
                 Log.d("GOOGLEPLACES JSONARRAY", jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return getPlaces(jsonArray, callingCode);
-        }
-        else {
-            JSONObject jo = new JSONObject();
-            try {
-                jo = jsonObject.getJSONObject("result");
-            }
-            catch (JSONException e){
-                e.printStackTrace();
-            }
-            Log.d("YOURMOM", jo.toString());
-            try {
-                //String wtf = jo.
-                jsonArray = (JSONArray) jo.getJSONArray("result");
+            return getPlaces(jsonArray);
 
-                Log.d("GOOGLEPLACES JA DETAIL", jsonArray.toString());
-            } catch (JSONException e) {
-                //e.printStackTrace();
-            }
-            jsonArray = jo.names();
-            Log.d("JONAMEA", jsonArray.toString());
-            return getPlaces(jsonArray, callingCode);
-        }
     }
 
     //get full list of places
-    private List<HashMap<String, String>> getPlaces(JSONArray jsonArray, int callingCode){
+    private List<HashMap<String, String>> getPlaces(JSONArray jsonArray){
         int placesCount = jsonArray.length();
         List<HashMap<String, String>> placesList = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> placeMap = null;
 
         for (int i = 0; i < placesCount; i++){
             try {
-                placeMap = getPlace((JSONObject) jsonArray.get(i), callingCode);
+                placeMap = getPlace((JSONObject) jsonArray.get(i));
                 placesList.add(placeMap);
             }
             catch (JSONException e){
@@ -70,61 +49,66 @@ public class GooglePlaces {
     }
 
 
-    private HashMap<String, String> getPlace(JSONObject googlePlaceJson, int callingCode){
+    private HashMap<String, String> getPlace(JSONObject googlePlaceJson) {
         HashMap<String, String> googlePlaceMap = new HashMap<String, String>();
-        if (callingCode == 1001) {
-            String placeName = "NA";
-            String vicinity = "NA";
-            String latitude = "";
-            String longitude = "";
-            String reference = "";
 
-            try {
-                if (!googlePlaceJson.isNull("name")) {
-                    placeName = googlePlaceJson.getString("name");
-                }
-                if (!googlePlaceJson.isNull("vicinity")) {
-                    vicinity = googlePlaceJson.getString("vicinity");
-                }
-                Log.d("Google Place JSON", googlePlaceJson.toString());
-                latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
-                reference = googlePlaceJson.getString("reference");
-                googlePlaceMap.put("place_name", placeName);
-                googlePlaceMap.put("vicinity", vicinity);
-                googlePlaceMap.put("lat", latitude);
-                googlePlaceMap.put("lng", longitude);
-                googlePlaceMap.put("reference", reference);
-            } catch (JSONException e) {
-                e.printStackTrace();
+        String placeName = "NA";
+        String vicinity = "NA";
+        String latitude = "";
+        String longitude = "";
+        String reference = "";
+        //String placeID = "";
+
+        try {
+            if (!googlePlaceJson.isNull("name")) {
+                placeName = googlePlaceJson.getString("name");
             }
-            return googlePlaceMap;
+            if (!googlePlaceJson.isNull("vicinity")) {
+                vicinity = googlePlaceJson.getString("vicinity");
+            }
+            //Log.d("Google Place JSON", googlePlaceJson.toString());
+            latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
+            longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            reference = googlePlaceJson.getString("reference");
+            //placeID = googlePlaceJson.getString("place_id");
+            googlePlaceMap.put("place_name", placeName);
+            googlePlaceMap.put("vicinity", vicinity);
+            googlePlaceMap.put("lat", latitude);
+            googlePlaceMap.put("lng", longitude);
+            googlePlaceMap.put("reference", reference);
+           // googlePlaceMap.put("placeID", placeID);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        else {
-            String phoneNumber = "NA";
-            String businessHours = "NA";
-            String iconURL = "NA";
+        return googlePlaceMap;
+    }
 
-            try{
-                if (!googlePlaceJson.isNull("formatted_phone_number")){
-                    phoneNumber = googlePlaceJson.getString("formatted_phone_number");
-                }
-                if (!googlePlaceJson.isNull("weekday_text")){
-                    businessHours = googlePlaceJson.getString("weekday_text");
-                }
-                if (!googlePlaceJson.isNull("icon")){
-                    iconURL = googlePlaceJson.getString("icon");
-                }
-                googlePlaceMap.put("phoneNumber", phoneNumber);
-                googlePlaceMap.put("businessHours", businessHours);
-                googlePlaceMap.put("iconURL", iconURL);
+    public String[] parseDetails(String result){
+        String[] placeDetails = new String[5];
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(result);
+            jsonObject = jsonObject.getJSONObject("result");
+            if (! jsonObject.isNull("name")) {
+                placeDetails[0] = jsonObject.getString("name");
             }
-            catch (JSONException e){
-                e.printStackTrace();
+            if (! jsonObject.isNull("formatted_address")){
+                placeDetails[1] = jsonObject.getString("formatted_address");
             }
-            Log.d("CODE 1000 place map" , googlePlaceMap.toString());
-            return googlePlaceMap;
+            if (! jsonObject.isNull("formatted_phone_number")){
+                placeDetails[2] = jsonObject.getString("formatted_phone_number");
+            }
+            if (! jsonObject.isNull("icon")){
+                placeDetails[3] = jsonObject.getString("icon");
+            }
+            if (! jsonObject.isNull("website")){
+                placeDetails[4] = jsonObject.getString("website");
+            }
+
         }
-
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return placeDetails;
     }
 }

@@ -12,11 +12,7 @@ import com.google.android.gms.maps.GoogleMap;
 public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
     String googlePlacesData = null;
     GoogleMap mMap;
-    MainActivity mainActivity;
 
-    public GooglePlacesReadTask(MainActivity mainActivity){
-        this.mainActivity = mainActivity;
-    }
 
     @Override
     protected String doInBackground(Object... inputObj) {
@@ -38,7 +34,6 @@ public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
         toPass[0] = mMap;
         toPass[1] = result;
         //Log.d("Tag", result);
-        mainActivity.asyncResult(result);
         placesDisplayTask.execute(toPass);
     }
 }
