@@ -438,9 +438,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("placesDetail line 438", placesDetail[0]);
     }
 
-
-
-
     //parse results from GoogleReadTask query
    /* private List<HashMap<String, String>> parseResults(String queryResult){
         //JSONObject gPlacesJson;
