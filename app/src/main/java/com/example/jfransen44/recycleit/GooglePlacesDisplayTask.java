@@ -20,7 +20,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
 
     JSONObject googlePlacesJson;
     GoogleMap mMap;
-    MainActivity mainActivity = new MainActivity();
+
     @Override
     protected List<HashMap<String, String>> doInBackground(Object... inputObj) {
 
@@ -30,7 +30,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
         try {
             mMap = (GoogleMap) inputObj[0];
             googlePlacesJson = new JSONObject((String) inputObj[1]);
-            googlePlacesList = placesJsonParser.parse(googlePlacesJson, 1001);
+            googlePlacesList = placesJsonParser.parse(googlePlacesJson);
         }
         catch (Exception e) {
             Log.d("Exception", e.toString());
@@ -47,11 +47,12 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             double lng = Double.parseDouble(googlePlace.get("lng"));
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
+            String reference = googlePlace.get("reference");
             LatLng latLng = new LatLng(lat, lng);
             //markerOptions.position(latLng);
             //markerOptions.title(placeName + " : " + vicinity);
             //mMap.addMarker(markerOptions);
-            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + ". Click for more details."));
+            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(reference));
 
         }
     }

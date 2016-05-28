@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,14 +38,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.plus.model.people.Person;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
@@ -57,17 +51,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final float defaultZoom = (float) 17.0;
     private GoogleApiClient mGoogleApiClient;
     private Button zipSearchButton;
-    private EditText zipTextBox;
-    private String zipCode;
+
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private Marker myMarker;
+
     private LatLng newPlace;
-    private String gQueryResult;
-    private List<HashMap<String, String>> gPlacesList;
+    private String[] placesDetail = new String[5];
+
+
+
     String session_username = null;
     String session_firstName = null;
     String session_lastName = null;
@@ -75,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String[] favArray;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
-    HashMap<Marker, Integer> markerHashMap;
-    List<HashMap<String, String>> placesDetail = null;
+
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
+    private String placeRef = "";
 
 
     @Override
@@ -202,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     getMapInfo(newPlace);
 
 
-                    mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
+                    //mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
                     autocompleteFragment.setText("");
                     newPlace = null;
@@ -273,32 +268,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    //TODO: Delete this method; not used
-    //convert user entered zip code to lat/lon.  Not used after location services implemented
-    public LatLng getLocatonFromZip(View.OnClickListener context, String zipCode){
-        Geocoder coder = new Geocoder(this);
-        List<android.location.Address> address;
-        LatLng userZip = null;
-
-        try{
-            address = coder.getFromLocationName(zipCode, 5);
-            Log.d("ADDRESS", address.toString());
-            if (address == null) {
-                return null;
-            }
-            android.location.Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-            Log.d("GETLOCATIONFROMZIP", location.toString());
-            userZip = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-
-        return userZip;
-    }
-
     //update map icons when map is moved
 
     public void onLocationChanged(Location location){
@@ -321,13 +290,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googlePlacesURL.append("&radius=" + 8500);
         googlePlacesURL.append("&keyword=recycling|waste_management");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-        Log.d("QueryURLS", googlePlacesURL.toString());
-        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask(this);
+        //Log.d("QueryURLS", googlePlacesURL.toString());
+        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        mMap.setOnMarkerClickListener(this);
+        //mMap.setOnMarkerClickListener(this);
     }
 
     // helper method for menu
@@ -454,108 +423,55 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    @Override
+   @Override
     public boolean onMarkerClick(Marker marker) {
-        int pos;
-        String mTitle = marker.getTitle();
-        LatLng mLatLng = marker.getPosition();
-        String mPlaceId = null;
-        // get key value from results
-        for (HashMap<String, String> map : placesDetail)
-            for (Map.Entry<String, String> entry : map.entrySet())
-                Log.d("KEY_VALUE", entry.getKey() + " => " + entry.getValue());
 
-        // get query result from marker latlng/title
-        if(mTitle != null && mLatLng != null) {
-            for (int i = 0; i < placesDetail.size(); i++) {
-                LatLng businessLatLng = new LatLng(Double.parseDouble(placesDetail.get(i).get("lat")), Double.parseDouble(placesDetail.get(i).get("lng")));
-                //Log.d("KEY_VALUE", businessLatLng.toString());
-                if (mTitle.equals(placesDetail.get(i).get("place_name")) && mLatLng.equals(businessLatLng)) {
-                    //Log.d("KEY_VALUE",placesDetail.get(i).get("place_name") );
-                    //Toast.makeText(MainActivity.this,placesDetail.get(i).get("place_name") , Toast.LENGTH_SHORT).show();
-                    mPlaceId = placesDetail.get(i).get("reference");
-
-                    // Query for business specific information
-                    StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
-                    googlePlacesDetailURL.append("reference=" + mPlaceId);
-                    googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
-                    Log.d("QueryURL", googlePlacesDetailURL.toString());
-
-                    PlacesDetail PlacesDetailTask = new PlacesDetail(this);
-                    Object[] toPass = new Object[2];
-                    toPass[0] = mMap;
-                    toPass[1] = googlePlacesDetailURL.toString();
-                    PlacesDetailTask.execute(toPass);
-
-                    // TODO
-                    // TODO update marker name and address and add details button
-                    // TODO
-
-                    //placeDetails.add();
-                    Log.d("placesmoredetial", placesDetail.toString());
-                    /*for (HashMap<String, String> map : placesMoreDetail) {
-                        for (Map.Entry<String, String> entry : map.entrySet()) {
-                            Log.d("MORE_KEY_VALUE", entry.getKey() + " => " + entry.getValue());
-                            if(entry.getValue() != null){
-                                businessDetails.add(entry.getValue());
-                            }
-                        }
-                    }*/
-                    break;
-
-                }
-            }
-        }
+        placeRef = marker.getSnippet();
+        marker.setSnippet("");
         return false;
     }
 
+    //get results string from PlacesDetailReadTask query
+    public void setPlacesDetail(String result){
+        GooglePlaces googlePlaces = new GooglePlaces();
+        this.placesDetail = googlePlaces.parseDetails(result);
+        Log.d("placesDetail line 438", placesDetail[0]);
 
-
-    //get results string from GoogleReadTask query
-    public void asyncResult(String result){
-        if (result != null){
-            //Log.d("RESULT", result.toString());
-            //gQueryResult = result;
-            placesDetail = parseResults(result, 1001);
-            //Log.d("GPLACESLIST SIZE", Integer.toString(gPlacesList.size()));
-        }
-        else
-            Log.d("METHOD ASYNCRESULT", "result empty");
-    }
-    //get results string from GoogleReadTask query
-    public void asyncResult2(String result){
-        if (result != null){
-            placesMoreDetail = parseResults(result, 1000);
-            Log.d("MORE_DETAIL", result.toString());
-        }else{
-            Log.d("METHOD ASYNCRESULT2", "result empty");
-        }
+        Intent intent = new Intent(this, BusinessDetailActivity.class);
+        intent.putExtra("businessDetails", placesDetail);
+        startActivity(intent);
     }
 
     //parse results from GoogleReadTask query
-    private List<HashMap<String, String>> parseResults(String queryResult, int callingCode){
+   /* private List<HashMap<String, String>> parseResults(String queryResult){
         //JSONObject gPlacesJson;
         List<HashMap<String, String>> parsedResultsList = null;
         GooglePlaces gPlacesParser = new GooglePlaces();
 
         try{
             JSONObject gPlacesJson = new JSONObject(queryResult);
-            parsedResultsList = gPlacesParser.parse(gPlacesJson, callingCode);
+            parsedResultsList = gPlacesParser.parse(gPlacesJson);
             Log.d("PARSEDRESULTSLIST", parsedResultsList.toString());
         }
         catch (Exception e){
             Log.d("PARSERESULTS EXC", e.toString());
         }
         return parsedResultsList;
-    }
+    }*/
 
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Log.d("oninforwindowclick", "click");
-        Intent intent = new Intent(this, BusinessDetailActivity.class);
-        intent.putStringArrayListExtra("businessDetail", (ArrayList)businessDetails);
-        startActivity(intent);
+
+        // Query for business specific information
+
+            StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+            googlePlacesDetailURL.append("reference=" + placeRef);
+            googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
+            PlacesDetailReadTask placesDetailReadTask = new PlacesDetailReadTask(this);
+            Object[] toPass = new Object[1];
+            toPass[0] = googlePlacesDetailURL.toString();
+            placesDetailReadTask.execute(toPass);
     }
 
 
