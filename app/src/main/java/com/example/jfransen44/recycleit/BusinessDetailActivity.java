@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -36,6 +37,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
             items.put(item, Boolean.FALSE);
         }
         MultiSpinner simpleSpinner = (MultiSpinner) findViewById(R.id.simpleMultiSpinner);
+        simpleSpinner.setPrompt("Select Materials Accepted");
 
         simpleSpinner.setItems(items, new MultiSpinnerListener() {
 

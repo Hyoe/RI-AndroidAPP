@@ -8,6 +8,7 @@
     android:background="@null"
     android:singleLine="false"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:textColor="#FF000000" />
+    android:textColor="#FF000000"
+    android:ellipsize="marquee"/>
