@@ -39,4 +39,11 @@
         android:id="@+id/textView4"
         android:layout_weight="0.22" />
 
+    <com.example.jfransen44.recycleit.MultiSpinner
+        android:id="@+id/simpleMultiSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
+
+
 </LinearLayout>
