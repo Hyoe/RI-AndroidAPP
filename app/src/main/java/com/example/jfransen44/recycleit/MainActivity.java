@@ -435,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setPlacesDetail(String result){
         GooglePlaces googlePlaces = new GooglePlaces();
         placesDetail = googlePlaces.parseDetails(result);
+        Log.d("placesDetail line 438", placesDetail[0]);
     }
 
 
@@ -462,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onInfoWindowClick(Marker marker) {
 
         // Query for business specific information
-        try {
+
             StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
             googlePlacesDetailURL.append("reference=" + placeRef);
             googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
@@ -471,18 +472,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
             Log.d("WTFFF!", placesDetail[0]);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
+
+
 
 
             Log.d("WTFFFF", placesDetail[1]);
             Intent intent = new Intent(this, BusinessDetailActivity.class);
             intent.putExtra("businessDetails", placesDetail);
             startActivity(intent);
-        }
+
     }
 
 

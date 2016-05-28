@@ -29,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7339246">
-              <caret line="480" column="28" selection-start-line="480" selection-start-column="28" selection-end-line="480" selection-end-column="28" />
+            <state vertical-scroll-proportion="-1.1481482">
+              <caret line="462" column="33" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2966#2974#0" expanded="true" />
@@ -54,10 +54,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BusinessDetailActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BusinessDetailActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.18410042">
               <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
               <folding />
             </state>
@@ -2569,18 +2569,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7339246">
-          <caret line="480" column="28" selection-start-line="480" selection-start-column="28" selection-end-line="480" selection-end-column="28" />
+        <state vertical-scroll-proportion="-1.1481482">
+          <caret line="462" column="33" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2966#2974#0" expanded="true" />
@@ -2597,6 +2589,14 @@
             <element signature="e#15062#16701#0" expanded="true" />
             <element signature="e#16700#16701#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/BusinessDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18410042">
+          <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
+          <folding />
         </state>
       </provider>
     </entry>
