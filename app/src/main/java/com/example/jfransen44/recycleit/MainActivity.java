@@ -458,7 +458,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Object[] toPass = new Object[1];
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
-
-
     }
 }

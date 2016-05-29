@@ -39,4 +39,21 @@
         android:id="@+id/textView4"
         android:layout_weight="0.22" />
 
+    <TextView
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Materials Accepted:"
+        android:id="@+id/textView5"
+        android:layout_weight="0.08" />
+
+    <com.example.jfransen44.recycleit.MultiSpinner
+        android:id="@+id/simpleMultiSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:singleLine="false"
+        android:layout_margin="20dp"
+        android:spinnerMode="dialog" />
+
+
 </LinearLayout>
