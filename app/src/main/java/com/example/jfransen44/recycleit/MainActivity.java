@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
 
     private LatLng newPlace;
-    private String[] placesDetail = new String[5];
+    private String[] placesDetail = new String[6];
 
 
 
@@ -435,28 +435,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setPlacesDetail(String result){
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
-        Log.d("placesDetail line 438", placesDetail[0]);
+
+        for (int i = 0; i < 6; i++) {
+            Log.d("placesDetail line 438", placesDetail[i]);
+        }
+        Intent intent = new Intent(this, BusinessDetailActivity.class);
+        intent.putExtra("businessDetails", placesDetail);
+        startActivity(intent);
     }
 
-
-
-
-    //parse results from GoogleReadTask query
-   /* private List<HashMap<String, String>> parseResults(String queryResult){
-        //JSONObject gPlacesJson;
-        List<HashMap<String, String>> parsedResultsList = null;
-        GooglePlaces gPlacesParser = new GooglePlaces();
-
-        try{
-            JSONObject gPlacesJson = new JSONObject(queryResult);
-            parsedResultsList = gPlacesParser.parse(gPlacesJson);
-            Log.d("PARSEDRESULTSLIST", parsedResultsList.toString());
-        }
-        catch (Exception e){
-            Log.d("PARSERESULTS EXC", e.toString());
-        }
-        return parsedResultsList;
-    }*/
 
 
     @Override
@@ -472,22 +459,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
 
-            //Log.d("WTFFF!", placesDetail[0]);
-            if (placesDetail == null){
-                try{
-                    wait(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            Log.d("Places Detail line 485", placesDetail[1]);
-            Intent intent = new Intent(this, BusinessDetailActivity.class);
-            intent.putExtra("businessDetails", placesDetail);
-            startActivity(intent);
 
     }
-
-
 }

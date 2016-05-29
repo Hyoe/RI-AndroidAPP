@@ -84,7 +84,7 @@ public class GooglePlaces {
     }
 
     public String[] parseDetails(String result){
-        String[] placeDetails = new String[5];
+        String[] placeDetails = {"NA", "NA", "NA", "NA", "NA", "NA", };
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(result);
@@ -103,6 +103,9 @@ public class GooglePlaces {
             }
             if (! jsonObject.isNull("website")){
                 placeDetails[4] = jsonObject.getString("website");
+            }
+            if (! jsonObject.isNull("weekday_text")){
+                placeDetails[5] = jsonObject.getString("weekday_text");
             }
 
         }
