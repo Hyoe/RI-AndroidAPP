@@ -4,7 +4,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98b56fba-2f23-4532-b479-8ac372024e4b" name="Default" comment="" />
+    <list default="true" id="841d0b2c-38b0-4ac0-8da2-be5eb3d5332a" name="Default" comment="" />
     <ignored path="RI-AndroidAPP.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,25 +24,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5334728">
-              <caret line="473" column="49" selection-start-line="473" selection-start-column="49" selection-end-line="473" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="439" column="60" selection-start-line="439" selection-start-column="60" selection-end-line="439" selection-end-column="60" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#6525#6526#0" expanded="true" />
-                <element signature="e#6585#6586#0" expanded="true" />
+                <element signature="e#12637#12657#0" expanded="true" />
+                <element signature="e#12659#12680#0" expanded="true" />
+                <element signature="e#13615#15011#0" expanded="true" />
+                <element signature="e#15010#15011#0" expanded="true" />
+                <element signature="e#15078#16717#0" expanded="true" />
+                <element signature="e#16716#16717#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlacesDetailReadTask.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java">
+      <file leaf-file-name="GooglePlaces.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GooglePlaces.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.35983264">
+              <caret line="90" column="60" selection-start-line="90" selection-start-column="60" selection-end-line="90" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -1646,7 +1649,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4393151169000" />
+        <entry key="$PROJECT_DIR$" value="4393436982000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2048,6 +2051,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GooglePlaces.java" />
       </list>
     </option>
   </component>
@@ -2082,9 +2086,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2137,7 +2138,10 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2308,10 +2312,10 @@
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="98b56fba-2f23-4532-b479-8ac372024e4b" name="Default" comment="" />
-      <created>1464467979845</created>
+      <changelist id="841d0b2c-38b0-4ac0-8da2-be5eb3d5332a" name="Default" comment="" />
+      <created>1464480198023</created>
       <option name="number" value="Default" />
-      <updated>1464467979845</updated>
+      <updated>1464480198023</updated>
     </task>
     <servers />
   </component>
@@ -2351,33 +2355,31 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$" />
-    </ignored-roots>
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/PlacesDetailReadTask.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
+          <caret line="439" column="60" selection-start-line="439" selection-start-column="60" selection-end-line="439" selection-end-column="60" />
+          <folding>
+            <element signature="e#12637#12657#0" expanded="true" />
+            <element signature="e#12659#12680#0" expanded="true" />
+            <element signature="e#13615#15011#0" expanded="true" />
+            <element signature="e#15010#15011#0" expanded="true" />
+            <element signature="e#15078#16717#0" expanded="true" />
+            <element signature="e#16716#16717#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/jfransen44/recycleit/GooglePlaces.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5334728">
-          <caret line="473" column="49" selection-start-line="473" selection-start-column="49" selection-end-line="473" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6525#6526#0" expanded="true" />
-            <element signature="e#6585#6586#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.35983264">
+          <caret line="90" column="60" selection-start-line="90" selection-start-column="60" selection-end-line="90" selection-end-column="60" />
+          <folding />
         </state>
       </provider>
     </entry>
