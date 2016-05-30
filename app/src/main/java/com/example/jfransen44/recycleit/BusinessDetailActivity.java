@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +18,7 @@ import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
@@ -34,6 +38,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
     TextView saturday;
     TextView sunday;
 
+    CheckBox favoritesCheckBox;
+    boolean loggedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +49,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        favoritesCheckBox = (CheckBox)findViewById(R.id.favoritesCheckBox);
         businessName = (TextView) findViewById(R.id.businessName);
         businessAddress = (TextView) findViewById(R.id.businessAddress);
         businessPhone = (TextView) findViewById(R.id.businessPhone);
@@ -55,6 +63,30 @@ public class BusinessDetailActivity extends AppCompatActivity {
         saturday = (TextView) findViewById(R.id.Saturday);
         sunday = (TextView) findViewById(R.id.Sunday);
 
+        final List <String> materialsAcceptedList = new ArrayList<String>();
+
+        Button updateButton = (Button) findViewById(R.id.updateButton);
+        assert updateButton != null;
+        //TODO  Check to make sure isFavorite is not already in users list of favorites. Make DB call.  Pass isFavorite, materialsAccepted.
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isFavorite = favoritesCheckBox.isChecked();
+                String materialsAccepted = "";
+                Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
+                for (int i = 0; i < materialsAcceptedList.size(); i++){
+                    if (i != materialsAcceptedList.size() - 1){
+                        materialsAccepted += materialsAcceptedList.get(i) + ", ";
+                    }
+                    else {
+                        materialsAccepted += materialsAcceptedList.get(i);
+                    }
+                }
+                Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
+                Log.d("Material list", materialsAccepted);
+
+            }
+        });
         //businessImage = (ImageView) findViewById(R.id.businessImage);
         //businessImage.
         final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
@@ -69,15 +101,16 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
             @Override
             public void onItemsSelected(boolean[] selected) {
-
                 // your operation with code...
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         Log.i("TAG", i + " : " + list.get(i));
+                        materialsAcceptedList.add(list.get(i));
                     }
                 }
             }
         });
+
 
         /* Contents of businessDetail array
         Index:
@@ -88,11 +121,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
         4: Business Website URL
         5: Business Hours, separated by comma
          */
+        loggedIn = getIntent().getBooleanExtra("loggedIn", false);
+
+        //TODO uncomment after testing
+        //if (loggedIn){
+            favoritesCheckBox.setVisibility(View.VISIBLE);
+       // }
         String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
-        for (int i = 0; i < 6; i++){
-            Log.d("DETAIL ACT", businessDetail[i]);
-        }
-        //businessDetail[5].replace(',', '\n');
+
         String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
 
         businessName.setText(businessDetail[0]);
