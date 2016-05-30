@@ -25,7 +25,15 @@ public class BusinessDetailActivity extends AppCompatActivity {
     TextView businessAddress;
     TextView businessPhone;
     TextView businessURL;
-    TextView businessHours;
+    //TextView businessHours;
+    TextView monday;
+    TextView tuesday;
+    TextView wednesday;
+    TextView thursday;
+    TextView friday;
+    TextView saturday;
+    TextView sunday;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +45,15 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessName = (TextView) findViewById(R.id.businessName);
         businessAddress = (TextView) findViewById(R.id.businessAddress);
         businessPhone = (TextView) findViewById(R.id.businessPhone);
-        businessHours = (TextView) findViewById(R.id.businessHours);
+        //businessHours = (TextView) findViewById(R.id.businessHours);
         businessURL = (TextView) findViewById(R.id.businessURL);
+        monday = (TextView) findViewById(R.id.Monday);
+        tuesday = (TextView) findViewById(R.id.Tuesday);
+        wednesday = (TextView) findViewById(R.id.Wednesday);
+        thursday = (TextView) findViewById(R.id.Thursday);
+        friday = (TextView) findViewById(R.id.Friday);
+        saturday = (TextView) findViewById(R.id.Saturday);
+        sunday = (TextView) findViewById(R.id.Sunday);
 
         //businessImage = (ImageView) findViewById(R.id.businessImage);
         //businessImage.
@@ -77,12 +92,22 @@ public class BusinessDetailActivity extends AppCompatActivity {
         for (int i = 0; i < 6; i++){
             Log.d("DETAIL ACT", businessDetail[i]);
         }
-        businessDetail[5].replace(',', '\n');
+        //businessDetail[5].replace(',', '\n');
+        String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
+
         businessName.setText(businessDetail[0]);
         businessAddress.setText(businessDetail[1]);
         businessPhone.setText(businessDetail[2]);
-        businessHours.setText(businessDetail[5]);
         businessURL.setText(businessDetail[4]);
+        //businessHours.setText(businessDetail[5]);
+        monday.setText(workweek[0].replace('"', ' '));
+        tuesday.setText(workweek[1].replace('"', ' '));
+        wednesday.setText(workweek[2].replace('"', ' '));
+        thursday.setText(workweek[3].replace('"', ' '));
+        friday.setText(workweek[4].replace('"', ' '));
+        saturday.setText(workweek[5].replace('"', ' '));
+        sunday.setText(workweek[6].replace('"', ' '));
+
     }
 
     public Drawable loadImageFromWeb (String url){
