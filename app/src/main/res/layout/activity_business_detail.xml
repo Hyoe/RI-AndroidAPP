@@ -41,10 +41,9 @@
         android:id="@+id/textView5"
         android:layout_weight="0.08"
         android:textSize="20sp"
-        android:layout_below="@+id/Sunday"
+        android:layout_below="@+id/businessURL"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="54dp" />
+        android:layout_alignParentStart="true" />
 
     <com.example.jfransen44.recycleit.MultiSpinner
         android:id="@+id/simpleMultiSpinner"
@@ -83,7 +82,7 @@
         android:text="Monday"
         android:id="@+id/Monday"
         android:textSize="15sp"
-        android:layout_below="@+id/businessURL"
+        android:layout_below="@+id/checkBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -92,60 +91,60 @@
         android:layout_height="wrap_content"
         android:text="Tuesday"
         android:id="@+id/Tuesday"
-        android:layout_below="@+id/Monday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Monday"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wednesday"
         android:id="@+id/Wednesday"
-        android:layout_below="@+id/Tuesday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Tuesday"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thursday"
         android:id="@+id/Thursday"
-        android:layout_below="@+id/Wednesday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Wednesday"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Friday"
         android:id="@+id/Friday"
-        android:layout_below="@+id/Thursday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Thursday"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Saturday"
         android:id="@+id/Saturday"
-        android:layout_below="@+id/Friday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Friday"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sunday"
         android:id="@+id/Sunday"
-        android:layout_below="@+id/Saturday"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:layout_below="@+id/Saturday"
+        android:layout_alignParentLeft="true" />
 
 
 </RelativeLayout>

@@ -99,15 +99,18 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessAddress.setText(businessDetail[1]);
         businessPhone.setText(businessDetail[2]);
         businessURL.setText(businessDetail[4]);
-        //businessHours.setText(businessDetail[5]);
-        monday.setText(workweek[0].replace('"', ' '));
-        tuesday.setText(workweek[1].replace('"', ' '));
-        wednesday.setText(workweek[2].replace('"', ' '));
-        thursday.setText(workweek[3].replace('"', ' '));
-        friday.setText(workweek[4].replace('"', ' '));
-        saturday.setText(workweek[5].replace('"', ' '));
-        sunday.setText(workweek[6].replace('"', ' '));
-
+        if (workweek[0].equals("HOURS UNAVAILABLE")){
+            monday.setText("HOURS UNAVAILABLE");
+        }
+        else {
+            monday.setText(workweek[0].replace('"', ' '));
+            tuesday.setText(workweek[1].replace('"', ' '));
+            wednesday.setText(workweek[2].replace('"', ' '));
+            thursday.setText(workweek[3].replace('"', ' '));
+            friday.setText(workweek[4].replace('"', ' '));
+            saturday.setText(workweek[5].replace('"', ' '));
+            sunday.setText(workweek[6].replace('"', ' '));
+        }
     }
 
     public Drawable loadImageFromWeb (String url){
