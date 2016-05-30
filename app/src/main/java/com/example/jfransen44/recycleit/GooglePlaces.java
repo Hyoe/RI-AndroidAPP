@@ -84,7 +84,8 @@ public class GooglePlaces {
     }
 
     public String[] parseDetails(String result){
-        String[] placeDetails = {"NA", "NA", "NA", "NA", "NA", "NA", };
+        String[] placeDetails = {"NAME UNAVAILABLE", "ADDRESS UNAVAILABLE", "PHONE UNAVAILABLE", "NA", "WEB ADDRESS UNAVAILABLE",
+                "HOURS UNAVAILABLE", };
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(result);
@@ -104,8 +105,10 @@ public class GooglePlaces {
             if (! jsonObject.isNull("website")){
                 placeDetails[4] = jsonObject.getString("website");
             }
-            if (! jsonObject.isNull("weekday_text")){
+            if (! jsonObject.isNull("opening_hours")){
+                jsonObject = jsonObject.getJSONObject("opening_hours");
                 placeDetails[5] = jsonObject.getString("weekday_text");
+                placeDetails[5] = placeDetails[5].substring(1, placeDetails[5].length() - 1);
             }
 
         }

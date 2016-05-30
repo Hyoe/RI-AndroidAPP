@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -206,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+    //TODO this is not currently used
     private boolean isGooglePlayServicesAvailable() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == status) {
@@ -290,13 +290,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googlePlacesURL.append("&radius=" + 8500);
         googlePlacesURL.append("&keyword=recycling|waste_management");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
-        //Log.d("QueryURLS", googlePlacesURL.toString());
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
         Object[] toPass = new Object[2];
         toPass[0] = mMap;
         toPass[1] = googlePlacesURL.toString();
         googlePlacesReadTask.execute(toPass);
-        //mMap.setOnMarkerClickListener(this);
     }
 
     // helper method for menu
@@ -424,7 +422,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
    @Override
-    public boolean onMarkerClick(Marker marker) {
+   //grab place reference for detail query, then delete to hide from user
+   public boolean onMarkerClick(Marker marker) {
 
         placeRef = marker.getSnippet();
         marker.setSnippet("");
@@ -435,10 +434,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setPlacesDetail(String result){
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
-
-        for (int i = 0; i < 6; i++) {
-            Log.d("placesDetail line 438", placesDetail[i]);
-        }
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtra("businessDetails", placesDetail);
         startActivity(intent);
