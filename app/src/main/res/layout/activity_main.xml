@@ -8,55 +8,43 @@
     <!-- The first child in the layout is for the main Activity UI-->
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical">
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
-        <LinearLayout
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/zipSearchButton"
+            android:layout_toStartOf="@+id/zipSearchButton" />
 
-
-            <!--EditText
-                android:layout_width="266dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/zipTextBox"
-                android:numeric="integer"
-                android:hint="Enter Zip Code" /-->
-
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:layout_width="277dp"
-                android:layout_height="match_parent"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                />
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search"
-                android:id="@+id/zipSearchButton"
-                android:layout_gravity="right"
-                android:onClick="onSearch" />
-
-        </LinearLayout>
-        <LinearLayout
+        <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/zipSearchButton"
+            android:layout_gravity="right"
+            android:onClick="onSearch"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/map" tools:context=".MainActivity"
-                android:name="com.google.android.gms.maps.SupportMapFragment" />
-
-        </LinearLayout>
-    </LinearLayout>
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map" tools:context=".MainActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_below="@+id/zipSearchButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
     <!-- Side navigation drawer UI -->
     <ListView
