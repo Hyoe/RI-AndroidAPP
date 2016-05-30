@@ -431,11 +431,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //get results string from PlacesDetailReadTask query
+    //TODO query DB for accepted materials for this location
     public void setPlacesDetail(String result){
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
+        Bundle extras = new Bundle();
+        extras.putStringArray("businessDetails", placesDetail);
+        extras.putBoolean("loggedIn", loggedIn);
         Intent intent = new Intent(this, BusinessDetailActivity.class);
-        intent.putExtra("businessDetails", placesDetail);
+        intent.putExtras(extras);
         startActivity(intent);
     }
 

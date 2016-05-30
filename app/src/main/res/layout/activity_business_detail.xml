@@ -71,10 +71,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to Favorites"
-        android:id="@+id/checkBox"
+        android:id="@+id/favoritesCheckBox"
         android:layout_below="@+id/textView5"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -82,7 +83,7 @@
         android:text="Monday"
         android:id="@+id/Monday"
         android:textSize="15sp"
-        android:layout_below="@+id/checkBox"
+        android:layout_below="@+id/favoritesCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -145,6 +146,16 @@
         android:textSize="15sp"
         android:layout_below="@+id/Saturday"
         android:layout_alignParentLeft="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:id="@+id/updateButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true" />
 
 
 </RelativeLayout>
