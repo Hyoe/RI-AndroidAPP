@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="Business Name Here"
         android:id="@+id/businessName"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:layout_alignParentTop="true" />
 
     <TextView
@@ -18,7 +18,7 @@
         android:text="Business Phone Here"
         android:id="@+id/businessPhone"
         android:phoneNumber = "true"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_below="@+id/businessAddress"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Business Hours Here"
         android:id="@+id/businessHours"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_below="@+id/businessURL"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -39,7 +39,7 @@
         android:id="@+id/businessURL"
         android:text="Business URL Here"
         android:linksClickable="false"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_below="@+id/businessPhone"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -50,7 +50,7 @@
         android:text="Materials Accepted:"
         android:id="@+id/textView5"
         android:layout_weight="0.08"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_below="@+id/businessHours"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -73,7 +73,7 @@
         android:layout_below="@+id/businessName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
 
 </RelativeLayout>
