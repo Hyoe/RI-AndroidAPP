@@ -40,7 +40,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessHours = (TextView) findViewById(R.id.businessHours);
         businessURL = (TextView) findViewById(R.id.businessURL);
 
-        businessImage = (ImageView) findViewById(R.id.businessImage);
+        //businessImage = (ImageView) findViewById(R.id.businessImage);
         //businessImage.
         final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
         TreeMap<String, Boolean> items = new TreeMap<>();
