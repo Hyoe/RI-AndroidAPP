@@ -3,9 +3,6 @@ package com.example.jfransen44.recycleit;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,10 +17,6 @@ import android.widget.TextView;
 
 import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -94,8 +87,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
             }
         });
-        //businessImage = (ImageView) findViewById(R.id.businessImage);
-        //businessImage.
+
         final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
         TreeMap<String, Boolean> items = new TreeMap<>();
         for(String item : list) {
@@ -139,7 +131,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
         Log.d("BUSINESS DETAIL URL", ">"+businessDetail[3]+"<");
 
         String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
-        if (businessDetail[3].equals("LOGO UNAVAILABLE")){
+        if (businessDetail[3].equals("https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png")){
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.recycliticon1);
+            icon.setImageBitmap(bm);
 
         }else{
             //icon.setImageDrawable(LoadImageFromWebOperations(businessDetail[3]));
