@@ -23,7 +23,9 @@
         android:textSize="20sp"
         android:layout_above="@+id/businessURL"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:autoLink="phone"
+        android:linksClickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
