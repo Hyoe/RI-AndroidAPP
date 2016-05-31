@@ -10,7 +10,9 @@
         android:text="Business Name Here"
         android:id="@+id/businessName"
         android:textSize="30sp"
-        android:layout_alignParentTop="true" />
+        android:layout_above="@+id/businessAddress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,7 +21,7 @@
         android:id="@+id/businessPhone"
         android:phoneNumber = "true"
         android:textSize="20sp"
-        android:layout_below="@+id/businessAddress"
+        android:layout_above="@+id/businessURL"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -30,7 +32,7 @@
         android:text="Business URL Here"
         android:linksClickable="false"
         android:textSize="20sp"
-        android:layout_below="@+id/businessPhone"
+        android:layout_above="@+id/textView5"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -41,7 +43,7 @@
         android:id="@+id/textView5"
         android:layout_weight="0.08"
         android:textSize="20sp"
-        android:layout_below="@+id/businessURL"
+        android:layout_above="@+id/favoritesCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -62,17 +64,17 @@
         android:layout_height="wrap_content"
         android:text="Business Address Here"
         android:id="@+id/businessAddress"
-        android:layout_below="@+id/businessName"
+        android:textSize="20sp"
+        android:layout_above="@+id/businessPhone"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20sp" />
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to Favorites"
         android:id="@+id/favoritesCheckBox"
-        android:layout_below="@+id/textView5"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:visibility="gone"/>
@@ -156,6 +158,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:clickable="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageURL"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/businessName"
+        android:layout_toLeftOf="@+id/simpleMultiSpinner"
+        android:layout_toStartOf="@+id/simpleMultiSpinner" />
 
 
 </RelativeLayout>

@@ -20,6 +20,7 @@ public class PlacesDetailReadTask extends AsyncTask<Object, Integer, String> {
             String googlePlacesURL = (String) inputObj[0];
             GoogleHttp http = new GoogleHttp();
             googlePlacesData = http.readGoogle(googlePlacesURL);
+            Log.d("Places Detail Read Task", googlePlacesData);
         }
         catch (Exception e){
             Log.d("Places Detail Read Task", e.toString());

@@ -84,7 +84,7 @@ public class GooglePlaces {
     }
 
     public String[] parseDetails(String result){
-        String[] placeDetails = {"NAME UNAVAILABLE", "ADDRESS UNAVAILABLE", "PHONE UNAVAILABLE", "NA", "WEB ADDRESS UNAVAILABLE",
+        String[] placeDetails = {"NAME UNAVAILABLE", "ADDRESS UNAVAILABLE", "PHONE UNAVAILABLE", "LOGO UNAVAILABLE", "WEB ADDRESS UNAVAILABLE",
                 "HOURS UNAVAILABLE", };
         JSONObject jsonObject;
         try {

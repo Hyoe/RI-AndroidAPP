@@ -1,6 +1,8 @@
 package com.example.jfransen44.recycleit;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -16,7 +18,9 @@ import android.widget.TextView;
 
 import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +41,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
     TextView friday;
     TextView saturday;
     TextView sunday;
+    ImageView icon;
 
     CheckBox favoritesCheckBox;
     boolean loggedIn;
@@ -62,7 +67,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         friday = (TextView) findViewById(R.id.Friday);
         saturday = (TextView) findViewById(R.id.Saturday);
         sunday = (TextView) findViewById(R.id.Sunday);
-
+        icon = (ImageView) findViewById(R.id.imageURL);
         final List <String> materialsAcceptedList = new ArrayList<String>();
 
         Button updateButton = (Button) findViewById(R.id.updateButton);
@@ -129,8 +134,16 @@ public class BusinessDetailActivity extends AppCompatActivity {
        // }
         String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
 
-        String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
+        Log.d("BUSINESS DETAIL URL", ">"+businessDetail[3]+"<");
 
+        String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
+        if (businessDetail[3].equals("LOGO UNAVAILABLE")){
+
+        }else{
+            //icon.setImageDrawable(LoadImageFromWebOperations(businessDetail[3]));
+            //icon.setImageBitmap(getBitmapFromURL(businessDetail[3]));
+            new ImageLoadTask(businessDetail[3].toString(), icon).execute();
+        }
         businessName.setText(businessDetail[0]);
         businessAddress.setText(businessDetail[1]);
         businessPhone.setText(businessDetail[2]);
@@ -149,36 +162,4 @@ public class BusinessDetailActivity extends AppCompatActivity {
         }
     }
 
-    public Drawable loadImageFromWeb (String url){
-        Drawable d = new Drawable() {
-            @Override
-            public void draw(Canvas canvas) {
-
-            }
-
-            @Override
-            public void setAlpha(int alpha) {
-
-            }
-
-            @Override
-            public void setColorFilter(ColorFilter colorFilter) {
-
-            }
-
-            @Override
-            public int getOpacity() {
-                return 0;
-            }
-        };
-        try{
-            InputStream is = (InputStream) new URL(url).getContent();
-            d = Drawable.createFromStream(is,"src name");
-
-        }
-        catch (Exception e){
-            Log.d("loadImageFromWeb", e.toString());
-        }
-        return d;
-    }
 }
