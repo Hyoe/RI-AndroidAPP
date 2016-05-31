@@ -105,7 +105,7 @@ public class RecycleServlet extends HttpServlet {
         }
 
         if (req.getParameter("function").equals("doLogin")) {
-            String url = null;
+            String url = "";
 
             String getUsername = req.getParameter("username");
             //String getEmail = req.getParameter("email");
@@ -161,7 +161,7 @@ public class RecycleServlet extends HttpServlet {
                         if (first == false) {
                             loginString += ", ";
                         }
-                        loginString += "\"value\": " + "\"" + placeID + "\"}";
+                        loginString += "\"{" + "\"value\": " + "\"" + placeID + "\"}";
                         first = false;
                     }
                     loginString += "]}}";
