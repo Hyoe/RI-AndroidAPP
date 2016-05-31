@@ -135,7 +135,7 @@ public class RecycleServlet extends HttpServlet {
                     username = rs.getString("username");
                     email = rs.getString("email");
                 }
-                String loginString = null;
+                String loginString = "";
                 if (username != null) {
                     //username/password combination works
 
@@ -155,13 +155,13 @@ public class RecycleServlet extends HttpServlet {
                 else {
                     boolean first = true;
                     String placeID = null;
-                    loginString += "{";
+                    //loginString += "{";
                     while (rs1.next()) {
                         placeID = rs1.getString("place_id");
                         if (first == false) {
                             loginString += ", ";
                         }
-                        loginString += "\"{" + "\"value\": " + "\"" + placeID + "\"}";
+                        loginString += "{\"value\": " + "\"" + placeID + "\"}";
                         first = false;
                     }
                     loginString += "]}}";
