@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -147,7 +149,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessName.setText(businessDetail[0]);
         businessAddress.setText(businessDetail[1]);
         businessPhone.setText(businessDetail[2]);
-        businessURL.setText(businessDetail[4]);
+        businessURL.setText(Html.fromHtml("<a href=\""+businessDetail[4]+"\">Website</a>"));
+        businessURL.setMovementMethod(LinkMovementMethod.getInstance());
         if (workweek[0].equals("HOURS UNAVAILABLE")){
             monday.setText("HOURS UNAVAILABLE");
         }
