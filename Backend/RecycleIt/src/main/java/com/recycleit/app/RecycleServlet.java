@@ -125,7 +125,7 @@ public class RecycleServlet extends HttpServlet {
                 String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "' OR email = '" + getUsername + "' AND pw = '" + getPassword + "'";
                 //String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'"; //TO DO - make sure this is placed in the code when we can make sure username is username (not email) - after username is defined
                 ResultSet rs = conn.createStatement().executeQuery(query);
-                //ResultSet rs1 = conn.createStatement().executeQuery(query1); //
+                //ResultSet rs1 = conn.createStatement().executeQuery(query1);
 
                 String username = null;
                 String email = null;
@@ -152,7 +152,7 @@ public class RecycleServlet extends HttpServlet {
                 ResultSet rs1 = conn.createStatement().executeQuery(query1);
 
                 if (!rs1.isBeforeFirst()) {
-                    loginString += "null]}";
+                    loginString += "]}";
                 }
 
                 else {

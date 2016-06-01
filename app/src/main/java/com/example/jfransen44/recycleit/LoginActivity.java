@@ -10,10 +10,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
+
+
+    static String[] favList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final TextView loginStatus = (TextView) findViewById(R.id.login_status);
 
+        assert loginButton != null;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +57,23 @@ public class LoginActivity extends AppCompatActivity {
                         String output = new GetData().execute(url).get();
                         JSONObject jObject = new JSONObject(output);
                         String status = jObject.getString("status");
+                        JSONArray jArray = jObject.getJSONArray("favorites");
+                        int arrSize = jArray.length();
+                        favList = new String[arrSize];
+                        //this populates a String array
+                        //jObject = jArray.getJSONObject(0);
+                        //if (jObject.getJSONObject("favorites") != null) {
+
+                            //Toast.makeText(LoginActivity.this, "array length: " + arrSize, Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < arrSize; i++) {
+                                jObject = jArray.getJSONObject(i);
+                                favList[i] = jObject.getString("value");
+                                //Toast.makeText(LoginActivity.this, favList[i], Toast.LENGTH_LONG).show();
+                            }
+                        //}
+
+
+                        //String[] favorites = jObject.value.getJSONArray("favorites");
 
                         //status can be incorrectUsernamePassword, Login Successful
                         if (status.equals("incorrectUsernamePassword")) {
