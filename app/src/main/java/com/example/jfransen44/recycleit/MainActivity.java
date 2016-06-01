@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String session_firstName = null;
     String session_lastName = null;
     private boolean loggedIn = false;
-    String[] favArray;
+    String[] favList;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
 
@@ -369,9 +369,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
 
-                            String[] tempString = LoginActivity.favList;
-                            for (int i = 0; i < tempString.length; i++) {
-                                Toast.makeText(MainActivity.this, tempString[i], Toast.LENGTH_LONG).show();
+                            favList = LoginActivity.favList;
+                            for (int i = 0; i < favList.length; i++) {
+                                Toast.makeText(MainActivity.this, favList[i], Toast.LENGTH_LONG).show();
                             }
 
                             break;
