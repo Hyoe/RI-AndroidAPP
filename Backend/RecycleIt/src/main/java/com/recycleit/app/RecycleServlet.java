@@ -105,7 +105,7 @@ public class RecycleServlet extends HttpServlet {
         }
 
         if (req.getParameter("function").equals("doLogin")) {
-            String url = "";
+            String url = null;
 
             String getUsername = req.getParameter("username");
             //String getEmail = req.getParameter("email");
@@ -123,9 +123,9 @@ public class RecycleServlet extends HttpServlet {
                 Connection conn = DriverManager.getConnection(url);
                 //String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "'";
                 String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "' OR email = '" + getUsername + "' AND pw = '" + getPassword + "'";
-                String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'"; //TO DO - make sure this is placed in the code when we can make sure username is username (not email) - after username is defined
+                //String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'"; //TO DO - make sure this is placed in the code when we can make sure username is username (not email) - after username is defined
                 ResultSet rs = conn.createStatement().executeQuery(query);
-                ResultSet rs1 = conn.createStatement().executeQuery(query1);
+                //ResultSet rs1 = conn.createStatement().executeQuery(query1);
 
                 String username = null;
                 String email = null;
@@ -135,11 +135,11 @@ public class RecycleServlet extends HttpServlet {
                     username = rs.getString("username");
                     email = rs.getString("email");
                 }
-                String loginString = "";
+                String loginString = null;
                 if (username != null) {
                     //username/password combination works
 
-                    loginString += "{\"login\": {\"status\":\"goodLogin\", \"favorites\": [";
+                    loginString = "{\"status\":\"goodLogin\", \"favorites\": [";
                     //resp.getWriter().println("{\"status\":\"goodLogin\"}");
                     //{"firstName":"John", "lastName":"Doe"}
                 } else {
@@ -148,23 +148,26 @@ public class RecycleServlet extends HttpServlet {
                     return;
                 }
 
+                String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + username + "'";
+                ResultSet rs1 = conn.createStatement().executeQuery(query1);
+
                 if (!rs1.isBeforeFirst()) {
-                    loginString += "null]}}";
+                    loginString += "null]}";
                 }
 
                 else {
                     boolean first = true;
                     String placeID = null;
-                    //loginString += "{";
+                    loginString += "{";
                     while (rs1.next()) {
                         placeID = rs1.getString("place_id");
                         if (first == false) {
-                            loginString += ", ";
+                            loginString += ", {";
                         }
-                        loginString += "{\"value\": " + "\"" + placeID + "\"}";
+                        loginString += "\"value\": " + "\"" + placeID + "\"}";
                         first = false;
                     }
-                    loginString += "]}}";
+                    loginString += "]}";
                 }
                 resp.getWriter().println(loginString);
                 conn.close();
