@@ -366,7 +366,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case 1:
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
                             //startActivity(b)
-                            Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
+
+                            //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
+
+                            String[] tempString = LoginActivity.favList;
+                            for (int i = 0; i < tempString.length; i++) {
+                                Toast.makeText(MainActivity.this, tempString[i], Toast.LENGTH_LONG).show();
+                            }
+
                             break;
                         case 2:
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
