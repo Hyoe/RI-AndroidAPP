@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/recycliticon2"/>
+            android:src="@drawable/recycliticon1"/>
     </item>
 </layer-list>
