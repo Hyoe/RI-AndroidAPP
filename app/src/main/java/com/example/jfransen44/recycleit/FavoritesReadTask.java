@@ -8,12 +8,14 @@ import com.google.android.gms.maps.GoogleMap;
 public class FavoritesReadTask extends AsyncTask<Object, Integer, String> {
     String googlePlacesData = null;
     GoogleMap mMap;
-    //FavoritesList favoritesList;
+    FavoritesList favoritesList;
 
+    public FavoritesReadTask(FavoritesList favoritesList){
+        this.favoritesList = favoritesList;
+    }
     @Override
     protected String doInBackground(Object... inputObj) {
         try{
-            mMap = (GoogleMap) inputObj[0];
             String googlePlacesURL = (String) inputObj[1];
             GoogleHttp http = new GoogleHttp();
             googlePlacesData = http.readGoogle(googlePlacesURL);
@@ -25,11 +27,6 @@ public class FavoritesReadTask extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result){
-        GooglePlacesDisplayTask placesDisplayTask = new GooglePlacesDisplayTask();
-        Object[] toPass = new Object[2];
-        toPass[0] = mMap;
-        toPass[1] = result;
-        //Log.d("Tag", result);
-        placesDisplayTask.execute(toPass);
+        favoritesList.setFavoritesDetail(result);
     }
 }

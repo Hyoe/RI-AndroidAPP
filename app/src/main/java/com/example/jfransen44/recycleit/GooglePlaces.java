@@ -75,7 +75,7 @@ public class GooglePlaces {
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
-            //googlePlaceMap.put("reference", reference);
+            //=------p[;[googlePlaceMap.put("reference", reference);
             googlePlaceMap.put("placeID", placeID);
         } catch (JSONException e) {
             e.printStackTrace();
