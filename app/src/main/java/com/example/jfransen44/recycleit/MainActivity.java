@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
 
     private GoogleMap mMap;
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String[] placesDetail = new String[6];
 
 
-
-    String session_username = null;
+    static String session_username = null;
+    static String place_id = null;
     String session_firstName = null;
     String session_lastName = null;
     private boolean loggedIn = false;
@@ -448,6 +449,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
    public boolean onMarkerClick(Marker marker) {
 
         placeID = marker.getSnippet();
+        place_id = placeID; //for business detail page
         marker.setSnippet("");
         return false;
     }

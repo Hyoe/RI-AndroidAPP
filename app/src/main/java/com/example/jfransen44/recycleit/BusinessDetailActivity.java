@@ -1,6 +1,7 @@
 package com.example.jfransen44.recycleit;
 
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,6 +15,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 
@@ -73,23 +81,52 @@ public class BusinessDetailActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isFavorite = favoritesCheckBox.isChecked();
-                String materialsAccepted = "";
-                Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
-                for (int i = 0; i < materialsAcceptedList.size(); i++){
-                    if (i != materialsAcceptedList.size() - 1){
-                        materialsAccepted += materialsAcceptedList.get(i) + ", ";
+                if (MainActivity.session_username == null) {
+                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG);
+                    Log.e("session_username", MainActivity.session_username);
+                }
+                else {
+
+                    boolean isFavorite = favoritesCheckBox.isChecked();
+                    boolean isreimbursable = reimbursableCheckBox.isChecked();
+                    String materialsAccepted = "";
+                    Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
+                    for (int i = 0; i < materialsAcceptedList.size(); i++){
+                        if (i != materialsAcceptedList.size() - 1){
+                            materialsAccepted += materialsAcceptedList.get(i) + ", ";
+                        }
+                        else {
+                            materialsAccepted += materialsAcceptedList.get(i);
+                        }
+                    }
+                    Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
+                    Log.d("Material list", materialsAccepted);
+
+                    String tempForToast = "";
+                    if (isFavorite) {
+                        tempForToast = "true";
                     }
                     else {
-                        materialsAccepted += materialsAcceptedList.get(i);
+                        tempForToast = "false";
                     }
-                }
-                Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
-                Log.d("Material list", materialsAccepted);
+                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + tempForToast, Toast.LENGTH_LONG);
+
+                    String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
+                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favoriteChecked=" + isFavorite;
+
+                    try {
+                        new editFavorites().execute(myURL).get();
+                    } catch (Exception e) {
+                    }
+
+
 
             }
+        }
+
         });
         //TODO   Make DB call.  Pass reimbursableCheckBox boolean
+        /* //merged with update button
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +134,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
 
             }
-        });
+        }); */
 
 
         final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
@@ -172,4 +209,22 @@ public class BusinessDetailActivity extends AppCompatActivity {
         }
     }
 
+    private class editFavorites extends AsyncTask<String, Void, Object> {
+        @Override
+        protected Object doInBackground(String... params) {
+            HttpClient client = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(params[0]);
+            try {
+                client.execute(httpGet);
+            } catch (Exception e) {
+
+            }
+
+            return null;
+        }
+    }
+
+
 }
+
+

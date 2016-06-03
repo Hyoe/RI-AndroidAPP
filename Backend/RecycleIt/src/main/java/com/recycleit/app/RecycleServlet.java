@@ -175,6 +175,55 @@ public class RecycleServlet extends HttpServlet {
                 resp.getWriter().println(e.toString());
             }
         }
+/*
+        if (req.getParameter("function").equals("queryPlace")) {
+
+        }
+*/
+        if (req.getParameter("function").equals("updateFavorite")) {
+            String url = null;
+            String getUsername = req.getParameter("username");
+            String getPlaceID = req.getParameter("place_id");
+            String getFavoriteCheckbox = req.getParameter("favoriteChecked");
+            resp.setContentType("text/html");
+
+            try {
+                Class.forName("com.mysql.jdbc.GoogleDriver");
+                //format for url is........appname:mysqlinstancename/dbname?user=username&place_id=place_id
+                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
+                Connection conn = DriverManager.getConnection(url);
+                //String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "'";
+                //query to see if already in favorites
+                String checkIfFavoriteQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'";
+                //query if the favorite is to be added
+                String query1 = "INSERT INTO favs_comments (username, place_id, comment) VALUES ('" + getUsername + "', '" + getPlaceID + "', (NULL))";
+                //query if the favorite is to be deleted
+                String query2 = "DELETE place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
+
+                //String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'"; //TO DO - make sure this is placed in the code when we can make sure username is username (not email) - after username is defined
+                ResultSet rsQ = conn.createStatement().executeQuery(checkIfFavoriteQuery);
+
+                if (!rsQ.isBeforeFirst()) { //empty result set - not in favorites
+                    if (getFavoriteCheckbox == "1") {
+                        ResultSet rsQ1 = conn.createStatement().executeQuery(query1);
+                    }
+                }
+                else { //not empty result set
+                    if (getFavoriteCheckbox == "0") {
+                        ResultSet rsQ2 = conn.createStatement().executeQuery(query2);
+                    }
+                }
+
+                conn.close();
+
+            } catch (Exception e) {
+                resp.getWriter().println(e.toString());
+            }
+
+        }
+
+
+
     }
 }
 
