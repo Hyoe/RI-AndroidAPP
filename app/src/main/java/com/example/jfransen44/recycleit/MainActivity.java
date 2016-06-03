@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
 
     private LatLng newPlace;
+    private LatLng currentSearchLocation;
     private String[] placesDetail = new String[6];
 
 
@@ -66,13 +68,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String session_firstName = null;
     String session_lastName = null;
     private boolean loggedIn = false;
-    String[] favList;
+    static String[] favList;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
 
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
-    private String placeRef = "";
+    private String placeID = "";
 
 
     @Override
@@ -130,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             addDrawerItems(loggedInMenu);
             setupDrawer();
             setupDrawerListener();
+            //TODO test later
+            //mMap.clear();
+            //getMapInfo(currentSearchLocation);
+
             Toast.makeText(MainActivity.this, "Username and Logged in true", Toast.LENGTH_SHORT).show();
         } else {
             addDrawerItems(loggedOutMenu);
@@ -285,10 +291,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //call google services to place markers on map
     private void getMapInfo(LatLng latLng){
+        currentSearchLocation = latLng;
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
         googlePlacesURL.append("&radius=" + 8500);
-        googlePlacesURL.append("&keyword=recycling|waste_management");
+        googlePlacesURL.append("&keyword=recycling");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
         Object[] toPass = new Object[2];
@@ -361,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case 0:
                             Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
                             MainActivity.this.startActivityForResult(intent, 333);
+                            mMap.clear();
                             //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
@@ -370,9 +378,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
 
                             favList = LoginActivity.favList;
+                            //TODO ADD INTENT
+                            /*Intent i = new Intent(MainActivity.this, FavoritesList);
+                            i.putExtra("favList", favList);
+                            startActivity(i);*/
+
+                            /*
                             for (int i = 0; i < favList.length; i++) {
                                 Toast.makeText(MainActivity.this, favList[i], Toast.LENGTH_LONG).show();
-                            }
+                                Log.d("FAVORITES LIST", favList[i]);
+                            }*/
 
                             break;
                         case 2:
@@ -432,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
    //grab place reference for detail query, then delete to hide from user
    public boolean onMarkerClick(Marker marker) {
 
-        placeRef = marker.getSnippet();
+        placeID = marker.getSnippet();
         marker.setSnippet("");
         return false;
     }
@@ -458,11 +473,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Query for business specific information
 
             StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
-            googlePlacesDetailURL.append("reference=" + placeRef);
+            googlePlacesDetailURL.append("placeid=" + placeID);
             googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
             PlacesDetailReadTask placesDetailReadTask = new PlacesDetailReadTask(this);
             Object[] toPass = new Object[1];
             toPass[0] = googlePlacesDetailURL.toString();
             placesDetailReadTask.execute(toPass);
+        Log.d("DETAIL QUERY URL", googlePlacesDetailURL.toString());
     }
 }

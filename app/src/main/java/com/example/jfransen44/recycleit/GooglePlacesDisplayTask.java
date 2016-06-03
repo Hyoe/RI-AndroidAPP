@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -20,6 +20,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
 
     JSONObject googlePlacesJson;
     GoogleMap mMap;
+    Boolean foundFlag = false;
 
     @Override
     protected List<HashMap<String, String>> doInBackground(Object... inputObj) {
@@ -47,12 +48,28 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             double lng = Double.parseDouble(googlePlace.get("lng"));
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
-            String reference = googlePlace.get("reference");
+            String placeID = googlePlace.get("placeID");
             LatLng latLng = new LatLng(lat, lng);
+            String [] favList = MainActivity.favList;
+
             //markerOptions.position(latLng);
             //markerOptions.title(placeName + " : " + vicinity);
             //mMap.addMarker(markerOptions);
-            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(reference));
+
+            if(favList != null) {
+                for (int  j = 0; j < favList.length; j++) {
+                    if (placeID.equals(favList[j])) {
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(placeID).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        break;
+                    }
+                    else{
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(placeID));
+                    }
+                }
+
+            }else{
+                 mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(placeID));
+            }
 
         }
     }

@@ -56,8 +56,8 @@ public class GooglePlaces {
         String vicinity = "NA";
         String latitude = "";
         String longitude = "";
-        String reference = "";
-        //String placeID = "";
+        //String reference = "";
+        String placeID = "";
 
         try {
             if (!googlePlaceJson.isNull("name")) {
@@ -69,14 +69,14 @@ public class GooglePlaces {
             //Log.d("Google Place JSON", googlePlaceJson.toString());
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
-            reference = googlePlaceJson.getString("reference");
-            //placeID = googlePlaceJson.getString("place_id");
+            //reference = googlePlaceJson.getString("reference");
+            placeID = googlePlaceJson.getString("place_id");
             googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
-            googlePlaceMap.put("reference", reference);
-           // googlePlaceMap.put("placeID", placeID);
+            //=------p[;[googlePlaceMap.put("reference", reference);
+            googlePlaceMap.put("placeID", placeID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
