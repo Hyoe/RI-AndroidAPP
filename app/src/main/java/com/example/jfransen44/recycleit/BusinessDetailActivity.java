@@ -39,6 +39,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
     ImageView icon;
 
     CheckBox favoritesCheckBox;
+    CheckBox reimbursableCheckBox;
     boolean loggedIn;
 
     @Override
@@ -50,6 +51,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         favoritesCheckBox = (CheckBox)findViewById(R.id.favoritesCheckBox);
+        reimbursableCheckBox = (CheckBox)findViewById(R.id.reimbursableCheckBox);
         businessName = (TextView) findViewById(R.id.businessName);
         businessAddress = (TextView) findViewById(R.id.businessAddress);
         businessPhone = (TextView) findViewById(R.id.businessPhone);
@@ -87,6 +89,16 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
             }
         });
+        //TODO   Make DB call.  Pass reimbursableCheckBox boolean
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isreimbursable = reimbursableCheckBox.isChecked();
+
+
+            }
+        });
+
 
         final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
         TreeMap<String, Boolean> items = new TreeMap<>();
@@ -124,8 +136,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
         //TODO uncomment after testing
         //if (loggedIn){
-            favoritesCheckBox.setVisibility(View.VISIBLE);
-       // }
+        favoritesCheckBox.setVisibility(View.VISIBLE);
+        reimbursableCheckBox.setVisibility(View.VISIBLE);
+        // }
         String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
 
         Log.d("BUSINESS DETAIL URL", ">"+businessDetail[3]+"<");

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,7 +10,7 @@
         android:text="Business Name Here"
         android:id="@+id/businessName"
         android:textSize="30sp"
-        android:layout_above="@+id/businessAddress"
+        android:layout_below="@+id/imageURL"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -21,11 +21,11 @@
         android:id="@+id/businessPhone"
         android:phoneNumber = "true"
         android:textSize="20sp"
-        android:layout_above="@+id/businessURL"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:autoLink="phone"
-        android:linksClickable="true" />
+        android:linksClickable="true"
+        android:layout_below="@+id/businessAddress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:text="Business URL Here"
         android:linksClickable="true"
         android:textSize="20sp"
-        android:layout_above="@+id/textView5"
+        android:layout_below="@+id/businessPhone"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -45,7 +45,7 @@
         android:id="@+id/textView5"
         android:layout_weight="0.08"
         android:textSize="20sp"
-        android:layout_above="@+id/favoritesCheckBox"
+        android:layout_below="@+id/businessURL"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -67,7 +67,7 @@
         android:text="Business Address Here"
         android:id="@+id/businessAddress"
         android:textSize="20sp"
-        android:layout_above="@+id/businessPhone"
+        android:layout_below="@+id/businessName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -76,17 +76,17 @@
         android:layout_height="wrap_content"
         android:text="Add to Favorites"
         android:id="@+id/favoritesCheckBox"
-        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_below="@+id/textView5"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:visibility="gone"/>
+        android:layout_alignParentStart="true" />
 
-    <TextView
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monday"
-        android:id="@+id/Monday"
-        android:textSize="15sp"
+        android:text="Reimbursable?"
+        android:id="@+id/reimbursableCheckBox"
+        android:visibility="gone"
         android:layout_below="@+id/favoritesCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -94,9 +94,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Tuesday"
-        android:layout_alignParentStart="true"
+        android:id="@+id/Monday"
         android:textSize="15sp"
+        android:layout_below="@+id/reimbursableCheckBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Tuesday"
+        android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/Monday"
         android:layout_alignParentLeft="true" />
 
@@ -104,8 +113,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Wednesday"
-        android:layout_alignParentStart="true"
         android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/Tuesday"
         android:layout_alignParentLeft="true" />
 
@@ -113,8 +122,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Thursday"
-        android:layout_alignParentStart="true"
         android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/Wednesday"
         android:layout_alignParentLeft="true" />
 
@@ -122,8 +131,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Friday"
-        android:layout_alignParentStart="true"
         android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/Thursday"
         android:layout_alignParentLeft="true" />
 
@@ -131,8 +140,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Saturday"
-        android:layout_alignParentStart="true"
         android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/Friday"
         android:layout_alignParentLeft="true" />
 
@@ -140,7 +149,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Sunday"
-        android:layout_alignParentStart="true"
         android:textSize="15sp"
         android:layout_below="@+id/Saturday"
         android:layout_alignParentLeft="true" />
@@ -162,9 +170,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/businessName"
-        android:layout_toLeftOf="@+id/simpleMultiSpinner"
-        android:layout_toStartOf="@+id/simpleMultiSpinner" />
+        android:layout_toStartOf="@+id/simpleMultiSpinner"
+        android:layout_toLeftOf="@+id/simpleMultiSpinner" />
 
 
 </RelativeLayout>
