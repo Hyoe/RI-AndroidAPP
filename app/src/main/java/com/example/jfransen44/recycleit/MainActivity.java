@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.placesDetail = googlePlaces.parseDetails(result);
         Bundle extras = new Bundle();
         extras.putStringArray("businessDetails", placesDetail);
-        extras.putBoolean("loggedIn", loggedIn);
+        extras.putString("userName", session_username);
         extras.putString("placeID", placeID);
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);

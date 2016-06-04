@@ -161,6 +161,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:visibility="invisible"
         android:clickable="true" />
 
     <ImageView

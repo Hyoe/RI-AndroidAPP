@@ -1,7 +1,6 @@
 package com.example.jfransen44.recycleit;
 
 import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -75,54 +73,26 @@ public class BusinessDetailActivity extends AppCompatActivity {
         icon = (ImageView) findViewById(R.id.imageURL);
         final List <String> materialsAcceptedList = new ArrayList<String>();
 
-        userName = MainActivity.session_username; //TEMP
-        //userName = getIntent().getExtras().getString("userName");
+
         placeID = getIntent().getExtras().getString("placeID");
+        userName = getIntent().getExtras().getString("userName");
 
         Button updateButton = (Button) findViewById(R.id.updateButton);
+
+        if (userName != null){
+            favoritesCheckBox.setVisibility(View.VISIBLE);
+            reimbursableCheckBox.setVisibility(View.VISIBLE);
+            updateButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            Toast.makeText(BusinessDetailActivity.this, "Log In to make changes", Toast.LENGTH_LONG).show();
+        }
         assert updateButton != null;
         //TODO  Check to make sure isFavorite is not already in users list of favorites. Make DB call.  Pass isFavorite, materialsAccepted.
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//<<<<<<< HEAD JENS
-/*                String usernameString = MainActivity.session_username;
-                if (MainActivity.session_username != null) {
-                    Log.d("session_username", usernameString);
-                }
-                else {
-                    Log.d("session_username", " is null");
-                }
-                //Toast.makeText(BusinessDetailActivity.this, "session_username: " + MainActivity.session_username, Toast.LENGTH_LONG).show();
 
-                if (usernameString != null) {
-
-                    boolean isFavorite = favoritesCheckBox.isChecked();
-                    boolean isreimbursable = reimbursableCheckBox.isChecked();
-                    //causing problem.
-                    String materialsAccepted = ""; //TODO create string from checkmarked materials
-                    Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
-                    for (int i = 0; i < materialsAcceptedList.size(); i++){
-                        if (i != materialsAcceptedList.size() - 1){
-                            materialsAccepted += materialsAcceptedList.get(i) + ", ";
-                        }
-                        else {
-                            materialsAccepted += materialsAcceptedList.get(i);
-                        }
-                    }
-                    Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
-                    Log.d("Material list", materialsAccepted);
-
-                    //convert isFavorite bool to String
-                    String favoriteChecked = (isFavorite) ? "1" : "0";
-
-                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + favoriteChecked, Toast.LENGTH_LONG).show();
-*/
-
-
-                boolean isreimbursable = reimbursableCheckBox.isChecked();
-//=======JEREMY
-                //TODO remove logged = true after testing
                 if (materialsAccepted.length() > 0) {
                     materialsAccepted = materialsAccepted.substring(0, materialsAccepted.length() - 2);
                 }
@@ -132,9 +102,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
                     //TODO undo hardcoded username
                     dbUpdateString[0] = userName;
-                    //dbUpdateString[0] = "TEST";
                     dbUpdateString[1] = placeID;
-//>>>>>>> master
+
 
                     if (favoritesCheckBox.isChecked()) {
                         dbUpdateString[2] = "1";
@@ -153,8 +122,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     for (int i = 0; i < dbUpdateString.length; i++) {
                         Log.d("DBUPDATESTRING", dbUpdateString[i]);
                     }
-                //}
-                    //may have to send isFavorite as a string rather than a bool
                     String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
                             + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + dbUpdateString[2];
 
@@ -183,47 +150,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
             }
 
         });
-        /* //TODO   Make DB call.  Pass reimbursableCheckBox boolean
-         //merged with update button
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isreimbursable = reimbursableCheckBox.isChecked();
-//=======JEREMY
-                //TODO remove logged = true after testing
-                if (materialsAccepted.length() > 0) {
-                    materialsAccepted = materialsAccepted.substring(0, materialsAccepted.length() - 2);
-                }
-                Log.d("ACCEPTEDSTRING", materialsAccepted);
-                loggedIn = true;
-                if (loggedIn) {
-
-                    //TODO undo hardcoded username
-                    //dbUpdateString[0] = userName;
-                    dbUpdateString[0] = "TEST";
-                    dbUpdateString[1] = placeID;
-//>>>>>>> master
-
-                    if (favoritesCheckBox.isChecked()) {
-                        dbUpdateString[2] = "true";
-                    }
-                    else{
-                        dbUpdateString[2] = "false";
-                    }
-                    if (reimbursableCheckBox.isChecked()) {
-                        dbUpdateString[3] = "true";
-                    }
-                    else{
-                        dbUpdateString[3] = "false";
-                    }
-                    dbUpdateString[4] = materialsAccepted;
-
-                    for (int i = 0; i < dbUpdateString.length; i++) {
-                        Log.d("DBUPDATESTRING", dbUpdateString[i]);
-                    }
-                }
-            }
-        }); */
 
 
         final List<String> list = Arrays.asList("Aluminum", "Copper", "Electronics", "Glass", "Household Hazardous Waste", "Paper", "Plastic", "Steel");
@@ -298,10 +224,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
             sunday.setText(workweek[6].replace('"', ' '));
         }
     }
-
-
-
-
 }
 
 
