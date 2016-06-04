@@ -42,6 +42,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
     CheckBox favoritesCheckBox;
     CheckBox reimbursableCheckBox;
+    Button updateButton;
     boolean loggedIn;
     String userName;
     String placeID;
@@ -71,13 +72,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
         saturday = (TextView) findViewById(R.id.Saturday);
         sunday = (TextView) findViewById(R.id.Sunday);
         icon = (ImageView) findViewById(R.id.imageURL);
+        updateButton = (Button) findViewById(R.id.updateButton);
+
         final List <String> materialsAcceptedList = new ArrayList<String>();
 
 
         placeID = getIntent().getExtras().getString("placeID");
         userName = getIntent().getExtras().getString("userName");
 
-        Button updateButton = (Button) findViewById(R.id.updateButton);
 
         if (userName != null){
             favoritesCheckBox.setVisibility(View.VISIBLE);

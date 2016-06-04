@@ -1,11 +1,10 @@
 package com.example.jfransen44.recycleit;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,14 +15,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     static String[] favPlaceIDList = null;
     static String[] favPlaceNameList = null;
-    static Map<String, String> favMap = null;
+    static HashMap<String, String> favMap = null;
 
 
     @Override
