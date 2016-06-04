@@ -1,6 +1,7 @@
 package com.example.jfransen44.recycleit;
 
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,6 +15,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Log;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,6 +84,75 @@ public class BusinessDetailActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//<<<<<<< HEAD JENS
+                String usernameString = MainActivity.session_username;
+                if (MainActivity.session_username != null) {
+                    Log.d("session_username", usernameString);
+                }
+                else {
+                    Log.d("session_username", " is null");
+                }
+                //Toast.makeText(BusinessDetailActivity.this, "session_username: " + MainActivity.session_username, Toast.LENGTH_LONG).show();
+
+                if (usernameString != null) {
+
+                    boolean isFavorite = favoritesCheckBox.isChecked();
+                    boolean isreimbursable = reimbursableCheckBox.isChecked();
+                    //causing problem.
+                    String materialsAccepted = ""; //TODO create string from checkmarked materials
+                    Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
+                    for (int i = 0; i < materialsAcceptedList.size(); i++){
+                        if (i != materialsAcceptedList.size() - 1){
+                            materialsAccepted += materialsAcceptedList.get(i) + ", ";
+                        }
+                        else {
+                            materialsAccepted += materialsAcceptedList.get(i);
+                        }
+                    }
+                    Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
+                    Log.d("Material list", materialsAccepted);
+
+                    //convert isFavorite bool to String
+                    String favoriteChecked = (isFavorite) ? "1" : "0";
+
+                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + favoriteChecked, Toast.LENGTH_LONG).show();
+
+                    //may have to send isFavorite as a string rather than a bool
+                    String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
+                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + favoriteChecked;
+
+                    try {
+                        String[] url = new String[]{myURL};
+                        String output = new GetData().execute(url).get();
+                        JSONObject jObject = new JSONObject(output);
+                        String status = jObject.getString("status");
+
+                        if (status.equals("validUpdate")) {
+                            Toast.makeText(BusinessDetailActivity.this, "Saved.", Toast.LENGTH_SHORT).show();
+                        } else {//database not written to
+                            Toast.makeText(BusinessDetailActivity.this, "Error - not saved.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                        catch(Exception e) {
+                        Log.d("Log.INFO", e.toString());
+
+                }
+
+            }
+                else {
+                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG).show();
+                    Log.e("session_username", "is null");
+                }
+        }
+
+        });
+        //TODO   Make DB call.  Pass reimbursableCheckBox boolean
+        /* //merged with update button
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isreimbursable = reimbursableCheckBox.isChecked();
+//=======JEREMY
                 //TODO remove logged = true after testing
                 if (materialsAccepted.length() > 0) {
                     materialsAccepted = materialsAccepted.substring(0, materialsAccepted.length() - 2);
@@ -91,6 +165,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     //dbUpdateString[0] = userName;
                     dbUpdateString[0] = "TEST";
                     dbUpdateString[1] = placeID;
+//>>>>>>> master
 
                     if (favoritesCheckBox.isChecked()) {
                         dbUpdateString[2] = "true";
@@ -111,7 +186,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        }); */
 
 
         final List<String> list = Arrays.asList("Aluminum", "Copper", "Electronics", "Glass", "Household Hazardous Waste", "Paper", "Plastic", "Steel");
@@ -187,4 +262,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
         }
     }
 
+
+
+
 }
+
+
