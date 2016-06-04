@@ -187,35 +187,68 @@ public class RecycleServlet extends HttpServlet {
             String url = null;
             String getUsername = req.getParameter("username");
             String getPlaceID = req.getParameter("place_id");
-            String getFavoriteCheckbox = req.getParameter("favoriteChecked");
+            String getFavoriteStatus = req.getParameter("favorite_checked");
+
             resp.setContentType("text/html");
+            //test url user without the favorite place (to add):  http://recycleit-1293.appspot.com/test?function=updateFavorite&username=test&place_id=FAKEPLACEX&favorite_checked=1
+            //test url user with the favorite place (to delete):  http://recycleit-1293.appspot.com/test?function=updateFavorite&username=test&place_id=FAKEPLACE4&favorite_checked=0
+
 
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&place_id=place_id
                 url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
                 Connection conn = DriverManager.getConnection(url);
-                //String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "'";
                 //query to see if already in favorites
-                String checkIfFavoriteQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'";
-                //query if the favorite is to be added
-                String query1 = "INSERT INTO favs_comments (username, place_id, comment) VALUES ('" + getUsername + "', '" + getPlaceID + "', (NULL))";
-                //query if the favorite is to be deleted
-                String query2 = "DELETE place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
+                String checkIfFavoriteQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
 
-                //String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "'"; //TO DO - make sure this is placed in the code when we can make sure username is username (not email) - after username is defined
-                ResultSet rsQ = conn.createStatement().executeQuery(checkIfFavoriteQuery);
+                ResultSet rs = conn.createStatement().executeQuery(checkIfFavoriteQuery);
 
-                if (!rsQ.isBeforeFirst()) { //empty result set - not in favorites
-                    if (getFavoriteCheckbox == "1") {
-                        ResultSet rsQ1 = conn.createStatement().executeQuery(query1);
+                if (!rs.isBeforeFirst()) { //empty result set - not in favorites
+
+                    if (getFavoriteStatus.equals("1")) {
+
+                        String query1 = "INSERT INTO favs_comments (username, place_id, comment) VALUES ( ?, ?, ? )";
+
+
+                        PreparedStatement stmt = conn.prepareStatement(query1);
+                        stmt.setString(1, getUsername);
+                        stmt.setString(2, getPlaceID);
+                        stmt.setString(3, "");
+                        int success = 2;
+                        success = stmt.executeUpdate();
+
+                        if (success == 1) {
+                            //echo out valid update
+                            resp.getWriter().println("{\"status\":\"validUpdate\"}");
+                        } else if (success == 0) {
+                            resp.getWriter().println("{\"status\":\"databaseError\"}");
+                        }
                     }
+
                 }
+
+
                 else { //not empty result set
-                    if (getFavoriteCheckbox == "0") {
-                        ResultSet rsQ2 = conn.createStatement().executeQuery(query2);
+                    if (getFavoriteStatus.equals("0")) {
+
+                        String query2 = "DELETE FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
+
+                        PreparedStatement stmt = conn.prepareStatement(query2);
+
+                        int success = 2;
+                        success = stmt.executeUpdate();
+
+                        if (success == 1) {
+                            //echo out valid update
+                            resp.getWriter().println("{\"status\":\"validUpdate\"}");
+                        } else if (success == 0) {
+                            resp.getWriter().println("{\"status\":\"databaseError\"}");
+                        }
+
                     }
                 }
+
 
                 conn.close();
 
