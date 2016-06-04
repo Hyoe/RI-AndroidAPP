@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             for (int i = 0; i < favList.length; i++) {
                                 Toast.makeText(MainActivity.this, favList[i], Toast.LENGTH_LONG).show();
                                 Log.d("FAVORITES LIST", favList[i]);
-                            }*/
+                            }*/ //
 
                             break;
                         case 2:
