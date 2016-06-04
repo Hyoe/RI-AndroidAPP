@@ -10,12 +10,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 public class FavoritesListActivity extends Activity {
 
     ListView listView;
     String placeID;
-    private String[] placesDetail = new String[6];
+    String userName;
+    List<String> placeName = new ArrayList<String>();
 
+    private String[] placesDetail = new String[6];
+    HashMap<String, String> favMap;
+    HashMap<String, String> favMap2;
 
     private final String GOOGLE_API_KEY = "AIzaSyC3rGjeJyuj6yno2EpPeRiijYbm1hK7RXQ";
 
@@ -23,11 +33,26 @@ public class FavoritesListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
-        String[] favList = getIntent().getStringArrayExtra("favList");
+
+        userName = getIntent().getExtras().getString("userName");
+
+        favMap = (HashMap<String, String>) getIntent().getSerializableExtra("favMap");
+        favMap2 = (HashMap<String, String>) favMap.clone();
+        final Iterator iterator = favMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry pair = (Map.Entry) iterator.next();
+            placeName.add((String) pair.getValue());
+            iterator.remove();
+        }
+        Log.d("FAVAAAAAAAA", favMap.toString());
+
+        for (int i = 0; i < placeName.size(); i++){
+            Log.d("PLACENAME", placeName.get(i));
+        }
 
         listView = (ListView) findViewById(R.id.favoritesList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, favList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, placeName);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -35,7 +60,25 @@ public class FavoritesListActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemPosition = position;
                 String itemValue = (String) listView.getItemAtPosition(itemPosition);
-                placeID = itemValue;
+                /*Iterator iterator2 = favMap.entrySet().iterator();
+                while (iterator2.hasNext()){
+                    Map.Entry pair = (Map.Entry) iterator2.next();
+                    String temp = pair.getValue().toString();
+                    Log.d("TEMP", temp);
+                    if (itemValue.equals(temp)){
+                        placeID = pair.getKey().toString();
+                    }
+                    iterator2.remove();
+                }*/
+                Log.d("FAVMAP", favMap2.toString());
+                for (Object o : favMap2.keySet()) {
+                    Log.d("FORLOP", o.toString());
+                    if (favMap2.get(o).equals(itemValue)) {
+                        placeID = o.toString();
+                    }
+                }
+
+                Log.d("PLACEID", "<" + placeID + ">");
                 startDetailActivity();
                 Toast.makeText(getApplicationContext(), "Position: " + itemPosition + "ListItem: " + itemValue, Toast.LENGTH_LONG).show();
             }
@@ -59,7 +102,7 @@ public class FavoritesListActivity extends Activity {
         this.placesDetail = googlePlaces.parseDetails(result);
         Bundle extras = new Bundle();
         extras.putStringArray("businessDetails", placesDetail);
-        extras.putBoolean("loggedIn", true);
+        extras.putString("userName", userName);
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);
         startActivity(intent);
