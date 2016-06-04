@@ -80,14 +80,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO remove logged = true after testing
-                for (int i = 0; i < materialsAcceptedList.size(); i++) {
-                    if (i != materialsAcceptedList.size() - 1) {
-                        materialsAccepted += materialsAcceptedList.get(i) + ", ";
-                    } else {
-                        materialsAccepted += materialsAcceptedList.get(i);
-                    }
+                if (materialsAccepted.length() > 0) {
+                    materialsAccepted = materialsAccepted.substring(0, materialsAccepted.length() - 2);
                 }
-
                 Log.d("ACCEPTEDSTRING", materialsAccepted);
                 loggedIn = true;
                 if (loggedIn) {
