@@ -50,7 +50,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
             String vicinity = googlePlace.get("vicinity");
             String placeID = googlePlace.get("placeID");
             LatLng latLng = new LatLng(lat, lng);
-            String [] favList = MainActivity.favList;
+            String [] favList = MainActivity.favPlaceIDList;
 
             //markerOptions.position(latLng);
             //markerOptions.title(placeName + " : " + vicinity);
