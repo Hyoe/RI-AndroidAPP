@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             favMap = LoginActivity.favMap;
                             //TODO ADD INTENT
                             Intent i = new Intent(MainActivity.this, FavoritesListActivity.class);
-                            i.putExtra("favList", favList);
+                            i.putExtra("favList", favPlaceIDList);
                             startActivity(i);
 
                             /*

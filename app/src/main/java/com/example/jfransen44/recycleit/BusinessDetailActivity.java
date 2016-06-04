@@ -75,7 +75,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
         icon = (ImageView) findViewById(R.id.imageURL);
         final List <String> materialsAcceptedList = new ArrayList<String>();
 
-        userName = getIntent().getExtras().getString("userName");
+        userName = MainActivity.session_username; //TEMP
+        //userName = getIntent().getExtras().getString("userName");
         placeID = getIntent().getExtras().getString("placeID");
 
         Button updateButton = (Button) findViewById(R.id.updateButton);
@@ -85,7 +86,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //<<<<<<< HEAD JENS
-                String usernameString = MainActivity.session_username;
+/*                String usernameString = MainActivity.session_username;
                 if (MainActivity.session_username != null) {
                     Log.d("session_username", usernameString);
                 }
@@ -116,10 +117,46 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     String favoriteChecked = (isFavorite) ? "1" : "0";
 
                     Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + favoriteChecked, Toast.LENGTH_LONG).show();
+*/
 
+
+                boolean isreimbursable = reimbursableCheckBox.isChecked();
+//=======JEREMY
+                //TODO remove logged = true after testing
+                if (materialsAccepted.length() > 0) {
+                    materialsAccepted = materialsAccepted.substring(0, materialsAccepted.length() - 2);
+                }
+                Log.d("ACCEPTEDSTRING", materialsAccepted);
+
+                if (userName != null) {
+
+                    //TODO undo hardcoded username
+                    dbUpdateString[0] = userName;
+                    //dbUpdateString[0] = "TEST";
+                    dbUpdateString[1] = placeID;
+//>>>>>>> master
+
+                    if (favoritesCheckBox.isChecked()) {
+                        dbUpdateString[2] = "1";
+                    }
+                    else{
+                        dbUpdateString[2] = "0";
+                    }
+                    if (reimbursableCheckBox.isChecked()) {
+                        dbUpdateString[3] = "1";
+                    }
+                    else{
+                        dbUpdateString[3] = "0";
+                    }
+                    dbUpdateString[4] = materialsAccepted;
+
+                    for (int i = 0; i < dbUpdateString.length; i++) {
+                        Log.d("DBUPDATESTRING", dbUpdateString[i]);
+                    }
+                //}
                     //may have to send isFavorite as a string rather than a bool
                     String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
-                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + favoriteChecked;
+                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + dbUpdateString[2];
 
                     try {
                         String[] url = new String[]{myURL};
@@ -143,11 +180,11 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG).show();
                     Log.e("session_username", "is null");
                 }
-        }
+            }
 
         });
-        //TODO   Make DB call.  Pass reimbursableCheckBox boolean
-        /* //merged with update button
+        /* //TODO   Make DB call.  Pass reimbursableCheckBox boolean
+         //merged with update button
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
