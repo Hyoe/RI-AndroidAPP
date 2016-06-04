@@ -15,12 +15,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
+
 public class BusinessDetailActivity extends AppCompatActivity {
 
     ImageView businessImage;
@@ -41,6 +40,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
     CheckBox favoritesCheckBox;
     CheckBox reimbursableCheckBox;
     boolean loggedIn;
+    String userName;
+    String placeID;
+    String[] dbUpdateString = new String[5];
+    String materialsAccepted = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,40 +70,56 @@ public class BusinessDetailActivity extends AppCompatActivity {
         icon = (ImageView) findViewById(R.id.imageURL);
         final List <String> materialsAcceptedList = new ArrayList<String>();
 
+        userName = getIntent().getExtras().getString("userName");
+        placeID = getIntent().getExtras().getString("placeID");
+
         Button updateButton = (Button) findViewById(R.id.updateButton);
         assert updateButton != null;
         //TODO  Check to make sure isFavorite is not already in users list of favorites. Make DB call.  Pass isFavorite, materialsAccepted.
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isFavorite = favoritesCheckBox.isChecked();
-                String materialsAccepted = "";
-                Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
-                for (int i = 0; i < materialsAcceptedList.size(); i++){
-                    if (i != materialsAcceptedList.size() - 1){
+                //TODO remove logged = true after testing
+                for (int i = 0; i < materialsAcceptedList.size(); i++) {
+                    if (i != materialsAcceptedList.size() - 1) {
                         materialsAccepted += materialsAcceptedList.get(i) + ", ";
-                    }
-                    else {
+                    } else {
                         materialsAccepted += materialsAcceptedList.get(i);
                     }
                 }
-                Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
-                Log.d("Material list", materialsAccepted);
 
+                Log.d("ACCEPTEDSTRING", materialsAccepted);
+                loggedIn = true;
+                if (loggedIn) {
+
+                    //TODO undo hardcoded username
+                    //dbUpdateString[0] = userName;
+                    dbUpdateString[0] = "TEST";
+                    dbUpdateString[1] = placeID;
+
+                    if (favoritesCheckBox.isChecked()) {
+                        dbUpdateString[2] = "true";
+                    }
+                    else{
+                        dbUpdateString[2] = "false";
+                    }
+                    if (reimbursableCheckBox.isChecked()) {
+                        dbUpdateString[3] = "true";
+                    }
+                    else{
+                        dbUpdateString[3] = "false";
+                    }
+                    dbUpdateString[4] = materialsAccepted;
+
+                    for (int i = 0; i < dbUpdateString.length; i++) {
+                        Log.d("DBUPDATESTRING", dbUpdateString[i]);
+                    }
+                }
             }
         });
-        //TODO   Make DB call.  Pass reimbursableCheckBox boolean
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isreimbursable = reimbursableCheckBox.isChecked();
 
 
-            }
-        });
-
-
-        final List<String> list = Arrays.asList("Aluminum", "Steel", "Copper", "Plastic", "Glass", "Paper", "Electronics", "Household Hazardous Waste");
+        final List<String> list = Arrays.asList("Aluminum", "Copper", "Electronics", "Glass", "Household Hazardous Waste", "Paper", "Plastic", "Steel");
         TreeMap<String, Boolean> items = new TreeMap<>();
         for(String item : list) {
             items.put(item, Boolean.FALSE);
@@ -108,15 +127,17 @@ public class BusinessDetailActivity extends AppCompatActivity {
         MultiSpinner simpleSpinner = (MultiSpinner) findViewById(R.id.simpleMultiSpinner);
         simpleSpinner.setPrompt("Select Materials Accepted");
 
-        simpleSpinner.setItems(items, new MultiSpinnerListener() {
+        simpleSpinner.setItems(items, new MultiSpinner.MultiSpinnerListener() {
 
             @Override
             public void onItemsSelected(boolean[] selected) {
                 // your operation with code...
+                materialsAccepted = "";
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        Log.i("TAG", i + " : " + list.get(i));
-                        materialsAcceptedList.add(list.get(i));
+                        //materialsAcceptedList.add(list.get(i));
+                        materialsAccepted += list.get(i) + ", ";
+                        Log.i("TAG", i + " : " + materialsAccepted);
                     }
                 }
             }
@@ -134,11 +155,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
          */
         loggedIn = getIntent().getBooleanExtra("loggedIn", false);
 
-        //TODO uncomment after testing
-        //if (loggedIn){
-        favoritesCheckBox.setVisibility(View.VISIBLE);
-        reimbursableCheckBox.setVisibility(View.VISIBLE);
-        // }
+        if (loggedIn){
+            favoritesCheckBox.setVisibility(View.VISIBLE);
+            reimbursableCheckBox.setVisibility(View.VISIBLE);
+         }
         String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
 
         Log.d("BUSINESS DETAIL URL", ">"+businessDetail[3]+"<");
