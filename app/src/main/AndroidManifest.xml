@@ -71,7 +71,7 @@
             android:label="@string/title_activity_business_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FavoritesList"
+            android:name=".FavoritesListActivity"
             android:label="@string/title_activity_favorites_list"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

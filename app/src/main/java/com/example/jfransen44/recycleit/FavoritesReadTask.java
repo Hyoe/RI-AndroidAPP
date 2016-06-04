@@ -8,10 +8,10 @@ import com.google.android.gms.maps.GoogleMap;
 public class FavoritesReadTask extends AsyncTask<Object, Integer, String> {
     String googlePlacesData = null;
     GoogleMap mMap;
-    FavoritesList favoritesList;
+    FavoritesListActivity favoritesListActivity;
 
-    public FavoritesReadTask(FavoritesList favoritesList){
-        this.favoritesList = favoritesList;
+    public FavoritesReadTask(FavoritesListActivity favoritesListActivity){
+        this.favoritesListActivity = favoritesListActivity;
     }
     @Override
     protected String doInBackground(Object... inputObj) {
@@ -27,6 +27,6 @@ public class FavoritesReadTask extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result){
-        favoritesList.setFavoritesDetail(result);
+        //favoritesListActivity.setNames(result);
     }
 }
