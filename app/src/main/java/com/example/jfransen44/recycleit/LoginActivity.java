@@ -15,10 +15,16 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
 
-    static String[] favList = null;
+    static String[] favPlaceIDList = null;
+    static String[] favPlaceNameList = null;
+    static Map<String, String> favMap = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     //everything is OK, build url string
                     password = Util.encryptPassword(password);
+                    //example URL http://recycleit-1293.appspot.com/test?function=doLogin&username=test&password=9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
                     String myURL = "http://recycleit-1293.appspot.com/test?function=doLogin&username="
                             + username + "&password=" + password;
 
@@ -57,20 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                         String output = new GetData().execute(url).get();
                         JSONObject jObject = new JSONObject(output);
                         String status = jObject.getString("status");
-                        JSONArray jArray = jObject.getJSONArray("favorites");
-                        int arrSize = jArray.length();
-                        favList = new String[arrSize];
-                        //this populates a String array
-                        //jObject = jArray.getJSONObject(0);
-                        //if (jObject.getJSONObject("favorites") != null) {
-
-                            //Toast.makeText(LoginActivity.this, "array length: " + arrSize, Toast.LENGTH_LONG).show();
-                            for (int i = 0; i < arrSize; i++) {
-                                jObject = jArray.getJSONObject(i);
-                                favList[i] = jObject.getString("value");
-                                //Toast.makeText(LoginActivity.this, favList[i], Toast.LENGTH_LONG).show();
-                            }
-                        //}
 
 
                         //String[] favorites = jObject.value.getJSONArray("favorites");
@@ -80,6 +73,28 @@ public class LoginActivity extends AppCompatActivity {
                             loginStatus.setText("Incorrect Login Credentials");
                         } else {
                             //good login, save variables and return to main activity
+
+                            JSONArray jArray = jObject.getJSONArray("favorites"); //wont work if the login was invalid
+                            int arrSize = jArray.length(); //goes with above line
+                            favPlaceIDList = new String[arrSize];
+                            favPlaceNameList = new String[arrSize];
+                            //this populates a String array
+                            //jObject = jArray.getJSONObject(0);
+                            //if (jObject.getJSONObject("favorites") != null) {
+
+                            //Toast.makeText(LoginActivity.this, "array length: " + arrSize, Toast.LENGTH_LONG).show();
+                            favMap = new HashMap<String, String>();
+                            for (int i = 0; i < arrSize; i++) {
+                                jObject = jArray.getJSONObject(i);
+                                favPlaceIDList[i] = jObject.getString("placeid");
+                                favPlaceNameList[i] = jObject.getString("placename");
+                                favMap.put(favPlaceIDList[i], favPlaceNameList[i]);
+                                Toast.makeText(LoginActivity.this, favPlaceNameList[i], Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+
                             loginStatus.setText("Login Successful");
                             Intent intent = new Intent();
                             intent.putExtra("username", username);

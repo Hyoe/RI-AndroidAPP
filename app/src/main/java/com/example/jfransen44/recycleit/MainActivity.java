@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, LocationSource.OnLocationChangedListener {
@@ -69,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     String session_firstName = null;
     String session_lastName = null;
     private boolean loggedIn = false;
-    static String[] favList;
+    static String[] favPlaceIDList = null;
+    static String[] favPlaceNameList = null;
+    static Map<String, String> favMap = null;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
 
@@ -378,7 +381,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
 
-                            favList = LoginActivity.favList;
+                            favPlaceIDList = LoginActivity.favPlaceIDList;
+                            favPlaceNameList = LoginActivity.favPlaceNameList;
+                            favMap = LoginActivity.favMap;
                             //TODO ADD INTENT
                             Intent i = new Intent(MainActivity.this, FavoritesListActivity.class);
                             i.putExtra("favList", favList);

@@ -148,7 +148,7 @@ public class RecycleServlet extends HttpServlet {
                     return;
                 }
 
-                String query1 = "SELECT place_id FROM favs_comments WHERE username = '" + username + "'";
+                String query1 = "SELECT favs_comments.place_id, places.place_name FROM favs_comments JOIN places WHERE username = '" + username + "' AND favs_comments.place_id = places.place_id" ;
                 ResultSet rs1 = conn.createStatement().executeQuery(query1);
 
                 if (!rs1.isBeforeFirst()) {
@@ -158,13 +158,16 @@ public class RecycleServlet extends HttpServlet {
                 else {
                     boolean first = true;
                     String placeID = null;
+                    String placeName = null;
                     loginString += "{";
                     while (rs1.next()) {
                         placeID = rs1.getString("place_id");
+                        placeName = rs1.getString("place_name");
+
                         if (first == false) {
                             loginString += ", {";
                         }
-                        loginString += "\"value\": " + "\"" + placeID + "\"}";
+                        loginString += "\"placeid\": " + "\"" + placeID + "\", \"placename\": " + "\"" + placeName + "\"}";
                         first = false;
                     }
                     loginString += "]}";
