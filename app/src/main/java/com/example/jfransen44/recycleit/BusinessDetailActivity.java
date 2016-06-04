@@ -16,12 +16,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import com.example.jfransen44.recycleit.MultiSpinner.MultiSpinnerListener;
 
@@ -82,14 +79,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (MainActivity.session_username == null) {
-                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG);
+                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG).show();
                     Log.e("session_username", MainActivity.session_username);
                 }
                 else {
 
                     boolean isFavorite = favoritesCheckBox.isChecked();
                     boolean isreimbursable = reimbursableCheckBox.isChecked();
-                    String materialsAccepted = "";
+                    String materialsAccepted = ""; //TODO create string from checkmarked materials
                     Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
                     for (int i = 0; i < materialsAcceptedList.size(); i++){
                         if (i != materialsAcceptedList.size() - 1){
@@ -102,24 +99,35 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
                     Log.d("Material list", materialsAccepted);
 
+
                     String tempForToast = "";
                     if (isFavorite) {
-                        tempForToast = "true";
+                        tempForToast = "1";
                     }
                     else {
-                        tempForToast = "false";
+                        tempForToast = "0";
                     }
-                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + tempForToast, Toast.LENGTH_LONG);
+                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + tempForToast, Toast.LENGTH_LONG).show();
 
                     String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
                             + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favoriteChecked=" + isFavorite;
 
                     try {
-                        new editFavorites().execute(myURL).get();
-                    } catch (Exception e) {
+                        String[] url = new String[]{myURL};
+                        String output = new GetData().execute(url).get();
+                        JSONObject jObject = new JSONObject(output);
+                        String status = jObject.getString("status");
+
+                        if (status.equals("validUpdate")) {
+                            Toast.makeText(BusinessDetailActivity.this, "Saved.", Toast.LENGTH_SHORT).show();
+                        } else {//database not written to
+                            Toast.makeText(BusinessDetailActivity.this, "Error - not saved.", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                        catch(Exception e) {
+                        Log.d("Log.INFO", e.toString());
 
-
+                }
 
             }
         }
@@ -209,20 +217,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         }
     }
 
-    private class editFavorites extends AsyncTask<String, Void, Object> {
-        @Override
-        protected Object doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(params[0]);
-            try {
-                client.execute(httpGet);
-            } catch (Exception e) {
 
-            }
-
-            return null;
-        }
-    }
 
 
 }
