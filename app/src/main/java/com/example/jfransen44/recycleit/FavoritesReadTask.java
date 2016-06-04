@@ -3,30 +3,29 @@ package com.example.jfransen44.recycleit;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
-
 public class FavoritesReadTask extends AsyncTask<Object, Integer, String> {
     String googlePlacesData = null;
-    GoogleMap mMap;
-    FavoritesList favoritesList;
+    FavoritesListActivity favoritesListActivity;
 
-    public FavoritesReadTask(FavoritesList favoritesList){
-        this.favoritesList = favoritesList;
+    public FavoritesReadTask(FavoritesListActivity favoritesListActivity){
+        this.favoritesListActivity = favoritesListActivity;
     }
     @Override
     protected String doInBackground(Object... inputObj) {
         try{
-            String googlePlacesURL = (String) inputObj[1];
+            String googlePlacesURL = (String) inputObj[0];
+            Log.d("URL", googlePlacesURL);
             GoogleHttp http = new GoogleHttp();
             googlePlacesData = http.readGoogle(googlePlacesURL);
         }
         catch (Exception e){
-            Log.d("Google Places Read Task", e.toString());
+            Log.d("Favorites Read Task", e.toString());
         }
+        Log.d("GDATA", googlePlacesData);
         return googlePlacesData;
     }
 
     protected void onPostExecute(String result){
-        favoritesList.setFavoritesDetail(result);
+        favoritesListActivity.setPlacesDetail(result);
     }
 }

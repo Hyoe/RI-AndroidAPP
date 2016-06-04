@@ -68,7 +68,7 @@ public class GooglePlacesDisplayTask extends AsyncTask<Object, Integer, List<Has
                 }
 
             }else{
-                 mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(placeID));
+                mMap.addMarker(new MarkerOptions().position(latLng).title(placeName + " - Touch for details").snippet(placeID));
             }
 
         }

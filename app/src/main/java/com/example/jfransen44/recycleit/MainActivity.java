@@ -385,9 +385,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             favPlaceNameList = LoginActivity.favPlaceNameList;
                             favMap = LoginActivity.favMap;
                             //TODO ADD INTENT
-                            /*Intent i = new Intent(MainActivity.this, FavoritesList);
+                            Intent i = new Intent(MainActivity.this, FavoritesListActivity.class);
                             i.putExtra("favList", favList);
-                            startActivity(i);*/
+                            startActivity(i);
 
                             /*
                             for (int i = 0; i < favList.length; i++) {
@@ -467,6 +467,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bundle extras = new Bundle();
         extras.putStringArray("businessDetails", placesDetail);
         extras.putBoolean("loggedIn", loggedIn);
+        extras.putString("placeID", placeID);
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);
         startActivity(intent);
