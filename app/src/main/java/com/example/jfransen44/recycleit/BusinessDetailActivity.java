@@ -78,14 +78,20 @@ public class BusinessDetailActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainActivity.session_username == null) {
-                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG).show();
-                    Log.e("session_username", MainActivity.session_username);
+                String usernameString = MainActivity.session_username;
+                if (MainActivity.session_username != null) {
+                    Log.d("session_username", usernameString);
                 }
                 else {
+                    Log.d("session_username", " is null");
+                }
+                //Toast.makeText(BusinessDetailActivity.this, "session_username: " + MainActivity.session_username, Toast.LENGTH_LONG).show();
+
+                if (usernameString != null) {
 
                     boolean isFavorite = favoritesCheckBox.isChecked();
                     boolean isreimbursable = reimbursableCheckBox.isChecked();
+                    //causing problem.
                     String materialsAccepted = ""; //TODO create string from checkmarked materials
                     Log.d("LIST SIZE", Integer.toString(materialsAcceptedList.size()));
                     for (int i = 0; i < materialsAcceptedList.size(); i++){
@@ -99,18 +105,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     Log.d("is favorite checked", String.valueOf(favoritesCheckBox.isChecked()));
                     Log.d("Material list", materialsAccepted);
 
+                    //convert isFavorite bool to String
+                    String favoriteChecked = (isFavorite) ? "1" : "0";
 
-                    String tempForToast = "";
-                    if (isFavorite) {
-                        tempForToast = "1";
-                    }
-                    else {
-                        tempForToast = "0";
-                    }
-                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + tempForToast, Toast.LENGTH_LONG).show();
+                    Toast.makeText(BusinessDetailActivity.this, "Favorite checked? " + favoriteChecked, Toast.LENGTH_LONG).show();
 
+                    //may have to send isFavorite as a string rather than a bool
                     String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
-                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favoriteChecked=" + isFavorite;
+                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + favoriteChecked;
 
                     try {
                         String[] url = new String[]{myURL};
@@ -130,6 +132,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 }
 
             }
+                else {
+                    Toast.makeText(BusinessDetailActivity.this, "You must log in to make changes.", Toast.LENGTH_LONG).show();
+                    Log.e("session_username", "is null");
+                }
         }
 
         });
