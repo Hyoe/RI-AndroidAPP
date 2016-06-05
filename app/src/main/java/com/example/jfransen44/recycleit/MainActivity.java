@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
 
-                            favPlaceIDList = LoginActivity.favPlaceIDList;
+                            favPlaceIDList = LoginActivity.favPlaceIDList.clone();
                             favPlaceNameList = LoginActivity.favPlaceNameList;
                             favMap = LoginActivity.favMap;
                             //TODO ADD INTENT
@@ -391,11 +391,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             i.putExtras(extras);
                             startActivity(i);
 
-                            /*
-                            for (int i = 0; i < favList.length; i++) {
-                                Toast.makeText(MainActivity.this, favList[i], Toast.LENGTH_LONG).show();
-                                Log.d("FAVORITES LIST", favList[i]);
-                            }*/ //
 
                             break;
                         case 2:
@@ -458,6 +453,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         placeID = marker.getSnippet();
         place_id = placeID; //for business detail page
         marker.setSnippet("");
+
         return false;
     }
 

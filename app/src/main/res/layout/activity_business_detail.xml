@@ -84,7 +84,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reimbursable?"
+        android:text="Reimburses?"
         android:id="@+id/reimbursableCheckBox"
         android:visibility="gone"
         android:layout_below="@+id/favoritesCheckBox"

@@ -47,7 +47,21 @@ public class BusinessDetailActivity extends AppCompatActivity {
     String userName;
     String placeID;
     String[] dbUpdateString = new String[9];
+    /*
+        Contents of dbUpdateString:
+        [0]: userName
+        [1]: placeID
+        [2]: favorites checked
+        [3]: reimbursable checkbox
+        [4]: materials accepted
+        [5]: placeName
+        [6]: address
+        [7]: phone
+        [8]: website url
+    */
+
     String materialsAccepted = "";
+    String[] businessDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,14 +167,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     else{
                         dbUpdateString[3] = "";
                     }
-                    //dbUpdateString[4] = materialsAccepted;
-                    dbUpdateString[4] = "Glass"; //temp
+                    dbUpdateString[4] = materialsAccepted;
+                    //dbUpdateString[4] = "Glass"; //temp
 
                     //temporary hard coding
-                    dbUpdateString[5] = "placename1";
-                    dbUpdateString[6] = "placeaddress1";
-                    dbUpdateString[7] = "placephone1";
-                    dbUpdateString[8] = "placewebsite1";
+                    dbUpdateString[5] = businessDetail[0];
+                    dbUpdateString[6] = businessDetail[1];
+                    dbUpdateString[7] = businessDetail[2];
+                    dbUpdateString[8] = businessDetail[4];
 
                     for (int i = 0; i < dbUpdateString.length; i++) {
                         Log.d("DBUPDATESTRING", dbUpdateString[i]);
@@ -241,13 +255,13 @@ public class BusinessDetailActivity extends AppCompatActivity {
             favoritesCheckBox.setVisibility(View.VISIBLE);
             reimbursableCheckBox.setVisibility(View.VISIBLE);
          }
-        String[] businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
+        businessDetail = this.getIntent().getStringArrayExtra("businessDetails");
 
         Log.d("BUSINESS DETAIL URL", ">"+businessDetail[3]+"<");
 
         String[] workweek = businessDetail[5].split("\\s*\",\"\\s*");
         if (businessDetail[3].equals("https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png")){
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.recycliticon1);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.recycliticonsmall);
             icon.setImageBitmap(bm);
 
         }else{
