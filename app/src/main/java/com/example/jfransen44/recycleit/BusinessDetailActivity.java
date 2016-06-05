@@ -46,7 +46,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
     boolean loggedIn;
     String userName;
     String placeID;
-    String[] dbUpdateString = new String[5];
+    String[] dbUpdateString = new String[9];
     String materialsAccepted = "";
 
     @Override
@@ -114,18 +114,28 @@ public class BusinessDetailActivity extends AppCompatActivity {
                         dbUpdateString[2] = "0";
                     }
                     if (reimbursableCheckBox.isChecked()) {
-                        dbUpdateString[3] = "1";
+                        dbUpdateString[3] = "Yes";
                     }
                     else{
-                        dbUpdateString[3] = "0";
+                        dbUpdateString[3] = "";
                     }
-                    dbUpdateString[4] = materialsAccepted;
+                    //dbUpdateString[4] = materialsAccepted;
+                    dbUpdateString[4] = "Glass"; //temp
+
+                    //temporary hard coding
+                    dbUpdateString[5] = "placename1";
+                    dbUpdateString[6] = "placeaddress1";
+                    dbUpdateString[7] = "placephone1";
+                    dbUpdateString[8] = "placewebsite1";
 
                     for (int i = 0; i < dbUpdateString.length; i++) {
                         Log.d("DBUPDATESTRING", dbUpdateString[i]);
                     }
                     String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
-                            + MainActivity.session_username + "&place_id=" + MainActivity.place_id + "&favorite_checked=" + dbUpdateString[2];
+                            + dbUpdateString[0] + "&place_id=" + dbUpdateString[1] + "&favorite_checked="
+                            + dbUpdateString[2] + "&reimburse=" + dbUpdateString[3] + "&materials=" + dbUpdateString[4]
+                            + "&placename=" + dbUpdateString[5] + "&placeaddress=" + dbUpdateString[6]
+                            + "&placephone=" + dbUpdateString[7] + "&placewebsite=" + dbUpdateString[8];
 
                     try {
                         String[] url = new String[]{myURL};
@@ -135,7 +145,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
                         if (status.equals("validUpdate")) {
                             Toast.makeText(BusinessDetailActivity.this, "Saved.", Toast.LENGTH_SHORT).show();
-                        } else {//database not written to
+                        } else if (status.equals("inrs4dataSet")){
+                            Toast.makeText(BusinessDetailActivity.this, "in rs4 dataset", Toast.LENGTH_SHORT).show();
+                        }
+                        else {//database not written to
                             Toast.makeText(BusinessDetailActivity.this, "Error - not saved.", Toast.LENGTH_SHORT).show();
                         }
                     }
