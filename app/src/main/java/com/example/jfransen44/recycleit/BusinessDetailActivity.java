@@ -81,6 +81,40 @@ public class BusinessDetailActivity extends AppCompatActivity {
         userName = getIntent().getExtras().getString("userName");
 
 
+        //****************************************************************************
+        //Script to request and receive array with place favorite status, reimburse
+        //status, and materials list
+        String[] dbRetrieveString = new String[3];
+
+        String myURL = "http://recycleit-1293.appspot.com/test?function=doRetrievePlaceDetails&username="
+                + userName + "&place_id=" + placeID;
+
+        try {
+            String[] url = new String[]{myURL};
+            String output = new GetData().execute(url).get();
+            JSONObject jObject = new JSONObject(output);
+
+            dbRetrieveString[0] = jObject.getString("isFavorite");
+            dbRetrieveString[1] = jObject.getString("reimburse");
+            dbRetrieveString[2] = jObject.getString("materials");
+
+            Toast.makeText(BusinessDetailActivity.this, "isFavorite: " + dbRetrieveString[0], Toast.LENGTH_SHORT).show();
+            Toast.makeText(BusinessDetailActivity.this, "reimburses: " + dbRetrieveString[1], Toast.LENGTH_SHORT).show();
+            Toast.makeText(BusinessDetailActivity.this, "materials: " + dbRetrieveString[2], Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.d("Log.INFO", e.toString());
+
+        }
+        //****************************************************************************
+
+
+
+
+
+
+
+
         if (userName != null){
             favoritesCheckBox.setVisibility(View.VISIBLE);
             reimbursableCheckBox.setVisibility(View.VISIBLE);
@@ -131,7 +165,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     for (int i = 0; i < dbUpdateString.length; i++) {
                         Log.d("DBUPDATESTRING", dbUpdateString[i]);
                     }
-                    String myURL = "http://recycleit-1293.appspot.com/test?function=updateFavorite&username="
+                    String myURL = "http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username="
                             + dbUpdateString[0] + "&place_id=" + dbUpdateString[1] + "&favorite_checked="
                             + dbUpdateString[2] + "&reimburse=" + dbUpdateString[3] + "&materials=" + dbUpdateString[4]
                             + "&placename=" + dbUpdateString[5] + "&placeaddress=" + dbUpdateString[6]

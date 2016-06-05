@@ -183,7 +183,7 @@ public class RecycleServlet extends HttpServlet {
 
         }
 */
-        if (req.getParameter("function").equals("updateFavorite")) {
+        if (req.getParameter("function").equals("doUpdatePlace")) {
             String url = null;
             String getUsername = req.getParameter("username");
             String getPlaceID = req.getParameter("place_id");
@@ -193,8 +193,8 @@ public class RecycleServlet extends HttpServlet {
             String getPlaceName = req.getParameter("placename");
             String getPlaceAddress = req.getParameter("placeaddress");
             String getPlacePhone = req.getParameter("placephone");
-            String getPlaceWebsite = req.getParameter("placewebsite");			
-			
+            String getPlaceWebsite = req.getParameter("placewebsite");
+
 			/*
 			String getReimburseStatus = (!req.getParameter("reimburse")) ? "" : "Yes";
 			String getMaterials = (!req.getParameter("materials")) ? "" : req.getParameter("materials");
@@ -203,11 +203,11 @@ public class RecycleServlet extends HttpServlet {
 			String getPlacePhone = (!req.getParameter("placephone")) ? "" : req.getParameter("placephone");
 			String getPlaceWebsite = (!req.getPlaceWebsite("placewebsite")) ? "" : req.getParameter("placewebsite");
 			*/
-			
+
 
             resp.setContentType("text/html");
-            //test url user without the favorite place (to add):  http://recycleit-1293.appspot.com/test?function=updateFavorite&username=test&place_id=FAKEPLACEX&favorite_checked=1
-            //test url user with the favorite place (to delete):  http://recycleit-1293.appspot.com/test?function=updateFavorite&username=test&place_id=FAKEPLACE4&favorite_checked=0
+            //test url user without the favorite place (to add):  http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username=test&place_id=FAKEPLACEX&favorite_checked=1
+            //test url user with the favorite place (to delete):  http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username=test&place_id=FAKEPLACE4&favorite_checked=0
 
 
             try {
@@ -234,7 +234,7 @@ public class RecycleServlet extends HttpServlet {
                         int success = 2;
                         success = stmt.executeUpdate();
 
-					
+
                     }
 
                 }
@@ -253,8 +253,8 @@ public class RecycleServlet extends HttpServlet {
                     }
                 }
 
-				//check of place is already in place_id table
-				String checkIfPlacesQuery = "SELECT place_id FROM places WHERE place_id = '" + getPlaceID + "'";
+                //check of place is already in place_id table
+                String checkIfPlacesQuery = "SELECT place_id FROM places WHERE place_id = '" + getPlaceID + "'";
 
                 ResultSet rs1 = conn.createStatement().executeQuery(checkIfPlacesQuery);
 
@@ -262,32 +262,32 @@ public class RecycleServlet extends HttpServlet {
 
                     if (getFavoriteStatus.equals("1")) {
 
-                    //String query3 = "INSERT INTO places (place_id, place_name, place_address, place_phone, place_website) VALUES ( ?, ?, ?, ?, ? )";
-                    String query3 = "INSERT INTO places (place_id, place_lat, place_lng, place_name, place_address,place_phone, place_website, place_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                    //String query3 = "INSERT INTO places VALUES ( 'test', '', '', 'test', 'test', 'test', 'test', 'test' )";
+                        //String query3 = "INSERT INTO places (place_id, place_name, place_address, place_phone, place_website) VALUES ( ?, ?, ?, ?, ? )";
+                        String query3 = "INSERT INTO places (place_id, place_lat, place_lng, place_name, place_address,place_phone, place_website, place_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        //String query3 = "INSERT INTO places VALUES ( 'test', '', '', 'test', 'test', 'test', 'test', 'test' )";
 
 
-                    PreparedStatement stmt1 = conn.prepareStatement(query3);
+                        PreparedStatement stmt1 = conn.prepareStatement(query3);
 
-					stmt1.setString(1, getPlaceID);
-                    stmt1.setString(2, "0.00000");
-                    stmt1.setString(3, "0.00000");
-                    stmt1.setString(4, getPlaceName);
-                    stmt1.setString(5, getPlaceAddress);
-                    stmt1.setString(6, getPlacePhone);
-                    stmt1.setString(7, getPlaceWebsite);
-                    stmt1.setString(8, "");
-										
-					
-                    int success = 2;
-                    success = stmt1.executeUpdate();
+                        stmt1.setString(1, getPlaceID);
+                        stmt1.setString(2, "0.00000");
+                        stmt1.setString(3, "0.00000");
+                        stmt1.setString(4, getPlaceName);
+                        stmt1.setString(5, getPlaceAddress);
+                        stmt1.setString(6, getPlacePhone);
+                        stmt1.setString(7, getPlaceWebsite);
+                        stmt1.setString(8, "");
+
+
+                        int success = 2;
+                        success = stmt1.executeUpdate();
 
                     }
 
                 }
-				
-				
-		         //check if place is already in materials_prices
+
+
+                //check if place is already in materials_prices
                 String checkIfMatTableQuery = "SELECT place_id FROM materials_prices WHERE place_id = '" + getPlaceID + "'";
 
                 ResultSet rs2 = conn.createStatement().executeQuery(checkIfMatTableQuery);
@@ -304,9 +304,9 @@ public class RecycleServlet extends HttpServlet {
                     int success = 2;
                     success = stmt.executeUpdate();
 
-               }
+                }
 
-               else { //place already in materials_prices table - update materials and reimburse
+                else { //place already in materials_prices table - update materials and reimburse
 
                     String query5 = "UPDATE materials_prices SET material_type='" + getMaterials + "', material_reimburse='" + getReimburseStatus + "' WHERE place_id='" + getPlaceID + "'";
 
@@ -316,18 +316,10 @@ public class RecycleServlet extends HttpServlet {
                     success = stmt.executeUpdate();
 
 
-               }		
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				//echo out valid update
+                }
+
+
+                //echo out valid update
                 resp.getWriter().println("{\"status\":\"validUpdate\"}");
 
                 conn.close();
@@ -338,6 +330,53 @@ public class RecycleServlet extends HttpServlet {
 
         }
 
+        if (req.getParameter("function").equals("doRetrievePlaceDetails")) {
+            String url = null;
+            String getUsername = req.getParameter("username");
+            String getPlaceID = req.getParameter("place_id");
+            String favoriteStatus = null;
+            String materials = null;
+            String reimburseStatus = null;
+
+
+            //sample url to test: http://recycleit-1293.appspot.com/test?function=doRetrievePlaceDetails&username=test&place_id=ChIJ7S3mBnAyw4ARToubWQqyK7M
+
+            resp.setContentType("text/html");
+            //http://recycleit-1293.appspot.com/test?function=doRegister&username=test
+
+            // Load the class that provides the new "jdbc:google:mysql://" prefix.
+            try {
+                Class.forName("com.mysql.jdbc.GoogleDriver");
+                //format for url is........appname:mysqlinstancename/dbname?user=username&password=passsword
+                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
+                Connection conn = DriverManager.getConnection(url);
+
+
+                String checkFavoritesQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
+                ResultSet rs3 = conn.createStatement().executeQuery(checkFavoritesQuery);
+                if (!rs3.isBeforeFirst()) {
+                    favoriteStatus = "0";
+                } else {
+                    favoriteStatus = "1";
+                }
+
+                String retrieveDetailsQuery = "SELECT * FROM materials_prices WHERE place_id = '" + getPlaceID + "'";
+                ResultSet rs4 = conn.createStatement().executeQuery(retrieveDetailsQuery);
+                if (!rs4.next()) { //empty result set
+                    materials = "";
+                    reimburseStatus = "";
+                }
+                else {  //result found
+                    materials = rs4.getString("material_type");
+                    reimburseStatus = rs4.getString("material_reimburse");
+                }
+
+                resp.getWriter().println("{\"isFavorite\": " + "\"" + favoriteStatus + "\", \"reimburse\": " + "\"" + reimburseStatus + "\", \"materials\": " + "\"" + materials + "\"}");
+            } catch (Exception e) {
+                resp.getWriter().println(e.toString());
+            }
+
+        }
 
 
     }
