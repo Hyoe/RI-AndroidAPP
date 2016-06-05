@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -453,7 +454,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         placeID = marker.getSnippet();
         place_id = placeID; //for business detail page
         marker.setSnippet("");
-
+        for (int i = 0; i < favPlaceIDList.length; i++){
+            if (favPlaceIDList[i].equals(placeID)){
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            }
+        }
         return false;
     }
 
