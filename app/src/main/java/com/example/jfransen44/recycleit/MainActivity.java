@@ -112,7 +112,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 session_username = data.getStringExtra("username");
                 //Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, "Hello "+ session_username +"!", Toast.LENGTH_SHORT).show();
-
+                //SEM added to fix favorites
+                favPlaceIDList = LoginActivity.favPlaceIDList.clone();
+                favPlaceNameList = LoginActivity.favPlaceNameList;
+                favMap = LoginActivity.favMap;
+                //SEM
             }
         }
 
