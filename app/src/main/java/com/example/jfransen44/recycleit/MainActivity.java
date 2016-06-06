@@ -22,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,7 +38,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,18 +51,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final float defaultZoom = (float) 17.0;
     private GoogleApiClient mGoogleApiClient;
     private Button zipSearchButton;
-
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-
     private LatLng newPlace;
     private LatLng currentSearchLocation;
     private String[] placesDetail = new String[6];
-
-
     static String session_username = null;
     static String place_id = null;
     String session_firstName = null;
@@ -75,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     static HashMap<String, String> favMap = null;
     private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
-
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
     private String placeID = "";
@@ -84,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         //when you return from another actiivty, we check if that activity had a request code, so we can set certain session variables.
         if (requestCode == 222) {
             //returning from register
@@ -110,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 setupDrawer();
                 setupDrawerListener();
                 session_username = data.getStringExtra("username");
-                //Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, "Hello "+ session_username +"!", Toast.LENGTH_SHORT).show();
                 //SEM added to fix favorites
                 favPlaceIDList = LoginActivity.favPlaceIDList.clone();
@@ -140,11 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             addDrawerItems(loggedInMenu);
             setupDrawer();
             setupDrawerListener();
-            //TODO test later
-            //mMap.clear();
-            //getMapInfo(currentSearchLocation);
 
-            Toast.makeText(MainActivity.this, "Username and Logged in true", Toast.LENGTH_SHORT).show();
         } else {
             addDrawerItems(loggedOutMenu);
             setupDrawer();
@@ -157,12 +144,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
 
-
-        // TODO this block throws an error
-        //show error if google play services unavailable
-        // if (! isGooglePlayServicesAvailable()){
-        //     finish();
-        // }
         setContentView(R.layout.activity_main);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
@@ -195,9 +176,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         addDrawerItems(loggedOutMenu);
         setupDrawer();
         setupDrawerListener();
-// TODO added in merge not cleared yet
+
         zipSearchButton = (Button) findViewById(R.id.zipSearchButton);
-        //zipTextBox = (EditText) findViewById(R.id.zipTextBox);
 
         //set zipSearchButton listener
         zipSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -206,11 +186,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (newPlace != null) {
                     mMap.clear();
-
                     getMapInfo(newPlace);
-
-
-                    //mMap.addMarker(new MarkerOptions().position(newPlace).title(zipCode));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, defaultZoom));
                     autocompleteFragment.setText("");
                     newPlace = null;
@@ -275,10 +251,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Add a marker at current location
         mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom));
-
-
-        /*if (location != null){
-            onLocationChanged(location);*/
 
     }
 
@@ -382,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case 1:
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
                             //startActivity(b)
-
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
 
                             favPlaceIDList = LoginActivity.favPlaceIDList.clone();
