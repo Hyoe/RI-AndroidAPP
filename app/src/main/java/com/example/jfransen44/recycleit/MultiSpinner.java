@@ -1,4 +1,5 @@
 package com.example.jfransen44.recycleit;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -18,6 +20,7 @@ public class MultiSpinner extends Spinner implements
     private List<String> items;
     private boolean[] selected;
     private String defaultText;
+    public String materialsList = BusinessDetailActivity.getMaterials();
     private MultiSpinnerListener listener;
 
     public MultiSpinner(Context context) {
@@ -107,5 +110,22 @@ public class MultiSpinner extends Spinner implements
 
     public interface MultiSpinnerListener {
         void onItemsSelected(boolean[] selected);
+    }
+
+    public void setCheckboxes() {
+        if (materialsList != null) {
+            materialsList = materialsList.replaceAll(",", "");
+            int startIndex = 0;
+            int endIndex = 0;
+            while (endIndex != materialsList.length()) {
+                if (materialsList.contains(","))
+                    endIndex = materialsList.indexOf(",", startIndex);
+                else
+                    endIndex = materialsList.length();
+                String tmp = materialsList.substring(startIndex, endIndex);
+                startIndex = endIndex;
+                tmp = tmp.replaceAll(" ", "");
+            }
+        }
     }
 }

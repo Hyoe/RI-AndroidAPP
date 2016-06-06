@@ -60,16 +60,7 @@ public class FavoritesListActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemPosition = position;
                 String itemValue = (String) listView.getItemAtPosition(itemPosition);
-                /*Iterator iterator2 = favMap.entrySet().iterator();
-                while (iterator2.hasNext()){
-                    Map.Entry pair = (Map.Entry) iterator2.next();
-                    String temp = pair.getValue().toString();
-                    Log.d("TEMP", temp);
-                    if (itemValue.equals(temp)){
-                        placeID = pair.getKey().toString();
-                    }
-                    iterator2.remove();
-                }*/
+
                 Log.d("FAVMAP", favMap2.toString());
                 for (Object o : favMap2.keySet()) {
                     Log.d("FORLOP", o.toString());
@@ -101,6 +92,7 @@ public class FavoritesListActivity extends Activity {
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
         Bundle extras = new Bundle();
+        extras.putString("placeID", placeID);
         extras.putStringArray("businessDetails", placesDetail);
         extras.putString("userName", userName);
         Intent intent = new Intent(this, BusinessDetailActivity.class);
