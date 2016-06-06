@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
@@ -62,6 +61,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
     String materialsAccepted = "";
     String[] businessDetail;
+    static String[] dbRetrieveString = new String[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
         icon = (ImageView) findViewById(R.id.imageURL);
         updateButton = (Button) findViewById(R.id.updateButton);
 
-        final List <String> materialsAcceptedList = new ArrayList<String>();
-
 
         placeID = getIntent().getExtras().getString("placeID");
         userName = getIntent().getExtras().getString("userName");
@@ -98,7 +96,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
         //****************************************************************************
         //Script to request and receive array with place favorite status, reimburse
         //status, and materials list
-        String[] dbRetrieveString = new String[3];
 
         String myURL = "http://recycleit-1293.appspot.com/test?function=doRetrievePlaceDetails&username="
                 + userName + "&place_id=" + placeID;
@@ -123,14 +120,13 @@ public class BusinessDetailActivity extends AppCompatActivity {
         //****************************************************************************
 
 
-
-
-
-
-
+        materialsAccepted = dbRetrieveString[2];
 
         if (userName != null){
             favoritesCheckBox.setVisibility(View.VISIBLE);
+            if (dbRetrieveString[0].equals("1")) {
+                favoritesCheckBox.setChecked(true);
+            }
             reimbursableCheckBox.setVisibility(View.VISIBLE);
             updateButton.setVisibility(View.VISIBLE);
         }
@@ -167,23 +163,22 @@ public class BusinessDetailActivity extends AppCompatActivity {
                     else{
                         dbUpdateString[3] = "";
                     }
-                    dbUpdateString[4] = materialsAccepted;
-                    //dbUpdateString[4] = "Glass"; //temp
 
-                    //temporary hard coding
+                    dbUpdateString[4] = materialsAccepted;
                     dbUpdateString[5] = businessDetail[0];
                     dbUpdateString[6] = businessDetail[1];
                     dbUpdateString[7] = businessDetail[2];
                     dbUpdateString[8] = businessDetail[4];
 
-                    for (int i = 0; i < dbUpdateString.length; i++) {
-                        Log.d("DBUPDATESTRING", dbUpdateString[i]);
-                    }
+
                     String myURL = "http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username="
                             + dbUpdateString[0] + "&place_id=" + dbUpdateString[1] + "&favorite_checked="
                             + dbUpdateString[2] + "&reimburse=" + dbUpdateString[3] + "&materials=" + dbUpdateString[4]
                             + "&placename=" + dbUpdateString[5] + "&placeaddress=" + dbUpdateString[6]
                             + "&placephone=" + dbUpdateString[7] + "&placewebsite=" + dbUpdateString[8];
+
+                    myURL = myURL.replaceAll(" ", "%20");
+                    dbUpdateString[4] = "";
 
                     try {
                         String[] url = new String[]{myURL};
@@ -229,6 +224,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
             public void onItemsSelected(boolean[] selected) {
                 // your operation with code...
                 materialsAccepted = "";
+
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         //materialsAcceptedList.add(list.get(i));
@@ -274,6 +270,11 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessPhone.setText(businessDetail[2]);
         businessURL.setText(Html.fromHtml("<a href=\""+businessDetail[4]+"\">Website</a>"));
         businessURL.setMovementMethod(LinkMovementMethod.getInstance());
+
+        if (dbRetrieveString[1].equals("1")){
+            reimbursableCheckBox.setChecked(true);
+        }
+
         if (workweek[0].equals("HOURS UNAVAILABLE")){
             monday.setText("HOURS UNAVAILABLE");
         }
@@ -286,6 +287,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
             saturday.setText(workweek[5].replace('"', ' '));
             sunday.setText(workweek[6].replace('"', ' '));
         }
+    }
+
+     public static String getMaterials(){
+        return dbRetrieveString[2];
     }
 }
 

@@ -454,11 +454,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         placeID = marker.getSnippet();
         place_id = placeID; //for business detail page
         marker.setSnippet("");
-        for (int i = 0; i < favPlaceIDList.length; i++){
-            if (favPlaceIDList[i].equals(placeID)){
-                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            }
-        }
+       if (favPlaceIDList != null) {
+           for (int i = 0; i < favPlaceIDList.length; i++) {
+               if (favPlaceIDList[i].equals(placeID)) {
+                   marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+               }
+           }
+       }
         return false;
     }
 
