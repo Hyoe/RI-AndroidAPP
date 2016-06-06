@@ -271,7 +271,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
         businessURL.setText(Html.fromHtml("<a href=\""+businessDetail[4]+"\">Website</a>"));
         businessURL.setMovementMethod(LinkMovementMethod.getInstance());
 
-        if (dbRetrieveString[1].equals("1")){
+        if (dbRetrieveString[1].equals("Yes")){
             reimbursableCheckBox.setChecked(true);
         }
 
