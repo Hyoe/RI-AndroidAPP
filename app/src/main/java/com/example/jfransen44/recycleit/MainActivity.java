@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     static String[] favPlaceIDList = null;
     static String[] favPlaceNameList = null;
     static HashMap<String, String> favMap = null;
-    private String[] loggedInMenu = { "Logout", "Favorites", "About" };
-    private String[] loggedOutMenu = { "Login", "Register", "About" };
+    private String[] loggedInMenu = { "Logout", "Favorites", "About", "Recycling Guide" };
+    private String[] loggedOutMenu = { "Login", "Register", "About", "Recycling Guide" };
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
     private String placeID = "";
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -375,6 +376,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
+                        case 3:
+                            testConnection();
+                            Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
+                            startActivity(recycleGuide);
                         default:
                     }
                 }
@@ -427,6 +432,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
+                        case 3:
+                            testConnection();
+                            Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
+                            startActivity(recycleGuide);
                         default:
                     }
                 }
