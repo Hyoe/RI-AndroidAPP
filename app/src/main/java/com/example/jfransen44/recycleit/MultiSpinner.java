@@ -112,20 +112,4 @@ public class MultiSpinner extends Spinner implements
         void onItemsSelected(boolean[] selected);
     }
 
-    public void setCheckboxes() {
-        if (materialsList != null) {
-            materialsList = materialsList.replaceAll(",", "");
-            int startIndex = 0;
-            int endIndex = 0;
-            while (endIndex != materialsList.length()) {
-                if (materialsList.contains(","))
-                    endIndex = materialsList.indexOf(",", startIndex);
-                else
-                    endIndex = materialsList.length();
-                String tmp = materialsList.substring(startIndex, endIndex);
-                startIndex = endIndex;
-                tmp = tmp.replaceAll(" ", "");
-            }
-        }
-    }
 }
