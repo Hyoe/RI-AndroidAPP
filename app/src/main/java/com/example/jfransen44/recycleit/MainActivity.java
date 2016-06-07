@@ -1,6 +1,7 @@
 package com.example.jfransen44.recycleit;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +9,8 @@ import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
     private String placeID = "";
-
+    Boolean isInternetPresent = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -129,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
 
+
+        // get Internet status
+        testConnection();
+
         if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
             setupDrawer();
@@ -147,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        // get Internet status
+        testConnection();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -220,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        testConnection();
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.setMyLocationEnabled(true);
@@ -259,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //update map icons when map is moved
 
     public void onLocationChanged(Location location){
+        testConnection();
         mMap.clear();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
@@ -273,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //call google services to place markers on map
     private void getMapInfo(LatLng latLng){
+        testConnection();
         currentSearchLocation = latLng;
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
@@ -323,16 +336,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
                     switch (position) {
                         case 0:
+                            testConnection();
                             Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
                             MainActivity.this.startActivityForResult(logInIntent, 111);
                             //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
+                            testConnection();
                             Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
                             MainActivity.this.startActivityForResult(registerIntent, 222);
                             //Toast.makeText(MainActivity.this, "Register Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
+                            testConnection();
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
@@ -348,12 +364,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
                     switch (position) {
                         case 0:
+                            testConnection();
                             Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
                             MainActivity.this.startActivityForResult(intent, 333);
                             mMap.clear();
                             //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
+                            testConnection();
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
                             //startActivity(b)
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
@@ -377,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
                             break;*/
                         case 2:
+                            testConnection();
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
@@ -444,24 +463,49 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //get results string from PlacesDetailReadTask query
     //TODO query DB for accepted materials for this location
     public void setPlacesDetail(String result){
+
         GooglePlaces googlePlaces = new GooglePlaces();
         this.placesDetail = googlePlaces.parseDetails(result);
         Bundle extras = new Bundle();
         extras.putStringArray("businessDetails", placesDetail);
         extras.putString("userName", session_username);
         extras.putString("placeID", placeID);
+        testConnection();
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);
         startActivity(intent);
     }
 
+    public boolean isConnectingToInternet() {
+        ConnectivityManager connectivity = (ConnectivityManager) getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+        }
+        return false;
 
+    }
+
+    public void testConnection(){
+        isInternetPresent = isConnectingToInternet();
+        if (!isInternetPresent) {
+            // go to intent
+            Intent noInternet = new Intent(MainActivity.this, NoInternet.class);
+            startActivity(noInternet);
+        }
+
+    }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
 
         // Query for business specific information
-
+            testConnection();
             StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
             googlePlacesDetailURL.append("placeid=" + placeID);
             googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);

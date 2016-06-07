@@ -133,4 +133,5 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_business_detail">BusinessDetailActivity</string>
     <string name="title_activity_favorites_list">FavoritesList</string>
+    <string name="title_activity_no_internet">NoInternet</string>
 </resources>
