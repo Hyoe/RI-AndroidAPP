@@ -71,7 +71,7 @@ public class FavoritesListActivity extends Activity {
 
                 Log.d("PLACEID", "<" + placeID + ">");
                 startDetailActivity();
-                Toast.makeText(getApplicationContext(), "Position: " + itemPosition + "ListItem: " + itemValue, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Position: " + itemPosition + "ListItem: " + itemValue, Toast.LENGTH_LONG).show();
             }
         });
     }

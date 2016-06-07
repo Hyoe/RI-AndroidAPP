@@ -112,9 +112,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
             dbRetrieveString[1] = jObject.getString("reimburse");
             dbRetrieveString[2] = jObject.getString("materials");
 
-            Toast.makeText(BusinessDetailActivity.this, "isFavorite: " + dbRetrieveString[0], Toast.LENGTH_SHORT).show();
-            Toast.makeText(BusinessDetailActivity.this, "reimburses: " + dbRetrieveString[1], Toast.LENGTH_SHORT).show();
-            Toast.makeText(BusinessDetailActivity.this, "materials: " + dbRetrieveString[2], Toast.LENGTH_SHORT).show();
+           // Toast.makeText(BusinessDetailActivity.this, "isFavorite: " + dbRetrieveString[0], Toast.LENGTH_SHORT).show();
+           // Toast.makeText(BusinessDetailActivity.this, "reimburses: " + dbRetrieveString[1], Toast.LENGTH_SHORT).show();
+           // Toast.makeText(BusinessDetailActivity.this, "materials: " + dbRetrieveString[2], Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
             Log.d("Log.INFO", e.toString());
