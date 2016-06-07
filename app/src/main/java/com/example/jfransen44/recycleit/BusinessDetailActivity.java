@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
@@ -46,6 +47,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
     String userName;
     String placeID;
     String[] dbUpdateString = new String[9];
+    List<String> setCheckboxList= new ArrayList<String>();
+
     /*
         Contents of dbUpdateString:
         [0]: userName
@@ -212,8 +215,16 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
         final List<String> list = Arrays.asList("Aluminum", "Copper", "Electronics", "Glass", "Household Hazardous Waste", "Paper", "Plastic", "Steel");
         TreeMap<String, Boolean> items = new TreeMap<>();
+        if (dbRetrieveString[2] != null) {
+            setCheckboxList = Arrays.asList(dbRetrieveString[2].split("\\s*,\\s*"));
+        }
         for(String item : list) {
-            items.put(item, Boolean.FALSE);
+            if (setCheckboxList.contains(item)) {
+                items.put(item, Boolean.TRUE);
+            }
+            else{
+                items.put(item, Boolean.FALSE);
+            }
         }
         MultiSpinner simpleSpinner = (MultiSpinner) findViewById(R.id.simpleMultiSpinner);
         simpleSpinner.setPrompt("Select Materials Accepted");
@@ -287,6 +298,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
             saturday.setText(workweek[5].replace('"', ' '));
             sunday.setText(workweek[6].replace('"', ' '));
         }
+
+    }
+
+    public void setCheckboxes() {
+       if (dbRetrieveString[2] != null){
+           setCheckboxList = Arrays.asList(dbRetrieveString[2].split("\\s*,\\s*"));
+
+       }
     }
 
      public static String getMaterials(){
