@@ -1,5 +1,6 @@
 package com.example.jfransen44.recycleit;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class NoInternet extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
