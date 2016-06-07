@@ -135,10 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // get Internet status
         //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
 
         if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
@@ -161,10 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // get Internet status
         //connection.();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -239,10 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.setMyLocationEnabled(true);
@@ -283,10 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void onLocationChanged(Location location){
         //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         mMap.clear();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
@@ -302,10 +290,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //call google services to place markers on map
     private void getMapInfo(LatLng latLng){
         //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         currentSearchLocation = latLng;
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
@@ -349,10 +334,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void setupDrawerListener(){
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         if(loggedIn == false){
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -377,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 3:
-                            testConnection();
+
                             Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
                             startActivity(recycleGuide);
                         default:
@@ -386,10 +368,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             });
         } else {
-            if(!TestInternetConnection.getInstance(this).isOnline()){
-                Intent noInternet = new Intent(this, NoInternet.class);
-                startActivity(noInternet);
-            }
+
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -433,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 3:
-                            testConnection();
                             Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
                             startActivity(recycleGuide);
                         default:
@@ -507,10 +485,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         extras.putString("userName", session_username);
         extras.putString("placeID", placeID);
         //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);
         startActivity(intent);
@@ -522,10 +497,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Query for business specific information
             //connection.testConnection();
-        if(!TestInternetConnection.getInstance(this).isOnline()){
-            Intent noInternet = new Intent(this, NoInternet.class);
-            startActivity(noInternet);
-        }
+
         StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
             googlePlacesDetailURL.append("placeid=" + placeID);
             googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
