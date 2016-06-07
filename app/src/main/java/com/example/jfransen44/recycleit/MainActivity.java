@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     static String[] favPlaceIDList = null;
     static String[] favPlaceNameList = null;
     static HashMap<String, String> favMap = null;
-    private String[] loggedInMenu = { "Logout", "Favorites", "Comments", "About" };
+    private String[] loggedInMenu = { "Logout", "Favorites", "About" };
     private String[] loggedOutMenu = { "Login", "Register", "About" };
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 session_username = data.getStringExtra("username");
                 //Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, "Hi "+ session_username +"!", Toast.LENGTH_SHORT).show();
-
+                favPlaceIDList = LoginActivity.favPlaceIDList.clone();
+                favPlaceNameList = LoginActivity.favPlaceNameList;
+                favMap = LoginActivity.favMap;
             }
         }
 
@@ -369,12 +371,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                             break;
-                        case 2:
+                       /* case 2:
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
                             //startActivity(b);
                             Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 3:
+                            break;*/
+                        case 2:
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
