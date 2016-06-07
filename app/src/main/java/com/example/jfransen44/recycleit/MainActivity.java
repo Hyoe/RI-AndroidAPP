@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
     private String placeID = "";
-    Boolean isInternetPresent = false;
-
+    //TestInternetConnection connection = new TestInternetConnection();
+    //TestInternetConnection.getInstance(this).testConnection();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -134,7 +134,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         // get Internet status
-        testConnection();
+        //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
 
         if (loggedIn = true && session_username != null){
             addDrawerItems(loggedInMenu);
@@ -156,8 +160,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
 
         // get Internet status
-        testConnection();
-
+        //connection.();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used; set up map UI
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -230,7 +237,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        testConnection();
+        //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.setMyLocationEnabled(true);
@@ -270,7 +281,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //update map icons when map is moved
 
     public void onLocationChanged(Location location){
-        testConnection();
+        //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         mMap.clear();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
@@ -285,7 +300,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //call google services to place markers on map
     private void getMapInfo(LatLng latLng){
-        testConnection();
+        //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         currentSearchLocation = latLng;
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
@@ -329,26 +348,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void setupDrawerListener(){
-
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         if(loggedIn == false){
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
                     switch (position) {
                         case 0:
-                            testConnection();
+                            //connection.testConnection();
                             Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
                             MainActivity.this.startActivityForResult(logInIntent, 111);
                             //Toast.makeText(MainActivity.this, "Login Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
-                            testConnection();
+                            //connection.testConnection();
                             Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
                             MainActivity.this.startActivityForResult(registerIntent, 222);
                             //Toast.makeText(MainActivity.this, "Register Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
-                            testConnection();
+                            //connection.testConnection();
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
@@ -359,19 +381,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             });
         } else {
+            if(!TestInternetConnection.getInstance(this).isOnline()){
+                Intent noInternet = new Intent(this, NoInternet.class);
+                startActivity(noInternet);
+            }
             mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view, int position, long id) {
                     switch (position) {
                         case 0:
-                            testConnection();
+                            //connection.testConnection();
                             Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
                             MainActivity.this.startActivityForResult(intent, 333);
                             mMap.clear();
                             //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
-                            testConnection();
+                            //connection.testConnection();
                             //Intent b = new Intent(MainActivity.this, Activity2.class);
                             //startActivity(b)
                             //Toast.makeText(MainActivity.this, "Favorites Pressed", Toast.LENGTH_SHORT).show();
@@ -395,7 +421,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Toast.makeText(MainActivity.this, "Comments Pressed", Toast.LENGTH_SHORT).show();
                             break;*/
                         case 2:
-                            testConnection();
+                            //connection.testConnection();
+
                             Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
@@ -470,43 +497,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         extras.putStringArray("businessDetails", placesDetail);
         extras.putString("userName", session_username);
         extras.putString("placeID", placeID);
-        testConnection();
+        //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
         Intent intent = new Intent(this, BusinessDetailActivity.class);
         intent.putExtras(extras);
         startActivity(intent);
     }
 
-    public boolean isConnectingToInternet() {
-        ConnectivityManager connectivity = (ConnectivityManager) getApplicationContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-        }
-        return false;
-
-    }
-
-    public void testConnection(){
-        isInternetPresent = isConnectingToInternet();
-        if (!isInternetPresent) {
-            // go to intent
-            Intent noInternet = new Intent(MainActivity.this, NoInternet.class);
-            startActivity(noInternet);
-        }
-
-    }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
 
         // Query for business specific information
-            testConnection();
-            StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+            //connection.testConnection();
+        if(!TestInternetConnection.getInstance(this).isOnline()){
+            Intent noInternet = new Intent(this, NoInternet.class);
+            startActivity(noInternet);
+        }
+        StringBuilder googlePlacesDetailURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
             googlePlacesDetailURL.append("placeid=" + placeID);
             googlePlacesDetailURL.append("&key=" + GOOGLE_API_KEY);
             PlacesDetailReadTask placesDetailReadTask = new PlacesDetailReadTask(this);
