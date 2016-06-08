@@ -137,4 +137,5 @@
     <string name="title_activity_why_recycle">WhyRecycle</string>
     <string name="title_activity_recycle_guide">RecycleGuide</string>
     <string name="title_activity_about_page">AboutPage</string>
+    <string name="title_activity_facts">Facts</string>
 </resources>

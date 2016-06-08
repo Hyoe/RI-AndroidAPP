@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             break;
                         case 2:
                             //connection.testConnection();
-                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            Intent AboutIntent = new Intent(MainActivity.this, Facts.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case 2:
                             //connection.testConnection();
 
-                            Intent AboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                            Intent AboutIntent = new Intent(MainActivity.this, Facts.class);
                             MainActivity.this.startActivityForResult(AboutIntent, 444);
                             //Toast.makeText(MainActivity.this, "About Pressed", Toast.LENGTH_SHORT).show();
                             break;
