@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         StringBuilder googlePlacesURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesURL.append("location=" + Double.toString(latLng.latitude) + "," + Double.toString(latLng.longitude));
         googlePlacesURL.append("&radius=" + 8500);
-        googlePlacesURL.append("&keyword=recycling");
+        googlePlacesURL.append("&keyword=recycle|recycle_center");
         googlePlacesURL.append("&key=" + GOOGLE_API_KEY);
         GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
         Object[] toPass = new Object[2];
