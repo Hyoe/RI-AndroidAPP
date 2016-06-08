@@ -18,7 +18,7 @@ public class AboutPage extends AppCompatActivity {
         setSupportActionBar(toolbar);
         WebView webview = new WebView(this);
         setContentView(webview);
-        webview.loadUrl("http://www.recycleit.site/includes/app_about.php");
+        webview.loadUrl("http://www.recycleit.site/includes/AndroidWebView/app_about.php");
 
 
     }

@@ -18,7 +18,7 @@ public class RecycleGuide extends AppCompatActivity {
         setSupportActionBar(toolbar);
         WebView webview = new WebView(this);
         setContentView(webview);
-        webview.loadUrl("http://www.recycleit.site/includes/learn.php");
+        webview.loadUrl("http://www.recycleit.site/includes/AndroidWebView/app_learn.php");
 
 
     }

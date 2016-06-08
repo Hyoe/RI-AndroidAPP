@@ -18,7 +18,7 @@ public class WhyRecycle extends AppCompatActivity {
         setSupportActionBar(toolbar);
         WebView webview = new WebView(this);
         setContentView(webview);
-        webview.loadUrl("http://www.recycleit.site/includes/whyRecycle.php");
+        webview.loadUrl("http://www.recycleit.site/includes/AndroidWebView/app_why_recycle.php");
 
     }
 
