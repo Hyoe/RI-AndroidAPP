@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     static String[] favPlaceIDList = null;
     static String[] favPlaceNameList = null;
     static HashMap<String, String> favMap = null;
-    private String[] loggedInMenu = { "Logout", "Favorites", "About", "Recycling Guide" };
-    private String[] loggedOutMenu = { "Login", "Register", "About", "Recycling Guide" };
+    private String[] loggedInMenu = { "Logout", "Favorites", "Facts", "Recycling Guide", "Why Recycle?", "About" };
+    private String[] loggedOutMenu = { "Login", "Register", "Facts", "Recycling Guide", "Why Recycle?", "About" };
     List<HashMap<String, String>> placesMoreDetail = null;
     List<String> businessDetails = new ArrayList<String>();
     private String placeID = "";
@@ -362,6 +362,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
                             startActivity(recycleGuide);
+                            break;
+
+                        case 4:
+                            // Why Recycle
+                            Intent whyRecycle = new Intent(MainActivity.this, WhyRecycle.class);
+                            startActivity(whyRecycle);
+                            break;
+                        case 5:
+                            // Why Recycle
+                            Intent aboutPage = new Intent(MainActivity.this, AboutPage.class);
+                            startActivity(aboutPage);
+                            break;
                         default:
                     }
                 }
@@ -414,6 +426,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case 3:
                             Intent recycleGuide = new Intent(MainActivity.this, RecycleGuide.class);
                             startActivity(recycleGuide);
+                            break;
+
+                        case 4:
+                            // Why Recycle
+                            Intent whyRecycle = new Intent(MainActivity.this, WhyRecycle.class);
+                            startActivity(whyRecycle);
+                            break;
+                        case 5:
+                            // Why Recycle
+                            Intent aboutPage = new Intent(MainActivity.this, AboutPage.class);
+                            startActivity(aboutPage);
+                            break;
                         default:
                     }
                 }

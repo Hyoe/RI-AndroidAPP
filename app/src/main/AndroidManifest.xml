@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,8 +35,8 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
         <receiver
-            android:name="NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver" >
+            android:name=".NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
@@ -89,7 +87,18 @@
             android:name=".NoInternet"
             android:label="@string/title_activity_no_internet"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RecycleGuide"></activity>
+        <activity
+            android:name=".RecycleGuide"
+            android:label="@string/title_activity_recycle_guide"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WhyRecycle"
+            android:label="@string/title_activity_why_recycle"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AboutPage"
+            android:label="@string/title_activity_about_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

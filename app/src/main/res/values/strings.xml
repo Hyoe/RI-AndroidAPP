@@ -30,7 +30,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_about">About</string>
+    <string name="title_activity_about">Facts</string>
 <string name="large_text">
                 <item><H1><b>Recycling Facts\n\n</b></H1></item>
         <item><b>Aluminum Recycling Facts\n</b></item>
@@ -134,4 +134,7 @@
     <string name="title_activity_business_detail">BusinessDetailActivity</string>
     <string name="title_activity_favorites_list">FavoritesList</string>
     <string name="title_activity_no_internet">NoInternet</string>
+    <string name="title_activity_why_recycle">WhyRecycle</string>
+    <string name="title_activity_recycle_guide">RecycleGuide</string>
+    <string name="title_activity_about_page">AboutPage</string>
 </resources>

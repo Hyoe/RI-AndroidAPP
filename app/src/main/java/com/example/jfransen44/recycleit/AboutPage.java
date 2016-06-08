@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 
-public class RecycleGuide extends AppCompatActivity {
+public class AboutPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,9 @@ public class RecycleGuide extends AppCompatActivity {
         setSupportActionBar(toolbar);
         WebView webview = new WebView(this);
         setContentView(webview);
-        webview.loadUrl("http://www.recycleit.site/includes/learn.php");
+        webview.loadUrl("http://www.recycleit.site/index.php");
 
 
     }
+
 }
