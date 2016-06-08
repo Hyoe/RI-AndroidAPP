@@ -390,6 +390,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Intent intent = new Intent(MainActivity.this, LogOutActivity.class);
                             MainActivity.this.startActivityForResult(intent, 333);
                             mMap.clear();
+                            favPlaceIDList = null;
                             //Toast.makeText(MainActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
