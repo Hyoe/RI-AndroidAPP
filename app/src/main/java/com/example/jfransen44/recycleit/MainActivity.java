@@ -474,12 +474,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    }*/
 
    @Override
    //grab place reference for detail query, then delete to hide from user
