@@ -265,9 +265,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.setOnInfoWindowClickListener(this);
         // Add a marker at current location
-        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom));
-
+        if(location != null) {
+            mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom));
+        }
     }
 
     //update map icons when map is moved

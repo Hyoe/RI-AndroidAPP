@@ -34,14 +34,14 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <receiver
+        <!--<receiver
             android:name=".NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
