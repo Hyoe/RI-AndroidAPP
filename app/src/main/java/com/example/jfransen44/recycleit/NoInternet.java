@@ -38,5 +38,8 @@ public class NoInternet extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onBackPressed() {
+    }
 
 }
