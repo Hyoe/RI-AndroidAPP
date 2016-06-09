@@ -34,7 +34,7 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <!--<receiver
+       <!-- <receiver
             android:name=".NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
             <intent-filter>
