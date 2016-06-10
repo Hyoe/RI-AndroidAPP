@@ -3,7 +3,9 @@ package com.example.jfransen44.recycleit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -35,6 +37,11 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etPassword = (EditText) findViewById(R.id.login_password);
 
         final TextView loginStatus = (TextView) findViewById(R.id.login_status);
+        final TextView forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        final String forgotPWLink = "http://www.recycleit.site/includes/forgotPassword.php";
+
+        forgotPassword.setText(Html.fromHtml("<a href=\""+forgotPWLink+"\">Forgot Password?</a>"));
+        forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
         assert loginButton != null;
         loginButton.setOnClickListener(new View.OnClickListener() {
