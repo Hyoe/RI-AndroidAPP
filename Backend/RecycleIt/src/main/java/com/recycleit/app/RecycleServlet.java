@@ -27,8 +27,8 @@ public class RecycleServlet extends HttpServlet {
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&password=passsword
-                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
-                Connection conn = DriverManager.getConnection(url);
+                url = "REDACTED"
+				Connection conn = DriverManager.getConnection(url);
                 ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM users WHERE username = " + "test");
 
                 while (rs.next()) {
@@ -52,13 +52,12 @@ public class RecycleServlet extends HttpServlet {
             String getUsername = req.getParameter("username");
 
             resp.setContentType("text/html");
-            //http://recycleit-1293.appspot.com/test?function=doRegister&username=test
 
             // Load the class that provides the new "jdbc:google:mysql://" prefix.
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&password=passsword
-                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
+                url = "REDACTED";
                 Connection conn = DriverManager.getConnection(url);
                 String query = "SELECT username FROM users WHERE username = '" + getUsername + "'";
                 ResultSet rs = conn.createStatement().executeQuery(query);
@@ -113,13 +112,12 @@ public class RecycleServlet extends HttpServlet {
             String getPassword = req.getParameter("password");
 
             resp.setContentType("text/html");
-            //http://recycleit-1293.appspot.com/test?function=doRegister&username=test
 
             // Load the class that provides the new "jdbc:google:mysql://" prefix.
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&password=passsword
-                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
+                url = "REDACTED";
                 Connection conn = DriverManager.getConnection(url);
                 //String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "'";
                 String query = "SELECT * FROM users WHERE username = '" + getUsername + "' AND pw = '" + getPassword + "' OR email = '" + getUsername + "' AND pw = '" + getPassword + "'";
@@ -206,14 +204,13 @@ public class RecycleServlet extends HttpServlet {
 
 
             resp.setContentType("text/html");
-            //test url user without the favorite place (to add):  http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username=test&place_id=FAKEPLACEX&favorite_checked=1
-            //test url user with the favorite place (to delete):  http://recycleit-1293.appspot.com/test?function=doUpdatePlace&username=test&place_id=FAKEPLACE4&favorite_checked=0
+
 
 
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&place_id=place_id
-                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
+                url = "REDACTED";
                 Connection conn = DriverManager.getConnection(url);
                 //query to see if already in favorites
                 String checkIfFavoriteQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
@@ -338,18 +335,15 @@ public class RecycleServlet extends HttpServlet {
             String materials = null;
             String reimburseStatus = null;
 
-
-            //sample url to test: http://recycleit-1293.appspot.com/test?function=doRetrievePlaceDetails&username=test&place_id=ChIJ7S3mBnAyw4ARToubWQqyK7M
-
+			
             resp.setContentType("text/html");
-            //http://recycleit-1293.appspot.com/test?function=doRegister&username=test
-
+            
             // Load the class that provides the new "jdbc:google:mysql://" prefix.
             try {
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 //format for url is........appname:mysqlinstancename/dbname?user=username&password=passsword
-                url = "jdbc:google:mysql://recycleit-1293:recycle-it-sql/Recycle_It?user=root&password=#kickascii";
-                Connection conn = DriverManager.getConnection(url);
+                url = "REDACTED";
+				Connection conn = DriverManager.getConnection(url);
 
 
                 String checkFavoritesQuery = "SELECT place_id FROM favs_comments WHERE username = '" + getUsername + "' AND place_id = '" + getPlaceID + "'";
